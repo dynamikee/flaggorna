@@ -5,15 +5,16 @@ struct ContentView: View {
     @State var currentScene = "Start"
     @State var countries: [Country] = []
     
+    
     var body: some View {
         
         switch currentScene {
         case "Start":
-            StartGameView(currentScene: $currentScene, loadData: loadData)
+            StartGameView(currentScene: $currentScene, countries: $countries)
         case "GetReady":
             GetReadyView(currentScene: $currentScene)
         case "Main":
-            MainGameView(currentScene: $currentScene)
+            MainGameView(currentScene: $currentScene, countries: $countries)
         case "Right":
             RightAnswerView(currentScene: $currentScene)
         case "Wrong":
@@ -21,17 +22,9 @@ struct ContentView: View {
         case "GameOver":
             GameOverView(currentScene: $currentScene)
         default:
-            StartGameView(currentScene: $currentScene, loadData: loadData)
+            StartGameView(currentScene: $currentScene, countries: $countries)
         }
     }
-    
-    private func loadData() {
-            let file = Bundle.main.path(forResource: "countries", ofType: "json")!
-            let data = try! Data(contentsOf: URL(fileURLWithPath: file))
-            let decoder = JSONDecoder()
-            self.countries = try! decoder.decode([Country].self, from: data)
-    }
-    
 }
 
 struct Country: Codable, Hashable {
@@ -42,7 +35,8 @@ struct Country: Codable, Hashable {
 struct StartGameView: View {
     
     @Binding var currentScene: String
-    var loadData: () -> ()
+    @Binding var countries: [Country]
+    //var loadData: () -> ()
     
     var body: some View {
         Button(action: {
@@ -53,6 +47,15 @@ struct StartGameView: View {
         }
         .padding()
     }
+    
+    private func loadData() {
+            let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+            let data = try! Data(contentsOf: URL(fileURLWithPath: file))
+            let decoder = JSONDecoder()
+            self.countries = try! decoder.decode([Country].self, from: data)
+        print(countries)
+    }
+    
 }
 
 struct GetReadyView: View {
@@ -71,24 +74,27 @@ struct GetReadyView: View {
 }
 
 struct MainGameView: View {
-    
     @Binding var currentScene: String
-    
+    @Binding var countries: [Country]
+
     var body: some View {
-        Button(action: {
-            currentScene = "Right"
-        }){
-            Text("Right")
+        let randomCountry = countries.randomElement()
+        let currentCountry = randomCountry?.name
+        let countryAlternatives = countries.filter { $0.name != currentCountry }
+        var randomCountryNames = countryAlternatives.map { $0.name }.shuffled().prefix(3)
+        randomCountryNames.append(currentCountry!)
+        randomCountryNames.shuffle()
+
+        return VStack {
+            Image(randomCountry!.flag)
+            ForEach(randomCountryNames, id: \.self) { countryName in
+                Text(countryName)
+            }
         }
-        .padding()
-        Button(action: {
-            currentScene = "Wrong"
-        }){
-            Text("Wrong")
-        }
-        .padding()
     }
 }
+
+
 
 struct RightAnswerView: View {
     
