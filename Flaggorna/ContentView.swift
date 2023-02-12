@@ -78,17 +78,25 @@ struct MainGameView: View {
     @Binding var countries: [Country]
 
     var body: some View {
-        let randomCountry = countries.randomElement()
-        let currentCountry = randomCountry?.name
-        let countryAlternatives = countries.filter { $0.name != currentCountry }
-        var randomCountryNames = countryAlternatives.map { $0.name }.shuffled().prefix(3)
-        randomCountryNames.append(currentCountry!)
-        randomCountryNames.shuffle()
+        let randomCountry = countries.randomElement()!
+                    let currentCountry = randomCountry.name
+                    let countryAlternatives = countries.filter { $0.name != currentCountry }
+                    var randomCountryNames = countryAlternatives.map { $0.name }.shuffled().prefix(3)
+                    randomCountryNames.append(currentCountry)
+                    randomCountryNames.shuffle()
 
         return VStack {
-            Image(randomCountry!.flag)
+            Image(randomCountry.flag)
             ForEach(randomCountryNames, id: \.self) { countryName in
-                Text(countryName)
+                Button(action: {
+                    if strcmp(currentCountry, countryName) == 0 {
+                                            self.currentScene = "Right"
+                                        } else {
+                                            self.currentScene = "Wrong"
+                                        }
+                }) {
+                    Text(countryName)
+                }
             }
         }
     }
