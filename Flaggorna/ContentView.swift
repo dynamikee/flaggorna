@@ -5,25 +5,26 @@ import Combine
 struct ContentView: View {
     @State var currentScene = "Start"
     @State var countries: [Country] = []
-    
+    @State var score = 0
+    @State var rounds = 3
     
     var body: some View {
         
         switch currentScene {
         case "Start":
-            StartGameView(currentScene: $currentScene, countries: $countries)
+            StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
         case "GetReady":
             GetReadyView(currentScene: $currentScene)
         case "Main":
-            MainGameView(currentScene: $currentScene, countries: $countries)
+            MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
         case "Right":
-            RightAnswerView(currentScene: $currentScene)
+            RightAnswerView(currentScene: $currentScene, rounds: $rounds)
         case "Wrong":
-            WrongAnswerView(currentScene: $currentScene)
+            WrongAnswerView(currentScene: $currentScene, rounds: $rounds)
         case "GameOver":
             GameOverView(currentScene: $currentScene)
         default:
-            StartGameView(currentScene: $currentScene, countries: $countries)
+            StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
         }
     }
 }
@@ -37,11 +38,15 @@ struct StartGameView: View {
     
     @Binding var currentScene: String
     @Binding var countries: [Country]
-    //var loadData: () -> ()
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
     
     var body: some View {
         Button(action: {
             loadData()
+            score = 0
+            rounds = 3
             currentScene = "GetReady"
         }){
             Text("Start game")
@@ -54,7 +59,6 @@ struct StartGameView: View {
             let data = try! Data(contentsOf: URL(fileURLWithPath: file))
             let decoder = JSONDecoder()
             self.countries = try! decoder.decode([Country].self, from: data)
-        print(countries)
     }
     
 }
@@ -77,6 +81,8 @@ struct GetReadyView: View {
 struct MainGameView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
+    @Binding var score: Int
+    @Binding var rounds: Int
 
     var body: some View {
         let randomCountry = countries.randomElement()!
@@ -87,24 +93,41 @@ struct MainGameView: View {
         randomCountryNames.shuffle()
 
         return VStack {
+            Text("Score: \(score)")
+            Text("Round: \(rounds)")
+            Spacer()
             Image(randomCountry.flag)
+                .border(.gray, width: 1)
+            Spacer()
             ForEach(randomCountryNames, id: \.self) { countryName in
                 Button(action: {
                     if strcmp(currentCountry, countryName) == 0 {
+                        self.score += 1
+                        if self.rounds > 0 {
+                            self.rounds -= 1
+                        }
                         self.currentScene = "Right"
+
+                        
                     } else {
+                        if self.rounds > 0 {
+                            self.rounds -= 1
+                        }
                         self.currentScene = "Wrong"
+                        
                     }
                 }) {
                     Text(countryName)
                 }
             }
+            
         }
     }
 }
 
 struct RightAnswerView: View {
     @Binding var currentScene: String
+    @Binding var rounds: Int
 
     var body: some View {
         VStack {
@@ -129,7 +152,12 @@ struct RightAnswerView: View {
         .onAppear {
             withAnimation {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.currentScene = "Main"
+                    if rounds > 0 {
+                        self.currentScene = "Main"
+                    } else {
+                        self.currentScene = "GameOver"
+                    }
+                    
                 }
             }
         }
@@ -143,6 +171,7 @@ struct RightAnswerView: View {
 struct WrongAnswerView: View {
     
     @Binding var currentScene: String
+    @Binding var rounds: Int
     
     var body: some View {
         VStack {
@@ -155,7 +184,11 @@ struct WrongAnswerView: View {
         .onAppear {
             withAnimation {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.currentScene = "Main"
+                    if rounds > 0 {
+                        self.currentScene = "Main"
+                    } else {
+                        self.currentScene = "GameOver"
+                    }
                 }
             }
         }
