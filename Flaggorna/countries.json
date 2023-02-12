@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "name": "Albania",
+    "flag": "albania",
+    "continent": "Europe"
+  },
+  {
+    "id": 2,
+    "name": "Andorra",
+    "flag": "andorra",
+    "continent": "Europe"
+  },
+  {
+    "id": 3,
+    "name": "Armenia",
+    "flag": "armenia",
+    "continent": "Europe"
+  },
+  {
+    "id": 4,
+    "name": "Austria",
+    "flag": "austria",
+    "continent": "Europe"
+  },
+  {
+    "id": 5,
+    "name": "Azerbaijan",
+    "flag": "azerbaijan",
+    "continent": "Europe"
+  },
+  {
+    "id": 6,
+    "name": "Belarus",
+    "flag": "belarus",
+    "continent": "Europe"
+  },
+  {
+    "id": 7,
+    "name": "Belgium",
+    "flag": "belgium",
+    "continent": "Europe"
+  },
+  {
+    "id": 8,
+    "name": "Bosnia and Herzegovina",
+    "flag": "bosnia_herzegovina",
+    "continent": "Europe"
+  },
+  {
+    "id": 9,
+    "name": "Bulgaria",
+    "flag": "bulgaria",
+    "continent": "Europe"
+  },
+  {
+    "id": 10,
+    "name": "Croatia",
+    "flag": "croatia",
+    "continent": "Europe"
+  },
+  {
+    "id": 11,
+    "name": "Cyprus",
+    "flag": "cyprus",
+    "continent": "Europe"
+  },
+  {
+    "id": 12,
+    "name": "Czech Republic",
+    "flag": "czech_republic",
+    "continent": "Europe"
+  },
+  {
+    "id": 13,
+    "name": "Denmark",
+    "flag": "denmark",
+    "continent": "Europe"
+  },
+  {
+    "id": 14,
+    "name": "Estonia",
+    "flag": "estonia",
+    "continent": "Europe"
+  },
+  {
+    "id": 15,
+    "name": "Finland",
+    "flag": "finland",
+    "continent": "Europe"
+  },
+  {
+    "id": 16,
+    "name": "France",
+    "flag": "france",
+    "continent": "Europe"
+  },
+  {
+    "id": 17,
+    "name": "Georgia",
+    "flag": "georgia",
+    "continent": "Europe"
+  },
+  {
+    "id": 18,
+    "name": "Germany",
+    "flag": "germany",
+    "continent": "Europe"
+  },
+  {
+    "id": 19,
+    "name": "Greece",
+    "flag": "greece",
+    "continent": "Europe"
+  },
+  {
+    "id": 20,
+    "name": "Hungary",
+    "flag": "hungary",
+    "continent": "Europe"
+  },
+  {
+    "id": 21,
+    "name": "Iceland",
+    "flag": "iceland",
+    "continent": "Europe"
+  },
+  {
+    "id": 22,
+    "name": "Ireland",
+    "flag": "ireland",
+    "continent": "Europe"
+  },
+  {
+    "id": 23,
+    "name": "Italy",
+    "flag": "italy",
+    "continent": "Europe"
+  }
+]
