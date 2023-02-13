@@ -116,7 +116,12 @@ struct MainGameView: View {
             Text("Round: \(rounds)")
             Spacer()
             Image(randomCountry.flag)
+                .resizable()
                 .border(.gray, width: 1)
+                
+                .aspectRatio(contentMode: .fit)
+                .frame(width: UIScreen.main.bounds.width * 0.9)
+            
             Spacer()
             ForEach(randomCountryNames, id: \.self) { countryName in
                 Button(action: {
