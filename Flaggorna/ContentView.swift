@@ -66,17 +66,26 @@ struct StartGameView: View {
 struct GetReadyView: View {
     
     @Binding var currentScene: String
+    @State private var count = 3
     
     var body: some View {
-        Button(action: {
-            currentScene = "Main"
-        }){
-            Text("Ok I am ready..")
+        VStack {
+            Text("Get ready! \(count)")
         }
-        .padding()
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if self.count > 0 {
+                    self.count -= 1
+                } else {
+                    timer.invalidate()
+                    self.currentScene = "Main"
+                }
+            }
+        }
     }
-    
 }
+
+
 
 struct MainGameView: View {
     @Binding var currentScene: String
@@ -119,6 +128,7 @@ struct MainGameView: View {
                 }) {
                     Text(countryName)
                 }
+                .buttonStyle(CountryButtonStyle())
             }
             
         }
@@ -211,6 +221,25 @@ struct GameOverView: View {
         .padding()
     }
 }
+
+
+struct CountryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+        
+                .padding(15)
+                .background(Color.gray)
+                .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.black, lineWidth: 5)
+                )
+                .font(.largeTitle)
+                .foregroundColor(.black)
+                
+        }
+}
+
 
 struct FireworkParticlesGeometryEffect : GeometryEffect {
     var time : Double
