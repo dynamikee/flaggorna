@@ -9,25 +9,35 @@ struct ContentView: View {
     @State var rounds = 3
     
     var body: some View {
-        
-        switch currentScene {
-        case "Start":
-            StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
-        case "GetReady":
-            GetReadyView(currentScene: $currentScene)
-        case "Main":
-            MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
-        case "Right":
-            RightAnswerView(currentScene: $currentScene, rounds: $rounds)
-        case "Wrong":
-            WrongAnswerView(currentScene: $currentScene, rounds: $rounds)
-        case "GameOver":
-            GameOverView(currentScene: $currentScene)
-        default:
-            StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+        ZStack {
+            Color.gray
+                    .edgesIgnoringSafeArea(.all)
+            switch currentScene {
+            case "Start":
+                StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+            case "GetReady":
+                GetReadyView(currentScene: $currentScene)
+            case "Main":
+                MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+            case "Right":
+                RightAnswerView(currentScene: $currentScene, rounds: $rounds)
+            case "Wrong":
+                WrongAnswerView(currentScene: $currentScene, rounds: $rounds)
+            case "GameOver":
+                GameOverView(currentScene: $currentScene)
+            default:
+                StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+            }
+            
         }
+        
+
+        
     }
+    
 }
+
+
 
 struct Country: Codable, Hashable {
     var name: String
@@ -100,7 +110,7 @@ struct MainGameView: View {
         var randomCountryNames = countryAlternatives.map { $0.name }.shuffled().prefix(3)
         randomCountryNames.append(currentCountry)
         randomCountryNames.shuffle()
-
+  
         return VStack {
             Text("Score: \(score)")
             Text("Round: \(rounds)")
@@ -115,6 +125,7 @@ struct MainGameView: View {
                         if self.rounds > 0 {
                             self.rounds -= 1
                         }
+                        self.countries.removeAll { $0.name == currentCountry }
                         self.currentScene = "Right"
 
                         
@@ -122,6 +133,7 @@ struct MainGameView: View {
                         if self.rounds > 0 {
                             self.rounds -= 1
                         }
+                        self.countries.removeAll { $0.name == currentCountry }
                         self.currentScene = "Wrong"
                         
                     }

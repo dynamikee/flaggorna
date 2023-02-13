@@ -136,5 +136,137 @@
     "name": "Italy",
     "flag": "italy",
     "continent": "Europe"
+  },
+  {
+    "id": 24,
+    "name": "Latvia",
+    "flag": "latvia",
+    "continent": "Europe"
+  },
+  {
+    "id": 25,
+    "name": "Lithuania",
+    "flag": "lithuania",
+    "continent": "Europe"
+  },
+  {
+    "id": 26,
+    "name": "Luxembourg",
+    "flag": "luxembourg",
+    "continent": "Europe"
+  },
+  {
+    "id": 27,
+    "name": "Malta",
+    "flag": "malta",
+    "continent": "Europe"
+  },
+  {
+    "id": 28,
+    "name": "Moldova",
+    "flag": "moldova",
+    "continent": "Europe"
+  },
+  {
+    "id": 29,
+    "name": "Monaco",
+    "flag": "monaco",
+    "continent": "Europe"
+  },
+  {
+    "id": 30,
+    "name": "Montenegro",
+    "flag": "montenegro",
+    "continent": "Europe"
+  },
+  {
+    "id": 31,
+    "name": "Netherlands",
+    "flag": "netherlands",
+    "continent": "Europe"
+  },
+  {
+    "id": 32,
+    "name": "North Macedonia",
+    "flag": "north_macedonia",
+    "continent": "Europe"
+  },
+  {
+    "id": 33,
+    "name": "Norway",
+    "flag": "norway",
+    "continent": "Europe"
+  },
+  {
+    "id": 34,
+    "name": "Poland",
+    "flag": "poland",
+    "continent": "Europe"
+  },
+  {
+    "id": 35,
+    "name": "Portugal",
+    "flag": "portugal",
+    "continent": "Europe"
+  },
+  {
+    "id": 36,
+    "name": "Romania",
+    "flag": "romania",
+    "continent": "Europe"
+  },
+  {
+    "id": 37,
+    "name": "Russia",
+    "flag": "russia",
+    "continent": "Europe"
+  },
+  {
+    "id": 38,
+    "name": "San Marino",
+    "flag": "san_marino",
+    "continent": "Europe"
+  },
+  {
+    "id": 39,
+    "name": "Serbia",
+    "flag": "serbia",
+    "continent": "Europe"
+  },
+  {
+    "id": 40,
+    "name": "Slovakia",
+    "flag": "slovakia",
+    "continent": "Europe"
+  },
+  {
+    "id": 41,
+    "name": "Slovenia",
+    "flag": "slovenia",
+    "continent": "Europe"
+  },
+  {
+    "id": 42,
+    "name": "Spain",
+    "flag": "spain",
+    "continent": "Europe"
+  },
+  {
+    "id": 43,
+    "name": "Sweden",
+    "flag": "sweden",
+    "continent": "Europe"
+  },
+  {
+    "id": 44,
+    "name": "Switzerland",
+    "flag": "switzerland",
+    "continent": "Europe"
+  },
+  {
+    "id": 45,
+    "name": "Ukraine",
+    "flag": "ukraine",
+    "continent": "Europe"
   }
 ]
