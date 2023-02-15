@@ -3,6 +3,7 @@ import SwiftUI
 import Combine
 import UIKit
 import Starscream
+import Foundation
 
 struct ContentView: View {
     @State var currentScene = "Start"
@@ -55,7 +56,7 @@ struct Country: Codable, Hashable {
 struct User: Hashable {
     var id: UUID
     var name: String
-    var color: Color
+    var color: String
 }
 
 struct StartGameView: View {
@@ -70,10 +71,6 @@ struct StartGameView: View {
         VStack {
             Button(action: {
                 loadData()
-                let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
-                let request = URLRequest(url: url)
-                let socket = WebSocket(request: request)
-                print("connected")
                 score = 0
                 rounds = 3
                 currentScene = "GetReadyMultiplayer"
@@ -156,19 +153,29 @@ struct GetReadyView: View {
 }
 
 struct GetReadyMultiplayerView: View {
-    
     @Binding var currentScene: String
     @State private var name: String = ""
-    @State private var users: [User] = []
-    
-    private let colors = [
-            Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
-            Color.yellow, Color.teal, Color.gray
-        ]
-        
-    var body: some View {
-        let color = colors.randomElement() ?? .white
+    @State private var color: Color = .white
+    @ObservedObject var socketManager = SocketManager()
 
+    private let colors = [
+        Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
+        Color.yellow, Color.teal, Color.gray
+    ]
+    
+    let colorToString: [Color: String] = [
+        .red: ".red",
+        .green: ".green",
+        .blue: ".blue",
+        .orange: ".orange",
+        .pink: ".pink",
+        .purple: ".purple",
+        .yellow: ".yellow",
+        .teal: ".teal",
+        .gray: ".gray"
+    ]
+
+    var body: some View {
         VStack {
             Text("Players:")
                 .font(.title)
@@ -183,19 +190,14 @@ struct GetReadyMultiplayerView: View {
                     .fontWeight(.black)
                     .foregroundColor(.white)
                     .padding()
+
             }
             .padding()
-            
-            
+
             Button(action: {
-                
-                users.append(User(id: UUID(), name: name, color: color))
-                print(users)
-                name = ""
-                currentScene = "Main"
-                
+                join()
             }) {
-                Text("START GAME")
+                Text("JOIN")
             }
             .disabled(name.isEmpty)
             .buttonStyle(OrdinaryButtonStyle())
@@ -203,13 +205,33 @@ struct GetReadyMultiplayerView: View {
 
         }
         .onAppear {
-            
+            // Choose a random color for the user
+            self.color = colors.randomElement()!
+        }
+    }
+
+    private func join() {
+        
+        let colorString = colorToString[color] ?? ".white"
+        
+        let user = User(id: UUID(), name: name, color: colorString)
+        name = ""
+
+        let json: [String: Any] = [
+            "type": "newUser",
+            "userID": user.id.uuidString,
+            "userName": user.name,
+            "userColor": user.color
+        ]
+        print(json)
+
+        if let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            // Send the JSON message to the WebSocket server using your WebSocketManager
+            socketManager.send(jsonString)
         }
     }
 }
-
-
-
 
 struct MainGameView: View {
     @Binding var currentScene: String
@@ -474,6 +496,72 @@ struct ParticlesModifier: ViewModifier {
         }
     }
 }
+
+class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
+    @Published var users: Set<User> = []
+    let socket: WebSocket
+    override init() {
+        let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
+        let request = URLRequest(url: url)
+        socket = WebSocket(request: request)
+        super.init()
+        socket.delegate = self
+        //socket.connect()
+    }
+    
+    func send(_ message: String) {
+        socket.write(string: message)
+    }
+
+
+    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
+
+        switch event {
+        case .connected(_):
+            break
+        case .disconnected(_):
+            break
+            
+        case .text(let string):
+            if let data = string.data(using: .utf8),
+               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                if let type = json["type"] as? String {
+                    if type == "newUser" {
+                        if let userIDString = json["userID"] as? String, let userID = UUID(uuidString: userIDString), let newUserName = json["userName"] as? String, let newUserColorString = json["userColor"] as? String {
+                            
+                            DispatchQueue.main.async {
+                               
+                            }
+                        }
+                    } else if type == "usersArray" {
+                        if let usersArrayString = json["users"] as? String {
+                            
+                        }
+                    }
+                }
+            }
+
+        case .binary(let data):
+            print("Received data: \(data.count)")
+        case .ping(_):
+            break
+        case .pong(_):
+            break
+        case .viabilityChanged(_):
+            break
+        case .reconnectSuggested(_):
+            break
+        case .cancelled:
+            break
+            //isConnected = false
+        case .error(let error):
+            //isConnected = false
+            //handleError(error)
+            break
+        }
+    }
+}
+
 
 
 
