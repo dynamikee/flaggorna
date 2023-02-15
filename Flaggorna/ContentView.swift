@@ -1,6 +1,7 @@
 
 import SwiftUI
 import Combine
+import UIKit
 
 struct ContentView: View {
     @State var currentScene = "Start"
@@ -10,7 +11,8 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.gray
+            
+            Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                     .edgesIgnoringSafeArea(.all)
             switch currentScene {
             case "Start":
@@ -20,11 +22,11 @@ struct ContentView: View {
             case "Main":
                 MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
             case "Right":
-                RightAnswerView(currentScene: $currentScene, rounds: $rounds)
+                RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
             case "Wrong":
-                WrongAnswerView(currentScene: $currentScene, rounds: $rounds)
+                WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
             case "GameOver":
-                GameOverView(currentScene: $currentScene)
+                GameOverView(currentScene: $currentScene, score: $score)
             default:
                 StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
             }
@@ -45,12 +47,12 @@ struct Country: Codable, Hashable {
 }
 
 struct StartGameView: View {
-    
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
     
+    @State private var offset = CGSize.zero
     
     var body: some View {
         Button(action: {
@@ -59,19 +61,41 @@ struct StartGameView: View {
             rounds = 3
             currentScene = "GetReady"
         }){
-            Text("Start game")
+            Text("START GAME")
         }
+        .buttonStyle(OrdinaryButtonStyle())
         .padding()
+        .background(
+            Image("background")
+                .resizable()
+                .scaledToFill()
+                //.aspectRatio(contentMode: .fill)
+                .offset(x: offset.width, y: offset.height)
+                .frame(width: UIScreen.main.bounds.width)
+                .animation(
+                    Animation.linear(duration: 5)
+                        .repeatForever(autoreverses: true)
+                )
+                .onAppear {
+                    withAnimation(
+                        Animation.linear(duration: 5)
+                            .repeatForever(autoreverses: true)
+                    ) {
+                        self.offset.height = -100
+                    }
+                }
+        )
+        .edgesIgnoringSafeArea(.all)
     }
     
     private func loadData() {
-            let file = Bundle.main.path(forResource: "countries", ofType: "json")!
-            let data = try! Data(contentsOf: URL(fileURLWithPath: file))
-            let decoder = JSONDecoder()
-            self.countries = try! decoder.decode([Country].self, from: data)
+        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
+        let decoder = JSONDecoder()
+        self.countries = try! decoder.decode([Country].self, from: data)
     }
-    
 }
+
 
 struct GetReadyView: View {
     
@@ -80,7 +104,14 @@ struct GetReadyView: View {
     
     var body: some View {
         VStack {
-            Text("Get ready! \(count)")
+            Text("GET READY!")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("\(count)")
+                .font(.largeTitle)
+                .fontWeight(.black)
+                .foregroundColor(.white)
         }
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -112,54 +143,77 @@ struct MainGameView: View {
         randomCountryNames.shuffle()
   
         return VStack {
-            Text("Score: \(score)")
-            Text("Round: \(rounds)")
+            HStack{
+                Text("Score: \(score)")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                Spacer()
+                Text("Round: \(rounds)")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+            }
+            .padding(24)
+
             Spacer()
             Image(randomCountry.flag)
                 .resizable()
                 .border(.gray, width: 1)
                 
                 .aspectRatio(contentMode: .fit)
-                .frame(width: UIScreen.main.bounds.width * 0.9)
+                .frame(width: UIScreen.main.bounds.width * 0.8)
             
             Spacer()
-            ForEach(randomCountryNames, id: \.self) { countryName in
-                Button(action: {
-                    if strcmp(currentCountry, countryName) == 0 {
-                        self.score += 1
-                        if self.rounds > 0 {
-                            self.rounds -= 1
-                        }
-                        self.countries.removeAll { $0.name == currentCountry }
-                        self.currentScene = "Right"
+            VStack(spacing: 24){
+                ForEach(randomCountryNames, id: \.self) { countryName in
+                    Button(action: {
+                        if strcmp(currentCountry, countryName) == 0 {
+                            self.score += 1
+                            if self.rounds > 0 {
+                                self.rounds -= 1
+                            }
+                            self.countries.removeAll { $0.name == currentCountry }
+                            self.currentScene = "Right"
 
-                        
-                    } else {
-                        if self.rounds > 0 {
-                            self.rounds -= 1
+                            
+                        } else {
+                            if self.rounds > 0 {
+                                self.rounds -= 1
+                            }
+                            self.countries.removeAll { $0.name == currentCountry }
+                            self.currentScene = "Wrong"
+                            
                         }
-                        self.countries.removeAll { $0.name == currentCountry }
-                        self.currentScene = "Wrong"
-                        
+                    }) {
+                        Text(countryName)
                     }
-                }) {
-                    Text(countryName)
+                    .buttonStyle(CountryButtonStyle())
+                    
                 }
-                .buttonStyle(CountryButtonStyle())
             }
-            
+            .padding(8)
         }
     }
 }
 
 struct RightAnswerView: View {
     @Binding var currentScene: String
+    @Binding var score: Int
     @Binding var rounds: Int
+   
 
     var body: some View {
         VStack {
             Spacer()
-            Text("YOU ARE RIGHT!")
+            Text("Right answer!")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("Your score: \(score)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
             ZStack {
                 Circle()
                     .fill(Color.blue)
@@ -178,7 +232,7 @@ struct RightAnswerView: View {
         }
         .onAppear {
             withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     if rounds > 0 {
                         self.currentScene = "Main"
                     } else {
@@ -198,19 +252,28 @@ struct RightAnswerView: View {
 struct WrongAnswerView: View {
     
     @Binding var currentScene: String
+    @Binding var score: Int
     @Binding var rounds: Int
+    
     
     var body: some View {
         VStack {
             Spacer()
-            Text("YOU ARE WRONG!")
+            Text("Wrong answer")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("Your score: \(score)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
 
             Spacer()
             
         }
         .onAppear {
             withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     if rounds > 0 {
                         self.currentScene = "Main"
                     } else {
@@ -228,14 +291,24 @@ struct WrongAnswerView: View {
 struct GameOverView: View {
     
     @Binding var currentScene: String
+    @Binding var score: Int
+
     
     var body: some View {
-        Button(action: {
-            currentScene = "Start"
-        }){
-            Text("GAME OVER !")
+        VStack {
+            Text("Your score: \(score)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Button(action: {
+                currentScene = "Start"
+            }){
+                Text("Continue")
+            }
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
         }
-        .padding()
+        
     }
 }
 
@@ -243,19 +316,39 @@ struct GameOverView: View {
 struct CountryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
             configuration.label
-        
+            .frame(width: UIScreen.main.bounds.width * 0.8, alignment: .leading)
                 .padding(15)
-                .background(Color.gray)
-                .cornerRadius(20)
+                .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
+                .cornerRadius(16)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.black, lineWidth: 5)
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white, lineWidth: 8)
                 )
-                .font(.largeTitle)
-                .foregroundColor(.black)
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
                 
         }
 }
+
+struct OrdinaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+            
+                .padding(15)
+                .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
+                .cornerRadius(16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white, lineWidth: 8)
+                )
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+                
+        }
+}
+
 
 
 struct FireworkParticlesGeometryEffect : GeometryEffect {
