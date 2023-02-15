@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
 		BAF21C0429994100009035E8 /* FlaggornaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0329994100009035E8 /* FlaggornaApp.swift */; };
 		BAF21C0629994100009035E8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0529994100009035E8 /* ContentView.swift */; };
 		BAF21C0829994103009035E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0729994103009035E8 /* Assets.xcassets */; };
@@ -15,12 +16,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flaggorna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flaggorna.release.xcconfig"; path = "Target Support Files/Pods-Flaggorna/Pods-Flaggorna.release.xcconfig"; sourceTree = "<group>"; };
 		BAF21C0029994100009035E8 /* Flaggorna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flaggorna.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAF21C0329994100009035E8 /* FlaggornaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggornaApp.swift; sourceTree = "<group>"; };
 		BAF21C0529994100009035E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BAF21C0729994103009035E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAF21C0A29994103009035E8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BAF21C112999477F009035E8 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
+		FD606BE073B6EFD734F9123D /* Pods-Flaggorna.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flaggorna.debug.xcconfig"; path = "Target Support Files/Pods-Flaggorna/Pods-Flaggorna.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,17 +32,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		148043B631B009D18B572535 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FD606BE073B6EFD734F9123D /* Pods-Flaggorna.debug.xcconfig */,
+				9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BAF21BF729994100009035E8 = {
 			isa = PBXGroup;
 			children = (
 				BAF21C0229994100009035E8 /* Flaggorna */,
 				BAF21C0129994100009035E8 /* Products */,
+				148043B631B009D18B572535 /* Pods */,
+				E6628B947791CACBE60070F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +87,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		E6628B947791CACBE60070F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BAF21C0E29994103009035E8 /* Build configuration list for PBXNativeTarget "Flaggorna" */;
 			buildPhases = (
+				8ECDF6291BEFED49DE045ACB /* [CP] Check Pods Manifest.lock */,
 				BAF21BFC29994100009035E8 /* Sources */,
 				BAF21BFD29994100009035E8 /* Frameworks */,
 				BAF21BFE29994100009035E8 /* Resources */,
+				ECC36CC1F96C52EFC1792B44 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -135,6 +162,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8ECDF6291BEFED49DE045ACB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Flaggorna-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ECC36CC1F96C52EFC1792B44 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BAF21BFC29994100009035E8 /* Sources */ = {
@@ -265,6 +334,7 @@
 		};
 		BAF21C0F29994103009035E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD606BE073B6EFD734F9123D /* Pods-Flaggorna.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -295,6 +365,7 @@
 		};
 		BAF21C1029994103009035E8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

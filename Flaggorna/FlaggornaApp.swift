@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Starscream
 
 @main
 struct FlaggornaApp: App {
     var body: some Scene {
         WindowGroup {
+            
             ContentView()
         }
     }

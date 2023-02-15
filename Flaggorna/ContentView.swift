@@ -2,6 +2,7 @@
 import SwiftUI
 import Combine
 import UIKit
+import Starscream
 
 struct ContentView: View {
     @State var currentScene = "Start"
@@ -9,7 +10,9 @@ struct ContentView: View {
     @State var score = 0
     @State var rounds = 3
     
+    
     var body: some View {
+        
         ZStack {
             
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
@@ -57,6 +60,11 @@ struct StartGameView: View {
     var body: some View {
         Button(action: {
             loadData()
+            let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
+            let request = URLRequest(url: url)
+            let socket = WebSocket(request: request)
+            print("connected")
+            
             score = 0
             rounds = 3
             currentScene = "GetReady"
@@ -72,10 +80,7 @@ struct StartGameView: View {
                 //.aspectRatio(contentMode: .fill)
                 .offset(x: offset.width, y: offset.height)
                 .frame(width: UIScreen.main.bounds.width)
-                .animation(
-                    Animation.linear(duration: 5)
-                        .repeatForever(autoreverses: true)
-                )
+
                 .onAppear {
                     withAnimation(
                         Animation.linear(duration: 5)
