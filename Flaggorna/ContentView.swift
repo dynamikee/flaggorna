@@ -9,6 +9,7 @@ struct ContentView: View {
     @State var countries: [Country] = []
     @State var score = 0
     @State var rounds = 3
+
     
     
     var body: some View {
@@ -22,6 +23,8 @@ struct ContentView: View {
                 StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
             case "GetReady":
                 GetReadyView(currentScene: $currentScene)
+            case "GetReadyMultiplayer":
+                GetReadyMultiplayerView(currentScene: $currentScene)
             case "Main":
                 MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
             case "Right":
@@ -49,6 +52,12 @@ struct Country: Codable, Hashable {
     var flag: String
 }
 
+struct User: Hashable {
+    var id: UUID
+    var name: String
+    var color: Color
+}
+
 struct StartGameView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
@@ -58,21 +67,35 @@ struct StartGameView: View {
     @State private var offset = CGSize.zero
     
     var body: some View {
-        Button(action: {
-            loadData()
-            let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
-            let request = URLRequest(url: url)
-            let socket = WebSocket(request: request)
-            print("connected")
+        VStack {
+            Button(action: {
+                loadData()
+                let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
+                let request = URLRequest(url: url)
+                let socket = WebSocket(request: request)
+                print("connected")
+                score = 0
+                rounds = 3
+                currentScene = "GetReadyMultiplayer"
+                
+            }){
+                Text("PARTY GAME")
+            }
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
             
-            score = 0
-            rounds = 3
-            currentScene = "GetReady"
-        }){
-            Text("START GAME")
+            Button(action: {
+                loadData()
+                score = 0
+                rounds = 3
+                currentScene = "GetReady"
+            }){
+                Text("SINGLE GAME")
+            }
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
         }
-        .buttonStyle(OrdinaryButtonStyle())
-        .padding()
+        
         .background(
             Image("background")
                 .resizable()
@@ -105,6 +128,7 @@ struct StartGameView: View {
 struct GetReadyView: View {
     
     @Binding var currentScene: String
+    
     @State private var count = 3
     
     var body: some View {
@@ -130,6 +154,60 @@ struct GetReadyView: View {
         }
     }
 }
+
+struct GetReadyMultiplayerView: View {
+    
+    @Binding var currentScene: String
+    @State private var name: String = ""
+    @State private var users: [User] = []
+    
+    private let colors = [
+            Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
+            Color.yellow, Color.teal, Color.gray
+        ]
+        
+    var body: some View {
+        let color = colors.randomElement() ?? .white
+
+        VStack {
+            Text("Players:")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            HStack {
+                Circle()
+                    .foregroundColor(color)
+                    .frame(width: 40)
+                TextField("Enter your name", text: $name)
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                    .padding()
+            }
+            .padding()
+            
+            
+            Button(action: {
+                
+                users.append(User(id: UUID(), name: name, color: color))
+                print(users)
+                name = ""
+                currentScene = "Main"
+                
+            }) {
+                Text("START GAME")
+            }
+            .disabled(name.isEmpty)
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
+
+        }
+        .onAppear {
+            
+        }
+    }
+}
+
 
 
 
@@ -396,5 +474,8 @@ struct ParticlesModifier: ViewModifier {
         }
     }
 }
+
+
+
 
 
