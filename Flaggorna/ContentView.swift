@@ -201,6 +201,7 @@ struct GetReadyMultiplayerView: View {
             
             if showStartButton {
                 Button(action: {
+                    self.socketManager.stopUsersTimer()
                     currentScene = "Main"
                 }){
                     Text("START GAME")
@@ -245,6 +246,7 @@ struct GetReadyMultiplayerView: View {
     private func join() {
         
         let user = User(id: UUID(), name: name, color: color)
+        
         name = ""
         let colorString = colorToString[user.color] ?? ".white"
         
@@ -260,7 +262,6 @@ struct GetReadyMultiplayerView: View {
             let jsonString = String(data: jsonData, encoding: .utf8) {
             // Send the JSON message to the WebSocket server using your WebSocketManager
             socketManager.send(jsonString)
-            print(jsonString)
         }
     }
 }
@@ -584,11 +585,14 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     }
     
     func startUsersTimer() {
-            stopUsersTimer() // make sure only one timer is running at a time
-            usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+        stopUsersTimer() // make sure only one timer is running at a time
+        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            if !(self?.users.isEmpty)! {
                 self?.sendUsersArray()
             }
+        }
     }
+
         
     func stopUsersTimer() {
             usersTimer?.invalidate()
@@ -634,18 +638,27 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                 "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
                             ]
                             if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
-                                let jsonString = String(data: jsonData, encoding: .utf8) {
+                               let jsonString = String(data: jsonData, encoding: .utf8) {
                                 socket.write(string: jsonString)
                                 print(jsonString)
                             }
                         }
                     } else if type == "usersArray" {
-                        if let usersArrayString = json["users"] as? String {
-                            
+                            if let usersArray = json["users"] as? [[String: Any]] {
+                                var newUsers = Set<User>()
+                                for userDict in usersArray {
+                                    if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
+                                        let newUser = User(id: userID, name: userName, color: color(for: userColorString))
+                                        newUsers.insert(newUser)
+                                    }
+                                }
+                                DispatchQueue.main.async { [weak self] in
+                                    self?.users = newUsers
+                                }
+                            }
                         }
-                    }
-                }
-            }
+                                }
+                            }
 
         case .binary(let data):
             print("Received data: \(data.count)")
