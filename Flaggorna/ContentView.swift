@@ -53,10 +53,10 @@ struct Country: Codable, Hashable {
     var flag: String
 }
 
-struct User: Hashable {
+struct User: Hashable, Identifiable {
     var id: UUID
     var name: String
-    var color: String
+    var color: Color
 }
 
 struct StartGameView: View {
@@ -156,6 +156,7 @@ struct GetReadyMultiplayerView: View {
     @Binding var currentScene: String
     @State private var name: String = ""
     @State private var color: Color = .white
+    @State private var showStartButton = false
     @ObservedObject var socketManager = SocketManager()
 
     private let colors = [
@@ -181,54 +182,85 @@ struct GetReadyMultiplayerView: View {
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            HStack {
-                Circle()
-                    .foregroundColor(color)
-                    .frame(width: 40)
-                TextField("Enter your name", text: $name)
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
+                    HStack {
+                        Circle()
+                            .foregroundColor(user.color)
+                            .frame(width: 20, height: 20)
+                        Text(user.name)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                }
+            }
+            Spacer()
+            
+            if showStartButton {
+                Button(action: {
+                    currentScene = "Main"
+                }){
+                    Text("START GAME")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+            } else {
+                HStack {
+                    Circle()
+                        .foregroundColor(color)
+                        .frame(width: 40)
+                    TextField("Enter your name", text: $name)
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                        .padding()
+                    Button(action: {
+                        join()
+                        showStartButton = true
+                    }) {
+                        Text(Image(systemName: "arrow.forward"))
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                        
+                    }
+                    .disabled(name.isEmpty)
                     .padding()
 
+                }
+                .padding()
             }
-            .padding()
-
-            Button(action: {
-                join()
-            }) {
-                Text("JOIN")
-            }
-            .disabled(name.isEmpty)
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
-
         }
         .onAppear {
             // Choose a random color for the user
+            self.socketManager.socket.connect()
+            self.socketManager.startUsersTimer()
             self.color = colors.randomElement()!
         }
     }
 
     private func join() {
         
-        let colorString = colorToString[color] ?? ".white"
-        
-        let user = User(id: UUID(), name: name, color: colorString)
+        let user = User(id: UUID(), name: name, color: color)
         name = ""
-
+        let colorString = colorToString[user.color] ?? ".white"
+        
         let json: [String: Any] = [
             "type": "newUser",
             "userID": user.id.uuidString,
             "userName": user.name,
-            "userColor": user.color
+            "userColor": colorString
         ]
-        print(json)
+        
 
         if let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []),
             let jsonString = String(data: jsonData, encoding: .utf8) {
             // Send the JSON message to the WebSocket server using your WebSocketManager
             socketManager.send(jsonString)
+            print(jsonString)
         }
     }
 }
@@ -499,7 +531,45 @@ struct ParticlesModifier: ViewModifier {
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     @Published var users: Set<User> = []
-    let socket: WebSocket
+    @Published var socket: WebSocket
+    var usersTimer: Timer?
+    
+    func color(for string: String) -> Color {
+        switch string {
+        case ".red":
+            return Color.red
+        case ".green":
+            return Color.green
+        case ".blue":
+            return Color.blue
+        case ".orange":
+            return Color.orange
+        case ".pink":
+            return Color.pink
+        case ".purple":
+            return Color.purple
+        case ".yellow":
+            return Color.yellow
+        case ".teal":
+            return Color.teal
+        case ".gray":
+            return Color.gray
+        default:
+            return Color.white
+        }
+    }
+    let colorToString: [Color: String] = [
+        .red: ".red",
+        .green: ".green",
+        .blue: ".blue",
+        .orange: ".orange",
+        .pink: ".pink",
+        .purple: ".purple",
+        .yellow: ".yellow",
+        .teal: ".teal",
+        .gray: ".gray"
+    ]
+    
     override init() {
         let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
         let request = URLRequest(url: url)
@@ -511,6 +581,31 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     
     func send(_ message: String) {
         socket.write(string: message)
+    }
+    
+    func startUsersTimer() {
+            stopUsersTimer() // make sure only one timer is running at a time
+            usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+                self?.sendUsersArray()
+            }
+    }
+        
+    func stopUsersTimer() {
+            usersTimer?.invalidate()
+            usersTimer = nil
+    }
+
+    func sendUsersArray() {
+        let usersArray = Array(users)
+        let usersDict: [String: Any] = [
+            "type": "usersArray",
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
+        ]
+        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print(jsonString)
+        }
     }
 
 
@@ -529,8 +624,19 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                     if type == "newUser" {
                         if let userIDString = json["userID"] as? String, let userID = UUID(uuidString: userIDString), let newUserName = json["userName"] as? String, let newUserColorString = json["userColor"] as? String {
                             
-                            DispatchQueue.main.async {
-                               
+                            let newUser = User(id: userID, name: newUserName, color: color(for: newUserColorString))
+                            DispatchQueue.main.async { [weak self] in
+                                self?.users.insert(newUser)
+                            }
+                            let usersArray = Array(users)
+                            let usersDict: [String: Any] = [
+                                "type": "usersArray",
+                                "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
+                            ]
+                            if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
+                                let jsonString = String(data: jsonData, encoding: .utf8) {
+                                socket.write(string: jsonString)
+                                print(jsonString)
                             }
                         }
                     } else if type == "usersArray" {
