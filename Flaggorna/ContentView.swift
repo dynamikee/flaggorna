@@ -244,25 +244,17 @@ struct GetReadyMultiplayerView: View {
     }
 
     private func join() {
-        
         let user = User(id: UUID(), name: name, color: color)
-        
         name = ""
         let colorString = colorToString[user.color] ?? ".white"
-        
         let json: [String: Any] = [
             "type": "newUser",
             "userID": user.id.uuidString,
             "userName": user.name,
             "userColor": colorString
         ]
+        socketManager.users.insert(user)
         
-
-        if let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            // Send the JSON message to the WebSocket server using your WebSocketManager
-            socketManager.send(jsonString)
-        }
     }
 }
 
@@ -600,7 +592,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     }
 
     func sendUsersArray() {
-        let usersArray = Array(users)
+        let usersArray = Array(self.users)
         let usersDict: [String: Any] = [
             "type": "usersArray",
             "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
@@ -625,40 +617,23 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
             if let data = string.data(using: .utf8),
                let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                 if let type = json["type"] as? String {
-                    if type == "newUser" {
-                        if let userIDString = json["userID"] as? String, let userID = UUID(uuidString: userIDString), let newUserName = json["userName"] as? String, let newUserColorString = json["userColor"] as? String {
-                            
-                            let newUser = User(id: userID, name: newUserName, color: color(for: newUserColorString))
+                    if type == "usersArray" {
+                        if let usersArray = json["users"] as? [[String: Any]] {
+                            var newUsers = Set<User>()
+                            for userDict in usersArray {
+                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
+                                    newUsers.insert(newUser)
+                                }
+                            }
                             DispatchQueue.main.async { [weak self] in
-                                self?.users.insert(newUser)
-                            }
-                            let usersArray = Array(users)
-                            let usersDict: [String: Any] = [
-                                "type": "usersArray",
-                                "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
-                            ]
-                            if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
-                               let jsonString = String(data: jsonData, encoding: .utf8) {
-                                socket.write(string: jsonString)
-                                print(jsonString)
+                                self?.users.formUnion(newUsers)
                             }
                         }
-                    } else if type == "usersArray" {
-                            if let usersArray = json["users"] as? [[String: Any]] {
-                                var newUsers = Set<User>()
-                                for userDict in usersArray {
-                                    if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
-                                        let newUser = User(id: userID, name: userName, color: color(for: userColorString))
-                                        newUsers.insert(newUser)
-                                    }
-                                }
-                                DispatchQueue.main.async { [weak self] in
-                                    self?.users = newUsers
-                                }
-                            }
-                        }
-                                }
-                            }
+                    }
+                }
+            }
+
 
         case .binary(let data):
             print("Received data: \(data.count)")
