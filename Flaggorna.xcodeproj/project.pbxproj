@@ -72,6 +72,13 @@
 			path = SinglePlayerGame;
 			sourceTree = "<group>";
 		};
+		BABC467329A0B6D20048AE12 /* MultiPlayerGame */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MultiPlayerGame;
+			sourceTree = "<group>";
+		};
 		BAF21BF729994100009035E8 = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +103,7 @@
 				BAF21C0329994100009035E8 /* FlaggornaApp.swift */,
 				BABC466829A0AF910048AE12 /* SinglePlayerGame */,
 				BAF21C0529994100009035E8 /* ContentView.swift */,
+				BABC467329A0B6D20048AE12 /* MultiPlayerGame */,
 				BABC466B29A0B0320048AE12 /* StartGameView.swift */,
 				BAF21C0729994103009035E8 /* Assets.xcassets */,
 				BAF21C112999477F009035E8 /* countries.json */,

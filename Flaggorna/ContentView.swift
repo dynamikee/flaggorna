@@ -10,42 +10,67 @@ struct ContentView: View {
     @State var countries: [Country] = []
     @State var score = 0
     @State var rounds = 3
-    @ObservedObject var socketManager = SocketManager()
+    @State var multiplayer: Bool = false
+    
+    
 
     var body: some View {
         ZStack {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                     .edgesIgnoringSafeArea(.all)
-            switch currentScene {
-            case "Start":
-                StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
-            case "GetReady":
-                GetReadyView(currentScene: $currentScene)
-            case "GetReadyMultiplayer":
-                GetReadyMultiplayerView(currentScene: $currentScene)
-            case "Main":
-                MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
-            case "Right":
-                RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
-            case "Wrong":
-                WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
-            case "GameOver":
-                GameOverView(currentScene: $currentScene, score: $score)
-            default:
-                StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+            
+            if multiplayer {
+                switch SocketManager.shared.currentScene {
+                case "GetReadyMultiplayer":
+                    GetReadyMultiplayerView(currentScene: $currentScene)
+                case "MainMultiplayer":
+                    MainGameMultiplayerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+                case "RightMultiplayer":
+                    RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                case "WrongMultiplayer":
+                    WrongAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                case "GameOverMultiplayer":
+                    GameOverMultiplayerView(currentScene: $currentScene, score: $score)
+                default:
+                    GetReadyMultiplayerView(currentScene: $currentScene)
+                }
+                
+                
+            } else {
+                switch currentScene {
+                case "Start":
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
+                case "GetReady":
+                    GetReadyView(currentScene: $currentScene)
+                case "Main":
+                    MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+                case "Right":
+                    RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                case "Wrong":
+                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                case "GameOver":
+                    GameOverView(currentScene: $currentScene, score: $score)
+                default:
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
+                }
+                
+                
             }
+            
+            
+            
+            
         }
     }
 }
-
 
 struct GetReadyMultiplayerView: View {
     @Binding var currentScene: String
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var showStartButton = false
-    @ObservedObject var socketManager = SocketManager()
-
+    @EnvironmentObject var socketManager: SocketManager
+     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
         Color.yellow, Color.teal, Color.gray
@@ -62,8 +87,9 @@ struct GetReadyMultiplayerView: View {
         .teal: ".teal",
         .gray: ".gray"
     ]
-
+    
     var body: some View {
+        
         VStack {
             Text("Players:")
                 .font(.title)
@@ -84,12 +110,13 @@ struct GetReadyMultiplayerView: View {
                     .padding(.horizontal, 16)
                 }
             }
+
             Spacer()
             
             if showStartButton {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
-                    currentScene = "Main"
+                    SocketManager.shared.currentScene = "MainMultiplayer"
                     let message: [String: Any] = ["type": "startGame"]
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
@@ -133,30 +160,176 @@ struct GetReadyMultiplayerView: View {
             self.socketManager.startUsersTimer()
             self.color = colors.randomElement()!
         }
-
     }
 
     private func join() {
         let user = User(id: UUID(), name: name, color: color)
         name = ""
-        let colorString = colorToString[user.color] ?? ".white"
-        let json: [String: Any] = [
-            "type": "newUser",
-            "userID": user.id.uuidString,
-            "userName": user.name,
-            "userColor": colorString
-        ]
-        socketManager.users.insert(user)
-        
+        socketManager.addUser(user)
     }
 }
 
-class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
-    @Published var users: Set<User> = []
-    @Published var socket: WebSocket
-    @Published var _currentScene: String
+struct MainGameMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var countries: [Country]
+    @Binding var score: Int
+    @Binding var rounds: Int
     
+    var body: some View {
+        Text("maingamemultiplayer")
+    }
+}
+struct RightAnswerMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("RightAnswerMultiplayerView")
+    }
+}
+struct WrongAnswerMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("WrongAnswerMultiplayerView")
+    }
+}
+struct GameOverMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+
+    var body: some View {
+        Text("GameOverMultiplayerView")
+    }
+}
+
+
+
+class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
+    static let shared = SocketManager()
+    @Published var users: Set<User> = []
+    @Published var currentScene: String
+    let objectWillChange = ObservableObjectPublisher()
+    internal var socket: WebSocket
     var usersTimer: Timer?
+
+    private var currentSceneBinding: Binding<String>?
+    
+    override init() {
+        let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
+        let request = URLRequest(url: url)
+        socket = WebSocket(request: request)
+        _currentScene = Published(initialValue: "Start")
+        super.init()
+        socket.delegate = self
+    }
+
+
+    
+    func send(_ message: String) {
+        socket.write(string: message)
+    }
+    
+    func addUser(_ user: User) {
+        self.users.insert(user)
+        sendUsersArray()
+    }
+    
+    func startUsersTimer() {
+        stopUsersTimer() // make sure only one timer is running at a time
+        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            print("timer")
+            print(self?.users)
+            if !(self?.users.isEmpty ?? true) {
+                self?.sendUsersArray()
+            }
+        }
+    }
+
+    func stopUsersTimer() {
+        usersTimer?.invalidate()
+        usersTimer = nil
+    }
+
+
+    func sendUsersArray() {
+        let usersArray = Array(self.users)
+        let usersDict: [String: Any] = [
+            "type": "usersArray",
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
+        ]
+        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print("sendUserArray")
+            print(jsonString)
+        }
+    }
+
+
+    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
+
+        switch event {
+        case .connected(_):
+            break
+        case .disconnected(_):
+            break
+            
+        case .text(let string):
+            if let data = string.data(using: .utf8),
+               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                if let type = json["type"] as? String {
+                    switch type {
+                    case "usersArray":
+                        if let usersArray = json["users"] as? [[String: Any]] {
+                            var newUsers = Set<User>()
+                            for userDict in usersArray {
+                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
+                                    newUsers.insert(newUser)
+                                }
+                            }
+                            DispatchQueue.main.async { [weak self] in
+                                self?.users.formUnion(newUsers)
+                                print("tog emot användare och updaterar arrayen")
+                            }
+                        }
+                    case "startGame":
+                        DispatchQueue.main.async { [weak self] in
+                            self?.currentScene = "MainGameMultiplayerView"
+                            self?.stopUsersTimer()
+                        }
+                        // handle other message types if needed
+                    default:
+                        print("Received unknown message type: \(type)")
+                    }
+                    
+                }
+            }
+
+
+        case .binary(let data):
+            print("Received data: \(data.count)")
+        case .ping(_):
+            break
+        case .pong(_):
+            break
+        case .viabilityChanged(_):
+            break
+        case .reconnectSuggested(_):
+            break
+        case .cancelled:
+            break
+            //isConnected = false
+        case .error(let error):
+            //isConnected = false
+            //handleError(error)
+            break
+        }
+    }
     
     func color(for string: String) -> Color {
         switch string {
@@ -194,121 +367,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         .gray: ".gray"
     ]
     
-    override init() {
-        let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
-        let request = URLRequest(url: url)
-        socket = WebSocket(request: request)
-        
-        var currentScene: Binding<String> {
-            Binding<String>(
-                get: { self._currentScene },
-                set: { self._currentScene = $0 }
-            )
-        }
-        
-        self._currentScene = ""
-        super.init()
-        self._currentScene = currentScene.wrappedValue
-        
-        socket.delegate = self
-    }
-
-
-
-
-    
-    func send(_ message: String) {
-        socket.write(string: message)
-    }
-    
-    func startUsersTimer() {
-        stopUsersTimer() // make sure only one timer is running at a time
-        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            if !(self?.users.isEmpty)! {
-                self?.sendUsersArray()
-            }
-        }
-    }
-
-        
-    func stopUsersTimer() {
-            usersTimer?.invalidate()
-            usersTimer = nil
-    }
-
-    func sendUsersArray() {
-        let usersArray = Array(self.users)
-        let usersDict: [String: Any] = [
-            "type": "usersArray",
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
-        ]
-        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            socket.write(string: jsonString)
-            print(jsonString)
-        }
-    }
-
-
-    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
-
-        switch event {
-        case .connected(_):
-            break
-        case .disconnected(_):
-            break
-            
-        case .text(let string):
-            if let data = string.data(using: .utf8),
-               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                if let type = json["type"] as? String {
-                    switch type {
-                    case "usersArray":
-                        if let usersArray = json["users"] as? [[String: Any]] {
-                            var newUsers = Set<User>()
-                            for userDict in usersArray {
-                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
-                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
-                                    newUsers.insert(newUser)
-                                }
-                            }
-                            DispatchQueue.main.async { [weak self] in
-                                self?.users.formUnion(newUsers)
-                            }
-                        }
-                    case "startGame":
-                        DispatchQueue.main.async { [weak self] in
-                            self?._currentScene = "Main"
-                            self?.stopUsersTimer()
-                        }
-                        // handle other message types if needed
-                    default:
-                        print("Received unknown message type: \(type)")
-                    }
-                    
-                }
-            }
-
-
-        case .binary(let data):
-            print("Received data: \(data.count)")
-        case .ping(_):
-            break
-        case .pong(_):
-            break
-        case .viabilityChanged(_):
-            break
-        case .reconnectSuggested(_):
-            break
-        case .cancelled:
-            break
-            //isConnected = false
-        case .error(let error):
-            //isConnected = false
-            //handleError(error)
-            break
-        }
-    }
 }
 
 
@@ -323,6 +381,7 @@ struct User: Hashable, Identifiable {
     var name: String
     var color: Color
 }
+
 
 
 struct CountryButtonStyle: ButtonStyle {

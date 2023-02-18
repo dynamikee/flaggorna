@@ -10,10 +10,13 @@ import Starscream
 
 @main
 struct FlaggornaApp: App {
+    @StateObject var socketManager = SocketManager.shared
+    
     var body: some Scene {
         WindowGroup {
             
             ContentView()
+                .environmentObject(socketManager)
         }
     }
 }

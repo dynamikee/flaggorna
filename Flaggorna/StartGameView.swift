@@ -12,6 +12,7 @@ struct StartGameView: View {
     @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
+    @Binding var multiplayer: Bool
     
     @State private var offset = CGSize.zero
     
@@ -21,7 +22,9 @@ struct StartGameView: View {
                 loadData()
                 score = 0
                 rounds = 3
-                currentScene = "GetReadyMultiplayer"
+                multiplayer = true
+                SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                //currentScene = "GetReadyMultiplayer"
                 
             }){
                 Text("PARTY GAME")
