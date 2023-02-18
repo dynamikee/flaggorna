@@ -13,6 +13,7 @@ struct ContentView: View {
     @State var multiplayer: Bool = false
     
     
+    
 
     var body: some View {
         ZStack {
@@ -235,14 +236,13 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     
     func addUser(_ user: User) {
         self.users.insert(user)
+        self.objectWillChange.send()
         sendUsersArray()
     }
     
     func startUsersTimer() {
         stopUsersTimer() // make sure only one timer is running at a time
         usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            print("timer")
-            print(self?.users)
             if !(self?.users.isEmpty ?? true) {
                 self?.sendUsersArray()
             }
@@ -294,7 +294,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                             DispatchQueue.main.async { [weak self] in
                                 self?.users.formUnion(newUsers)
-                                print("tog emot användare och updaterar arrayen")
+                                self?.objectWillChange.send()
                             }
                         }
                     case "startGame":
