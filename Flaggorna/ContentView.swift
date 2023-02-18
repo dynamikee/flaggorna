@@ -10,13 +10,10 @@ struct ContentView: View {
     @State var countries: [Country] = []
     @State var score = 0
     @State var rounds = 3
+    @ObservedObject var socketManager = SocketManager()
 
-    
-    
     var body: some View {
-        
         ZStack {
-            
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                     .edgesIgnoringSafeArea(.all)
             switch currentScene {
@@ -37,120 +34,10 @@ struct ContentView: View {
             default:
                 StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
             }
-            
-        }
-        
-
-        
-    }
-    
-}
-
-
-
-struct Country: Codable, Hashable {
-    var name: String
-    var flag: String
-}
-
-struct User: Hashable, Identifiable {
-    var id: UUID
-    var name: String
-    var color: Color
-}
-
-struct StartGameView: View {
-    @Binding var currentScene: String
-    @Binding var countries: [Country]
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    @State private var offset = CGSize.zero
-    
-    var body: some View {
-        VStack {
-            Button(action: {
-                loadData()
-                score = 0
-                rounds = 3
-                currentScene = "GetReadyMultiplayer"
-                
-            }){
-                Text("PARTY GAME")
-            }
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
-            
-            Button(action: {
-                loadData()
-                score = 0
-                rounds = 3
-                currentScene = "GetReady"
-            }){
-                Text("SINGLE GAME")
-            }
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
-        }
-        
-        .background(
-            Image("background")
-                .resizable()
-                .scaledToFill()
-                //.aspectRatio(contentMode: .fill)
-                .offset(x: offset.width, y: offset.height)
-                .frame(width: UIScreen.main.bounds.width)
-
-                .onAppear {
-                    withAnimation(
-                        Animation.linear(duration: 5)
-                            .repeatForever(autoreverses: true)
-                    ) {
-                        self.offset.height = -100
-                    }
-                }
-        )
-        .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func loadData() {
-        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
-        let decoder = JSONDecoder()
-        self.countries = try! decoder.decode([Country].self, from: data)
-    }
-}
-
-
-struct GetReadyView: View {
-    
-    @Binding var currentScene: String
-    
-    @State private var count = 3
-    
-    var body: some View {
-        VStack {
-            Text("GET READY!")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("\(count)")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-        }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if self.count > 0 {
-                    self.count -= 1
-                } else {
-                    timer.invalidate()
-                    self.currentScene = "Main"
-                }
-            }
         }
     }
 }
+
 
 struct GetReadyMultiplayerView: View {
     @Binding var currentScene: String
@@ -203,11 +90,16 @@ struct GetReadyMultiplayerView: View {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
                     currentScene = "Main"
+                    let message: [String: Any] = ["type": "startGame"]
+                    let jsonData = try? JSONSerialization.data(withJSONObject: message)
+                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    socketManager.send(jsonString)
                 }){
                     Text("START GAME")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
+
             } else {
                 HStack {
                     Circle()
@@ -241,6 +133,7 @@ struct GetReadyMultiplayerView: View {
             self.socketManager.startUsersTimer()
             self.color = colors.randomElement()!
         }
+
     }
 
     private func join() {
@@ -258,188 +151,177 @@ struct GetReadyMultiplayerView: View {
     }
 }
 
-struct MainGameView: View {
-    @Binding var currentScene: String
-    @Binding var countries: [Country]
-    @Binding var score: Int
-    @Binding var rounds: Int
-
-    var body: some View {
-        let randomCountry = countries.randomElement()!
-        let currentCountry = randomCountry.name
-        let countryAlternatives = countries.filter { $0.name != currentCountry }
-        var randomCountryNames = countryAlternatives.map { $0.name }.shuffled().prefix(3)
-        randomCountryNames.append(currentCountry)
-        randomCountryNames.shuffle()
-  
-        return VStack {
-            HStack{
-                Text("Score: \(score)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                Spacer()
-                Text("Round: \(rounds)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-            }
-            .padding(24)
-
-            Spacer()
-            Image(randomCountry.flag)
-                .resizable()
-                .border(.gray, width: 1)
-                
-                .aspectRatio(contentMode: .fit)
-                .frame(width: UIScreen.main.bounds.width * 0.8)
-            
-            Spacer()
-            VStack(spacing: 24){
-                ForEach(randomCountryNames, id: \.self) { countryName in
-                    Button(action: {
-                        if strcmp(currentCountry, countryName) == 0 {
-                            self.score += 1
-                            if self.rounds > 0 {
-                                self.rounds -= 1
-                            }
-                            self.countries.removeAll { $0.name == currentCountry }
-                            self.currentScene = "Right"
-
-                            
-                        } else {
-                            if self.rounds > 0 {
-                                self.rounds -= 1
-                            }
-                            self.countries.removeAll { $0.name == currentCountry }
-                            self.currentScene = "Wrong"
-                            
-                        }
-                    }) {
-                        Text(countryName)
-                    }
-                    .buttonStyle(CountryButtonStyle())
-                    
-                }
-            }
-            .padding(8)
+class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
+    @Published var users: Set<User> = []
+    @Published var socket: WebSocket
+    @Published var _currentScene: String
+    
+    var usersTimer: Timer?
+    
+    func color(for string: String) -> Color {
+        switch string {
+        case ".red":
+            return Color.red
+        case ".green":
+            return Color.green
+        case ".blue":
+            return Color.blue
+        case ".orange":
+            return Color.orange
+        case ".pink":
+            return Color.pink
+        case ".purple":
+            return Color.purple
+        case ".yellow":
+            return Color.yellow
+        case ".teal":
+            return Color.teal
+        case ".gray":
+            return Color.gray
+        default:
+            return Color.white
         }
     }
-}
-
-struct RightAnswerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-   
-
-    var body: some View {
-        VStack {
-            Spacer()
-            Text("Right answer!")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("Your score: \(score)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            ZStack {
-                Circle()
-                    .fill(Color.blue)
-                    .frame(width: 12, height: 12)
-                    .modifier(ParticlesModifier())
-                    .offset(x: -100, y : -50)
-                        
-                Circle()
-                    .fill(Color.red)
-                    .frame(width: 12, height: 12)
-                    .modifier(ParticlesModifier())
-                    .offset(x: 60, y : 70)
-            }
-            Spacer()
-            
-        }
-        .onAppear {
-            withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    if rounds > 0 {
-                        self.currentScene = "Main"
-                    } else {
-                        self.currentScene = "GameOver"
-                    }
-                    
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-struct WrongAnswerView: View {
+    let colorToString: [Color: String] = [
+        .red: ".red",
+        .green: ".green",
+        .blue: ".blue",
+        .orange: ".orange",
+        .pink: ".pink",
+        .purple: ".purple",
+        .yellow: ".yellow",
+        .teal: ".teal",
+        .gray: ".gray"
+    ]
     
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            Text("Wrong answer")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("Your score: \(score)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-
-            Spacer()
-            
-        }
-        .onAppear {
-            withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    if rounds > 0 {
-                        self.currentScene = "Main"
-                    } else {
-                        self.currentScene = "GameOver"
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
-
-
-struct GameOverView: View {
-    
-    @Binding var currentScene: String
-    @Binding var score: Int
-
-    
-    var body: some View {
-        VStack {
-            Text("Your score: \(score)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Button(action: {
-                currentScene = "Start"
-            }){
-                Text("Continue")
-            }
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
+    override init() {
+        let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
+        let request = URLRequest(url: url)
+        socket = WebSocket(request: request)
+        
+        var currentScene: Binding<String> {
+            Binding<String>(
+                get: { self._currentScene },
+                set: { self._currentScene = $0 }
+            )
         }
         
+        self._currentScene = ""
+        super.init()
+        self._currentScene = currentScene.wrappedValue
+        
+        socket.delegate = self
     }
+
+
+
+
+    
+    func send(_ message: String) {
+        socket.write(string: message)
+    }
+    
+    func startUsersTimer() {
+        stopUsersTimer() // make sure only one timer is running at a time
+        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            if !(self?.users.isEmpty)! {
+                self?.sendUsersArray()
+            }
+        }
+    }
+
+        
+    func stopUsersTimer() {
+            usersTimer?.invalidate()
+            usersTimer = nil
+    }
+
+    func sendUsersArray() {
+        let usersArray = Array(self.users)
+        let usersDict: [String: Any] = [
+            "type": "usersArray",
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
+        ]
+        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print(jsonString)
+        }
+    }
+
+
+    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
+
+        switch event {
+        case .connected(_):
+            break
+        case .disconnected(_):
+            break
+            
+        case .text(let string):
+            if let data = string.data(using: .utf8),
+               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                if let type = json["type"] as? String {
+                    switch type {
+                    case "usersArray":
+                        if let usersArray = json["users"] as? [[String: Any]] {
+                            var newUsers = Set<User>()
+                            for userDict in usersArray {
+                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
+                                    newUsers.insert(newUser)
+                                }
+                            }
+                            DispatchQueue.main.async { [weak self] in
+                                self?.users.formUnion(newUsers)
+                            }
+                        }
+                    case "startGame":
+                        DispatchQueue.main.async { [weak self] in
+                            self?._currentScene = "Main"
+                            self?.stopUsersTimer()
+                        }
+                        // handle other message types if needed
+                    default:
+                        print("Received unknown message type: \(type)")
+                    }
+                    
+                }
+            }
+
+
+        case .binary(let data):
+            print("Received data: \(data.count)")
+        case .ping(_):
+            break
+        case .pong(_):
+            break
+        case .viabilityChanged(_):
+            break
+        case .reconnectSuggested(_):
+            break
+        case .cancelled:
+            break
+            //isConnected = false
+        case .error(let error):
+            //isConnected = false
+            //handleError(error)
+            break
+        }
+    }
+}
+
+
+
+struct Country: Codable, Hashable {
+    var name: String
+    var flag: String
+}
+
+struct User: Hashable, Identifiable {
+    var id: UUID
+    var name: String
+    var color: Color
 }
 
 
@@ -521,143 +403,4 @@ struct ParticlesModifier: ViewModifier {
         }
     }
 }
-
-class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
-    @Published var users: Set<User> = []
-    @Published var socket: WebSocket
-    var usersTimer: Timer?
-    
-    func color(for string: String) -> Color {
-        switch string {
-        case ".red":
-            return Color.red
-        case ".green":
-            return Color.green
-        case ".blue":
-            return Color.blue
-        case ".orange":
-            return Color.orange
-        case ".pink":
-            return Color.pink
-        case ".purple":
-            return Color.purple
-        case ".yellow":
-            return Color.yellow
-        case ".teal":
-            return Color.teal
-        case ".gray":
-            return Color.gray
-        default:
-            return Color.white
-        }
-    }
-    let colorToString: [Color: String] = [
-        .red: ".red",
-        .green: ".green",
-        .blue: ".blue",
-        .orange: ".orange",
-        .pink: ".pink",
-        .purple: ".purple",
-        .yellow: ".yellow",
-        .teal: ".teal",
-        .gray: ".gray"
-    ]
-    
-    override init() {
-        let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
-        let request = URLRequest(url: url)
-        socket = WebSocket(request: request)
-        super.init()
-        socket.delegate = self
-        //socket.connect()
-    }
-    
-    func send(_ message: String) {
-        socket.write(string: message)
-    }
-    
-    func startUsersTimer() {
-        stopUsersTimer() // make sure only one timer is running at a time
-        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            if !(self?.users.isEmpty)! {
-                self?.sendUsersArray()
-            }
-        }
-    }
-
-        
-    func stopUsersTimer() {
-            usersTimer?.invalidate()
-            usersTimer = nil
-    }
-
-    func sendUsersArray() {
-        let usersArray = Array(self.users)
-        let usersDict: [String: Any] = [
-            "type": "usersArray",
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
-        ]
-        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            socket.write(string: jsonString)
-            print(jsonString)
-        }
-    }
-
-
-    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
-
-        switch event {
-        case .connected(_):
-            break
-        case .disconnected(_):
-            break
-            
-        case .text(let string):
-            if let data = string.data(using: .utf8),
-               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                if let type = json["type"] as? String {
-                    if type == "usersArray" {
-                        if let usersArray = json["users"] as? [[String: Any]] {
-                            var newUsers = Set<User>()
-                            for userDict in usersArray {
-                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
-                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
-                                    newUsers.insert(newUser)
-                                }
-                            }
-                            DispatchQueue.main.async { [weak self] in
-                                self?.users.formUnion(newUsers)
-                            }
-                        }
-                    }
-                }
-            }
-
-
-        case .binary(let data):
-            print("Received data: \(data.count)")
-        case .ping(_):
-            break
-        case .pong(_):
-            break
-        case .viabilityChanged(_):
-            break
-        case .reconnectSuggested(_):
-            break
-        case .cancelled:
-            break
-            //isConnected = false
-        case .error(let error):
-            //isConnected = false
-            //handleError(error)
-            break
-        }
-    }
-}
-
-
-
-
-
 
