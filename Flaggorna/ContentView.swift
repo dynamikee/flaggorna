@@ -22,6 +22,8 @@ struct ContentView: View {
             
             if multiplayer {
                 switch SocketManager.shared.currentScene {
+                case "JoinMultiplayer":
+                    JoinMultiplayerView(currentScene: $currentScene)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene)
                 case "MainMultiplayer":
@@ -33,7 +35,7 @@ struct ContentView: View {
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score)
                 default:
-                    GetReadyMultiplayerView(currentScene: $currentScene)
+                    JoinMultiplayerView(currentScene: $currentScene)
                 }
                 
                 
@@ -65,10 +67,12 @@ struct ContentView: View {
     }
 }
 
-struct GetReadyMultiplayerView: View {
+struct JoinMultiplayerView: View {
     @Binding var currentScene: String
     @State private var name: String = ""
     @State private var color: Color = .white
+    @State private var score: Int = 0
+    @State private var currentRound: Int = 0
     @State private var showStartButton = false
     @EnvironmentObject var socketManager: SocketManager
      
@@ -122,6 +126,7 @@ struct GetReadyMultiplayerView: View {
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
                     socketManager.send(jsonString)
+                    print(SocketManager.shared.currentScene)
                 }){
                     Text("START GAME")
                 }
@@ -164,11 +169,43 @@ struct GetReadyMultiplayerView: View {
     }
 
     private func join() {
-        let user = User(id: UUID(), name: name, color: color)
-        name = ""
+        let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
+        //name = ""
         socketManager.addUser(user)
     }
 }
+
+struct GetReadyMultiplayerView: View {
+    @Binding var currentScene: String
+    
+    @State private var timerCount = 3
+    
+    var body: some View {
+        VStack {
+            Text("GET READY!")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("\(timerCount)")
+                .font(.largeTitle)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+        }
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if self.timerCount > 0 {
+                    self.timerCount -= 1
+                } else {
+                    timer.invalidate()
+                    SocketManager.shared.currentScene = "MainMultiplayer"
+                }
+            }
+        }
+    }
+}
+
+
+
 
 struct MainGameMultiplayerView: View {
     @Binding var currentScene: String
@@ -178,6 +215,9 @@ struct MainGameMultiplayerView: View {
     
     var body: some View {
         Text("maingamemultiplayer")
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(.white)
     }
 }
 struct RightAnswerMultiplayerView: View {
@@ -259,7 +299,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         let usersArray = Array(self.users)
         let usersDict: [String: Any] = [
             "type": "usersArray",
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? ""] }
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
             let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -287,10 +327,16 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         if let usersArray = json["users"] as? [[String: Any]] {
                             var newUsers = Set<User>()
                             for userDict in usersArray {
-                                if let userIDString = userDict["id"] as? String, let userID = UUID(uuidString: userIDString), let userName = userDict["name"] as? String, let userColorString = userDict["color"] as? String {
-                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString))
+                                if let userIDString = userDict["id"] as? String,
+                                   let userID = UUID(uuidString: userIDString),
+                                   let userName = userDict["name"] as? String,
+                                   let userColorString = userDict["color"] as? String,
+                                   let userScoreString = userDict["score"] as? String,
+                                   let userCurrentRoundString = userDict["currentRound"] as? String {
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString), score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0)
                                     newUsers.insert(newUser)
                                 }
+
                             }
                             DispatchQueue.main.async { [weak self] in
                                 self?.users.formUnion(newUsers)
@@ -299,8 +345,9 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         }
                     case "startGame":
                         DispatchQueue.main.async { [weak self] in
-                            self?.currentScene = "MainGameMultiplayerView"
+                            self?.currentScene = "MainMultiplayer"
                             self?.stopUsersTimer()
+                            self?.objectWillChange.send()
                         }
                         // handle other message types if needed
                     default:
@@ -380,6 +427,8 @@ struct User: Hashable, Identifiable {
     var id: UUID
     var name: String
     var color: Color
+    var score: Int
+    var currentRound: Int
 }
 
 

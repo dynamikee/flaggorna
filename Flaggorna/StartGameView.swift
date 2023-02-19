@@ -23,7 +23,7 @@ struct StartGameView: View {
                 score = 0
                 rounds = 3
                 multiplayer = true
-                SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                SocketManager.shared.currentScene = "JoinMultiplayer"
                 //currentScene = "GetReadyMultiplayer"
                 
             }){
