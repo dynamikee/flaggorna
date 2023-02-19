@@ -10,8 +10,6 @@ struct ContentView: View {
     @State var multiplayer: Bool = false
     @EnvironmentObject var socketManager: SocketManager
 
-
-    
     var body: some View {
         ZStack {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
@@ -20,7 +18,7 @@ struct ContentView: View {
             if multiplayer {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene)
                 case "MainMultiplayer":
@@ -32,7 +30,7 @@ struct ContentView: View {
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries)
                 }
                 
                 
@@ -58,6 +56,34 @@ struct ContentView: View {
     }
 }
 
+struct flagQuestion {
+    let flag: String
+    let answerOptions: [String]
+    let correctAnswer: String
+
+    func toDict() -> [String: Any] {
+        return [
+            "flag": flag,
+            "answerOptions": answerOptions,
+            "correctAnswer": correctAnswer
+        ]
+    }
+}
+
+
+struct MainGameMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var countries: [Country]
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("maingamemultiplayer")
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(.white)
+    }
+}
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
@@ -226,10 +252,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     
 }
 
-
-
-
-
 struct Country: Codable, Hashable {
     var name: String
     var flag: String
@@ -276,19 +298,7 @@ struct GetReadyMultiplayerView: View {
 
 
 
-struct MainGameMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var countries: [Country]
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("maingamemultiplayer")
-            .font(.title)
-            .fontWeight(.black)
-            .foregroundColor(.white)
-    }
-}
+
 struct RightAnswerMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var score: Int

@@ -9,11 +9,13 @@ import SwiftUI
 
 struct JoinMultiplayerView: View {
     @Binding var currentScene: String
+    @Binding var countries: [Country]
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
     @State private var showStartButton = false
+    
     @EnvironmentObject var socketManager: SocketManager
     
     private let colors = [
@@ -62,14 +64,15 @@ struct JoinMultiplayerView: View {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
                     SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    self.currentScene = "GetReadyMultiplayer" // update the binding
-                    //socketManager.objectWillChange.send()
                     
-                    let message: [String: Any] = ["type": "startGame"]
+                    let question = generateFlagQuestion()
+                    let message: [String: Any] = ["type": "startGame", "question": question.toDict()]
+                    
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
                     socketManager.send(jsonString)
                     print(SocketManager.shared.currentScene)
+                    print(jsonString)
 
                 }){
                     Text("START GAME")
@@ -117,4 +120,16 @@ struct JoinMultiplayerView: View {
         //name = ""
         socketManager.addUser(user)
     }
+    func generateFlagQuestion() -> flagQuestion {
+        let randomCountry = countries.randomElement()!
+        let currentCountry = randomCountry.name
+        let countryAlternatives = countries.filter { $0.name != currentCountry }
+        let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
+        let correctAnswer = currentCountry
+        let flag = randomCountry.flag
+
+        return flagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+    }
 }
+
+
