@@ -1,9 +1,6 @@
 
 import SwiftUI
-import Combine
-import UIKit
 import Starscream
-import Foundation
 
 struct ContentView: View {
     @State var currentScene = "Start"
@@ -11,7 +8,10 @@ struct ContentView: View {
     @State var score = 0
     @State var rounds = 3
     @State var multiplayer: Bool = false
+    @EnvironmentObject var socketManager: SocketManager
 
+
+    
     var body: some View {
         ZStack {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
@@ -20,7 +20,7 @@ struct ContentView: View {
             if multiplayer {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene, multiplayer: $multiplayer)
+                    JoinMultiplayerView(currentScene: $currentScene)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene)
                 case "MainMultiplayer":
@@ -32,7 +32,7 @@ struct ContentView: View {
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene, multiplayer: $multiplayer)
+                    JoinMultiplayerView(currentScene: $currentScene)
                 }
                 
                 
@@ -58,203 +58,16 @@ struct ContentView: View {
     }
 }
 
-struct JoinMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var multiplayer: Bool
-    @State private var name: String = ""
-    @State private var color: Color = .white
-    @State private var score: Int = 0
-    @State private var currentRound: Int = 0
-    @State private var showStartButton = false
-    @EnvironmentObject var socketManager: SocketManager
-     
-    private let colors = [
-        Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
-        Color.yellow, Color.teal, Color.gray
-    ]
-    
-    let colorToString: [Color: String] = [
-        .red: ".red",
-        .green: ".green",
-        .blue: ".blue",
-        .orange: ".orange",
-        .pink: ".pink",
-        .purple: ".purple",
-        .yellow: ".yellow",
-        .teal: ".teal",
-        .gray: ".gray"
-    ]
-    
-    var body: some View {
-        
-        VStack {
-            Text("Players:")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            VStack(alignment: .leading, spacing: 10) {
-                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 16)
-                }
-            }
-
-            Spacer()
-            
-            if showStartButton {
-                Button(action: {
-                    self.socketManager.stopUsersTimer()
-                    
-                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    self.currentScene = "GetReadyMultiplayer" // update the binding
-                    socketManager.objectWillChange.send()
-
-             
-                    let message: [String: Any] = ["type": "startGame"]
-                    let jsonData = try? JSONSerialization.data(withJSONObject: message)
-                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-                    socketManager.send(jsonString)
-                    print(SocketManager.shared.currentScene)
-                }){
-                    Text("START GAME")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-
-            } else {
-                HStack {
-                    Circle()
-                        .foregroundColor(color)
-                        .frame(width: 40)
-                    TextField("Enter your name", text: $name)
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                        .padding()
-                    Button(action: {
-                        join()
-                        showStartButton = true
-                    }) {
-                        Text(Image(systemName: "arrow.forward"))
-                            .font(.title)
-                            .fontWeight(.black)
-                            .foregroundColor(.white)
-                        
-                    }
-                    .disabled(name.isEmpty)
-                    .padding()
-
-                }
-                .padding()
-            }
-        }
-        .onAppear {
-            // Choose a random color for the user
-            self.socketManager.socket.connect()
-            self.socketManager.startUsersTimer()
-            self.color = colors.randomElement()!
-        }
-    }
-
-    private func join() {
-        let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
-        //name = ""
-        socketManager.addUser(user)
-    }
-}
-
-struct GetReadyMultiplayerView: View {
-    @Binding var currentScene: String
-    
-    @State private var timerCount = 3
-    
-    var body: some View {
-        VStack {
-            Text("GET READY 4 MULTIPLAYER")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("\(timerCount)")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-        }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if self.timerCount > 0 {
-                    self.timerCount -= 1
-                } else {
-                    timer.invalidate()
-                    SocketManager.shared.currentScene = "MainMultiplayer"
-                }
-            }
-        }
-    }
-}
-
-
-
-
-struct MainGameMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var countries: [Country]
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("maingamemultiplayer")
-            .font(.title)
-            .fontWeight(.black)
-            .foregroundColor(.white)
-    }
-}
-struct RightAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("RightAnswerMultiplayerView")
-    }
-}
-struct WrongAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("WrongAnswerMultiplayerView")
-    }
-}
-struct GameOverMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-
-    var body: some View {
-        Text("GameOverMultiplayerView")
-    }
-}
-
-
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
     @Published var users: Set<User> = []
     @Published var currentScene: String
-    let objectWillChange = ObservableObjectPublisher()
+    //let objectWillChange = ObservableObjectPublisher()
     internal var socket: WebSocket
     var usersTimer: Timer?
 
-    private var currentSceneBinding: Binding<String>?
+    //private var currentSceneBinding: Binding<String>?
     
     override init() {
         let url = URL(string: "wss://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/socket")!
@@ -341,10 +154,9 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                         }
                     case "startGame":
-                        SocketManager.shared.currentScene = "MainMultiplayer"
-                        self.stopUsersTimer()
-                        SocketManager.shared.objectWillChange.send()
                         DispatchQueue.main.async { [weak self] in
+                            self?.currentScene = "GetReadyMultiplayer"
+                            self?.objectWillChange.send()
                             
                         }
                         // handle other message types if needed
@@ -416,6 +228,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
 
 
 
+
+
 struct Country: Codable, Hashable {
     var name: String
     var flag: String
@@ -429,6 +243,78 @@ struct User: Hashable, Identifiable {
     var currentRound: Int
 }
 
+
+struct GetReadyMultiplayerView: View {
+    @Binding var currentScene: String
+    
+    @State private var timerCount = 3
+    
+    var body: some View {
+        VStack {
+            Text("GET READY 4 MULTIPLAYER")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("\(timerCount)")
+                .font(.largeTitle)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+        }
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if self.timerCount > 0 {
+                    self.timerCount -= 1
+                } else {
+                    timer.invalidate()
+                    SocketManager.shared.currentScene = "MainMultiplayer"
+                }
+            }
+        }
+    }
+}
+
+
+
+
+struct MainGameMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var countries: [Country]
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("maingamemultiplayer")
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(.white)
+    }
+}
+struct RightAnswerMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("RightAnswerMultiplayerView")
+    }
+}
+struct WrongAnswerMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("WrongAnswerMultiplayerView")
+    }
+}
+struct GameOverMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+
+    var body: some View {
+        Text("GameOverMultiplayerView")
+    }
+}
 
 
 struct CountryButtonStyle: ButtonStyle {

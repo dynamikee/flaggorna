@@ -13,7 +13,7 @@ struct StartGameView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var multiplayer: Bool
-    
+
     @State private var offset = CGSize.zero
     
     var body: some View {
