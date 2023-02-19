@@ -11,9 +11,6 @@ struct ContentView: View {
     @State var score = 0
     @State var rounds = 3
     @State var multiplayer: Bool = false
-    
-    
-    
 
     var body: some View {
         ZStack {
@@ -23,7 +20,7 @@ struct ContentView: View {
             if multiplayer {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene)
+                    JoinMultiplayerView(currentScene: $currentScene, multiplayer: $multiplayer)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene)
                 case "MainMultiplayer":
@@ -35,7 +32,7 @@ struct ContentView: View {
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene)
+                    JoinMultiplayerView(currentScene: $currentScene, multiplayer: $multiplayer)
                 }
                 
                 
@@ -56,19 +53,14 @@ struct ContentView: View {
                 default:
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
                 }
-                
-                
             }
-            
-            
-            
-            
         }
     }
 }
 
 struct JoinMultiplayerView: View {
     @Binding var currentScene: String
+    @Binding var multiplayer: Bool
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0
@@ -121,7 +113,12 @@ struct JoinMultiplayerView: View {
             if showStartButton {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
-                    SocketManager.shared.currentScene = "MainMultiplayer"
+                    
+                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                    self.currentScene = "GetReadyMultiplayer" // update the binding
+                    socketManager.objectWillChange.send()
+
+             
                     let message: [String: Any] = ["type": "startGame"]
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
@@ -182,7 +179,7 @@ struct GetReadyMultiplayerView: View {
     
     var body: some View {
         VStack {
-            Text("GET READY!")
+            Text("GET READY 4 MULTIPLAYER")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
@@ -344,10 +341,11 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                         }
                     case "startGame":
+                        SocketManager.shared.currentScene = "MainMultiplayer"
+                        self.stopUsersTimer()
+                        SocketManager.shared.objectWillChange.send()
                         DispatchQueue.main.async { [weak self] in
-                            self?.currentScene = "MainMultiplayer"
-                            self?.stopUsersTimer()
-                            self?.objectWillChange.send()
+                            
                         }
                         // handle other message types if needed
                     default:
