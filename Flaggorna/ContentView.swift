@@ -56,7 +56,7 @@ struct ContentView: View {
     }
 }
 
-struct flagQuestion {
+struct flagQuestion: Codable {
     let flag: String
     let answerOptions: [String]
     let correctAnswer: String
@@ -77,6 +77,9 @@ struct MainGameMultiplayerView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     
+    @EnvironmentObject var socketManager: SocketManager
+
+    
     var body: some View {
         Text("maingamemultiplayer")
             .font(.title)
@@ -89,8 +92,10 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
     @Published var users: Set<User> = []
     @Published var currentScene: String
+
     //let objectWillChange = ObservableObjectPublisher()
     internal var socket: WebSocket
+    var countries: [Country]
     var usersTimer: Timer?
 
     //private var currentSceneBinding: Binding<String>?
@@ -100,10 +105,10 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         let request = URLRequest(url: url)
         socket = WebSocket(request: request)
         _currentScene = Published(initialValue: "Start")
+        countries = []
         super.init()
         socket.delegate = self
     }
-
 
     
     func send(_ message: String) {
@@ -130,7 +135,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         usersTimer = nil
     }
 
-
     func sendUsersArray() {
         let usersArray = Array(self.users)
         let usersDict: [String: Any] = [
@@ -150,6 +154,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
 
         switch event {
         case .connected(_):
+            loadData()
             break
         case .disconnected(_):
             break
@@ -181,11 +186,43 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         }
                     case "startGame":
                         DispatchQueue.main.async { [weak self] in
+                            self?.stopUsersTimer()
                             self?.currentScene = "GetReadyMultiplayer"
                             self?.objectWillChange.send()
+
+                            // Generate a flag question
+                            let randomCountry = self?.countries.randomElement()!
+                            let currentCountry = randomCountry?.name
+                            let countryAlternatives = self?.countries.filter { $0.name != currentCountry }
+                            let answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name } + [currentCountry]
+                            let correctAnswer = currentCountry
+                            let flag = randomCountry?.flag
+                            let question = flagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
+
+
+                            // Send the flag question to all clients
+                            let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
+                            guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
+                                return
+                            }
+                            let jsonString = String(data: jsonData, encoding: .utf8)!
+                            self?.send(jsonString)
                             
                         }
-                        // handle other message types if needed
+                        
+                    case "flagQuestion":
+                        DispatchQueue.main.async { [weak self] in
+                            let randomCountry = self?.countries.randomElement()!
+                            let currentCountry = randomCountry?.name
+                            let countryAlternatives = self?.countries.filter { $0.name != currentCountry }
+                            let answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name } + [currentCountry]
+                            let correctAnswer = currentCountry
+                            let flag = randomCountry?.flag
+                            let question = flagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
+                         
+                            print(question)
+                        }
+
                     default:
                         print("Received unknown message type: \(type)")
                     }
@@ -212,6 +249,13 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
             //handleError(error)
             break
         }
+    }
+    
+    private func loadData() {
+        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
+        let decoder = JSONDecoder()
+        self.countries = try! decoder.decode([Country].self, from: data)
     }
     
     func color(for string: String) -> Color {

@@ -64,16 +64,10 @@ struct JoinMultiplayerView: View {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
                     SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    
-                    let question = generateFlagQuestion()
-                    let message: [String: Any] = ["type": "startGame", "question": question.toDict()]
-                    
+                    let message: [String: Any] = ["type": "startGame"]
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
                     socketManager.send(jsonString)
-                    print(SocketManager.shared.currentScene)
-                    print(jsonString)
-
                 }){
                     Text("START GAME")
                 }
