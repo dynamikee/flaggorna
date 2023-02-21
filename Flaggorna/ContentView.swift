@@ -56,7 +56,7 @@ struct ContentView: View {
     }
 }
 
-struct flagQuestion: Codable {
+struct FlagQuestion: Codable {
     let flag: String
     let answerOptions: [String]
     let correctAnswer: String
@@ -78,15 +78,64 @@ struct MainGameMultiplayerView: View {
     @Binding var rounds: Int
     
     @EnvironmentObject var socketManager: SocketManager
-
     
     var body: some View {
-        Text("maingamemultiplayer")
-            .font(.title)
-            .fontWeight(.black)
-            .foregroundColor(.white)
+        VStack {
+            if let question = socketManager.currentQuestion {
+                HStack {
+                    Text("Score: \(score)")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    Spacer()
+                    Text("Round: \(rounds)")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                }
+                .padding(24)
+
+                Spacer()
+                Image(question.flag)
+                    .resizable()
+                    .border(.gray, width: 1)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: UIScreen.main.bounds.width * 0.8)
+
+                Spacer()
+                VStack(spacing: 24) {
+                    ForEach(question.answerOptions, id: \.self) { option in
+                        Button(action: {
+                            if option == question.correctAnswer {
+                                score += 1
+                                if rounds > 0 {
+                                    rounds -= 1
+                                }
+                                countries.removeAll { $0.name == question.correctAnswer }
+                                currentScene = "Right"
+                            } else {
+                                if rounds > 0 {
+                                    rounds -= 1
+                                }
+                                countries.removeAll { $0.name == question.correctAnswer }
+                                currentScene = "Wrong"
+                            }
+                        }) {
+                            Text(option)
+                        }
+                        .buttonStyle(CountryButtonStyle())
+                    }
+                }
+                .padding(8)
+            } else {
+                ProgressView()
+            }
+        }
     }
 }
+
+
+
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
@@ -97,6 +146,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     internal var socket: WebSocket
     var countries: [Country]
     var usersTimer: Timer?
+    @Published var currentQuestion: FlagQuestion?
 
     //private var currentSceneBinding: Binding<String>?
     
@@ -114,41 +164,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     func send(_ message: String) {
         socket.write(string: message)
     }
-    
-    func addUser(_ user: User) {
-        self.users.insert(user)
-        self.objectWillChange.send()
-        sendUsersArray()
-    }
-    
-    func startUsersTimer() {
-        stopUsersTimer() // make sure only one timer is running at a time
-        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            if !(self?.users.isEmpty ?? true) {
-                self?.sendUsersArray()
-            }
-        }
-    }
-
-    func stopUsersTimer() {
-        usersTimer?.invalidate()
-        usersTimer = nil
-    }
-
-    func sendUsersArray() {
-        let usersArray = Array(self.users)
-        let usersDict: [String: Any] = [
-            "type": "usersArray",
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
-        ]
-        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            socket.write(string: jsonString)
-            print("sendUserArray")
-            print(jsonString)
-        }
-    }
-
 
     func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
 
@@ -197,8 +212,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             let answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name } + [currentCountry]
                             let correctAnswer = currentCountry
                             let flag = randomCountry?.flag
-                            let question = flagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
-
+                            let question = FlagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
 
                             // Send the flag question to all clients
                             let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
@@ -207,21 +221,29 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                             let jsonString = String(data: jsonData, encoding: .utf8)!
                             self?.send(jsonString)
+                            self?.currentQuestion = question
+                            print(jsonString)
+                            print(self?.currentQuestion)
                             
                         }
                         
                     case "flagQuestion":
-                        DispatchQueue.main.async { [weak self] in
-                            let randomCountry = self?.countries.randomElement()!
-                            let currentCountry = randomCountry?.name
-                            let countryAlternatives = self?.countries.filter { $0.name != currentCountry }
-                            let answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name } + [currentCountry]
-                            let correctAnswer = currentCountry
-                            let flag = randomCountry?.flag
-                            let question = flagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
-                         
-                            print(question)
+                        
+                        guard let jsonQuestion = json["question"] as? [String: Any],
+                              let flag = jsonQuestion["flag"] as? String,
+                              let answerOptions = jsonQuestion["answerOptions"] as? [String],
+                              let correctAnswer = jsonQuestion["correctAnswer"] as? String else {
+                            // Error handling for when the JSON message is malformed or missing necessary fields
+                            return
                         }
+                        print("Mottager flagga")
+                        print(jsonQuestion)
+                    
+                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+                        self.currentQuestion = question
+                        print(self.currentQuestion)
+
+
 
                     default:
                         print("Received unknown message type: \(type)")
@@ -251,6 +273,41 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         }
     }
     
+    
+    func addUser(_ user: User) {
+        self.users.insert(user)
+        self.objectWillChange.send()
+        sendUsersArray()
+    }
+    
+    func startUsersTimer() {
+        stopUsersTimer() // make sure only one timer is running at a time
+        usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            if !(self?.users.isEmpty ?? true) {
+                self?.sendUsersArray()
+            }
+        }
+    }
+
+    func stopUsersTimer() {
+        usersTimer?.invalidate()
+        usersTimer = nil
+    }
+
+    func sendUsersArray() {
+        let usersArray = Array(self.users)
+        let usersDict: [String: Any] = [
+            "type": "usersArray",
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
+        ]
+        if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print("sendUserArray")
+            print(jsonString)
+        }
+    }
+
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))

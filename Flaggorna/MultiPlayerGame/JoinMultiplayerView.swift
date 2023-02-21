@@ -114,7 +114,7 @@ struct JoinMultiplayerView: View {
         //name = ""
         socketManager.addUser(user)
     }
-    func generateFlagQuestion() -> flagQuestion {
+    func generateFlagQuestion() -> FlagQuestion {
         let randomCountry = countries.randomElement()!
         let currentCountry = randomCountry.name
         let countryAlternatives = countries.filter { $0.name != currentCountry }
@@ -122,7 +122,7 @@ struct JoinMultiplayerView: View {
         let correctAnswer = currentCountry
         let flag = randomCountry.flag
 
-        return flagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
     }
 }
 
