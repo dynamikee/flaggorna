@@ -112,13 +112,13 @@ struct MainGameMultiplayerView: View {
                                     rounds -= 1
                                 }
                                 countries.removeAll { $0.name == question.correctAnswer }
-                                currentScene = "Right"
+                                socketManager.currentScene = "RightMultiplayer"
                             } else {
                                 if rounds > 0 {
                                     rounds -= 1
                                 }
                                 countries.removeAll { $0.name == question.correctAnswer }
-                                currentScene = "Wrong"
+                                socketManager.currentScene = "WrongMultiplayer"
                             }
                         }) {
                             Text(option)
