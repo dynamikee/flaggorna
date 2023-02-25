@@ -9,7 +9,6 @@ struct ContentView: View {
     @State var rounds = 3
     @State var multiplayer: Bool = false
     @EnvironmentObject var socketManager: SocketManager
-    @EnvironmentObject var currentUser: User
 
     var body: some View {
         ZStack {
@@ -19,7 +18,7 @@ struct ContentView: View {
             if multiplayer {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene)
                 case "MainMultiplayer":
@@ -27,11 +26,11 @@ struct ContentView: View {
                 case "RightMultiplayer":
                     RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds)
                 case "WrongMultiplayer":
-                    WrongAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                    WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds)
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
                 }
                 
                 
@@ -69,13 +68,54 @@ struct RightAnswerMultiplayerView: View {
 }
 struct WrongAnswerMultiplayerView: View {
     @Binding var currentScene: String
-    @Binding var score: Int
     @Binding var rounds: Int
+    @EnvironmentObject var socketManager: SocketManager
     
     var body: some View {
-        Text("WrongAnswerMultiplayerView")
+        VStack {
+            Text("WRONG ANSWER")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+
+            VStack {
+                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).filter { $0.currentRound == rounds }, id: \.id) { user in
+                    HStack {
+                        Circle()
+                            .foregroundColor(user.color)
+                            .frame(width: 20, height: 20)
+                        Text(user.name)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text(String(user.score))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text(String(user.currentRound))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text(String(rounds))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                    }
+                    .padding(.horizontal, 16)
+                }
+            }
+        }
+            .onAppear {
+                // Choose a random color for the user
+                self.socketManager.startUsersTimer()
+            }
     }
 }
+
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
@@ -87,6 +127,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     var countries: [Country]
     var usersTimer: Timer?
     @Published var currentQuestion: FlagQuestion?
+    @Published var currentUser: User?
 
     //private var currentSceneBinding: Binding<String>?
     

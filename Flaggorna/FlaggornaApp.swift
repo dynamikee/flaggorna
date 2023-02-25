@@ -19,7 +19,6 @@ struct FlaggornaApp: App {
             
             ContentView()
                 .environmentObject(socketManager)
-                .environmentObject(user)
         }
     }
 }

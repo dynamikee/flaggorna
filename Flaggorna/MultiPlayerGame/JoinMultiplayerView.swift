@@ -10,14 +10,13 @@ import SwiftUI
 struct JoinMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
+    @Binding var rounds: Int
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
     @State private var showStartButton = false
     
-    @State private var currentUser: User?
-
     @EnvironmentObject var socketManager: SocketManager
 
     
@@ -108,6 +107,7 @@ struct JoinMultiplayerView: View {
             // Choose a random color for the user
             self.socketManager.socket.connect()
             self.socketManager.startUsersTimer()
+            self.currentRound = rounds
             self.color = colors.randomElement()!
         }
     }
@@ -116,7 +116,11 @@ struct JoinMultiplayerView: View {
         let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
         //name = ""
         socketManager.addUser(user)
-        currentUser = user
+        socketManager.currentUser = user
+        print("Detta är den lokala användaren")
+        print(socketManager.currentUser?.name)
+        
+        
     }
     
     func generateFlagQuestion() -> FlagQuestion {

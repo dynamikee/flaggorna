@@ -12,7 +12,6 @@ struct MainGameMultiplayerView: View {
     @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
-    @EnvironmentObject var currentUser: User
     
     @EnvironmentObject var socketManager: SocketManager
 
@@ -21,12 +20,17 @@ struct MainGameMultiplayerView: View {
         VStack {
             if let question = socketManager.currentQuestion {
                 HStack {
-                    Text("Score: \(score)")
+                    Text(socketManager.currentUser!.name)
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
                     Spacer()
-                    Text("Round: \(rounds)")
+                    Text("Score: \(socketManager.currentUser!.score)")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    Spacer()
+                    Text("Round: \(socketManager.currentUser!.currentRound)")
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
@@ -45,20 +49,24 @@ struct MainGameMultiplayerView: View {
                     ForEach(question.answerOptions, id: \.self) { option in
                         Button(action: {
                             if option == question.correctAnswer {
-
-                                
-                                
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
+                                socketManager.currentUser!.score += 1
                                 
+                                if rounds > 0 {
+                                    socketManager.currentUser!.currentRound -= 1
+                                    rounds -= 1
+                                }
                                 
                                 socketManager.currentScene = "RightMultiplayer"
                                 
                             } else {
                                 if rounds > 0 {
+                                    socketManager.currentUser!.currentRound -= 1
                                     rounds -= 1
                                 }
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
                                 socketManager.currentScene = "WrongMultiplayer"
+                                
                             }
                         }) {
                             Text(option)
