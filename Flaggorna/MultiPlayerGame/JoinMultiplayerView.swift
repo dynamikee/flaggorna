@@ -16,7 +16,10 @@ struct JoinMultiplayerView: View {
     @State private var currentRound: Int = 0
     @State private var showStartButton = false
     
+    @State private var currentUser: User?
+
     @EnvironmentObject var socketManager: SocketManager
+
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -113,7 +116,9 @@ struct JoinMultiplayerView: View {
         let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
         //name = ""
         socketManager.addUser(user)
+        currentUser = user
     }
+    
     func generateFlagQuestion() -> FlagQuestion {
         let randomCountry = countries.randomElement()!
         let currentCountry = randomCountry.name

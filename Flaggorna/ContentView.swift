@@ -9,6 +9,7 @@ struct ContentView: View {
     @State var rounds = 3
     @State var multiplayer: Bool = false
     @EnvironmentObject var socketManager: SocketManager
+    @EnvironmentObject var currentUser: User
 
     var body: some View {
         ZStack {
@@ -56,86 +57,25 @@ struct ContentView: View {
     }
 }
 
-struct FlagQuestion: Codable {
-    let flag: String
-    let answerOptions: [String]
-    let correctAnswer: String
 
-    func toDict() -> [String: Any] {
-        return [
-            "flag": flag,
-            "answerOptions": answerOptions,
-            "correctAnswer": correctAnswer
-        ]
-    }
-}
-
-
-struct MainGameMultiplayerView: View {
+struct RightAnswerMultiplayerView: View {
     @Binding var currentScene: String
-    @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
     
-    @EnvironmentObject var socketManager: SocketManager
-    
     var body: some View {
-        VStack {
-            if let question = socketManager.currentQuestion {
-                HStack {
-                    Text("Score: \(score)")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    Spacer()
-                    Text("Round: \(rounds)")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                }
-                .padding(24)
-
-                Spacer()
-                Image(question.flag)
-                    .resizable()
-                    .border(.gray, width: 1)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: UIScreen.main.bounds.width * 0.8)
-
-                Spacer()
-                VStack(spacing: 24) {
-                    ForEach(question.answerOptions, id: \.self) { option in
-                        Button(action: {
-                            if option == question.correctAnswer {
-                                score += 1
-                                if rounds > 0 {
-                                    rounds -= 1
-                                }
-                                countries.removeAll { $0.name == question.correctAnswer }
-                                socketManager.currentScene = "RightMultiplayer"
-                            } else {
-                                if rounds > 0 {
-                                    rounds -= 1
-                                }
-                                countries.removeAll { $0.name == question.correctAnswer }
-                                socketManager.currentScene = "WrongMultiplayer"
-                            }
-                        }) {
-                            Text(option)
-                        }
-                        .buttonStyle(CountryButtonStyle())
-                    }
-                }
-                .padding(8)
-            } else {
-                ProgressView()
-            }
-        }
+        Text("RightAnswerMultiplayerView")
     }
 }
-
-
-
+struct WrongAnswerMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var rounds: Int
+    
+    var body: some View {
+        Text("WrongAnswerMultiplayerView")
+    }
+}
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
@@ -159,12 +99,19 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         super.init()
         socket.delegate = self
     }
-
+    
+    
+    func updateUserScoreAndRound(userID: UUID, score: Int, round: Int) {
+        if let user = users.first(where: { $0.id == userID }) {
+            users.update(with: User(id: user.id, name: user.name, color: user.color, score: user.score + score, currentRound: user.currentRound + round))
+        }
+    }
+    
     
     func send(_ message: String) {
         socket.write(string: message)
     }
-
+    
     func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
 
         switch event {
@@ -353,17 +300,48 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     
 }
 
+struct FlagQuestion: Codable {
+    let flag: String
+    let answerOptions: [String]
+    let correctAnswer: String
+
+    func toDict() -> [String: Any] {
+        return [
+            "flag": flag,
+            "answerOptions": answerOptions,
+            "correctAnswer": correctAnswer
+        ]
+    }
+}
+
+
 struct Country: Codable, Hashable {
     var name: String
     var flag: String
 }
 
-struct User: Hashable, Identifiable {
-    var id: UUID
-    var name: String
-    var color: Color
-    var score: Int
-    var currentRound: Int
+class User: ObservableObject, Hashable, Identifiable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    @Published var id: UUID
+    @Published var name: String
+    @Published var color: Color
+    @Published var score: Int
+    @Published var currentRound: Int
+    
+    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0) {
+        self.id = id
+        self.name = name
+        self.color = color
+        self.score = score
+        self.currentRound = currentRound
+    }
 }
 
 
@@ -400,24 +378,7 @@ struct GetReadyMultiplayerView: View {
 
 
 
-struct RightAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("RightAnswerMultiplayerView")
-    }
-}
-struct WrongAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("WrongAnswerMultiplayerView")
-    }
-}
+
 struct GameOverMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var score: Int

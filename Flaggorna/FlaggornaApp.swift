@@ -11,12 +11,15 @@ import Starscream
 @main
 struct FlaggornaApp: App {
     @StateObject var socketManager = SocketManager.shared
+    let user = User(id: UUID(), name: "", color: .white, score: 0, currentRound: 0)
+
     
     var body: some Scene {
         WindowGroup {
             
             ContentView()
                 .environmentObject(socketManager)
+                .environmentObject(user)
         }
     }
 }
