@@ -58,6 +58,7 @@ struct MainGameMultiplayerView: View {
                                 }
                                 
                                 socketManager.currentScene = "RightMultiplayer"
+                                socketManager.updateUser()
                                 
                             } else {
                                 if rounds > 0 {
@@ -66,6 +67,7 @@ struct MainGameMultiplayerView: View {
                                 }
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
                                 socketManager.currentScene = "WrongMultiplayer"
+                                socketManager.updateUser()
                                 
                             }
                         }) {

@@ -57,64 +57,6 @@ struct ContentView: View {
 }
 
 
-struct RightAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var rounds: Int
-    
-    var body: some View {
-        Text("RightAnswerMultiplayerView")
-    }
-}
-struct WrongAnswerMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var rounds: Int
-    @EnvironmentObject var socketManager: SocketManager
-    
-    var body: some View {
-        VStack {
-            Text("WRONG ANSWER")
-                .font(.title3)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-
-            VStack {
-                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).filter { $0.currentRound == rounds }, id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(String(user.score))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(String(user.currentRound))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(String(rounds))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        
-                    }
-                    .padding(.horizontal, 16)
-                }
-            }
-        }
-            .onAppear {
-                // Choose a random color for the user
-                self.socketManager.startUsersTimer()
-            }
-    }
-}
 
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
@@ -140,14 +82,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         super.init()
         socket.delegate = self
     }
-    
-    
-    func updateUserScoreAndRound(userID: UUID, score: Int, round: Int) {
-        if let user = users.first(where: { $0.id == userID }) {
-            users.update(with: User(id: user.id, name: user.name, color: user.color, score: user.score + score, currentRound: user.currentRound + round))
-        }
-    }
-    
     
     func send(_ message: String) {
         socket.write(string: message)
@@ -210,8 +144,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             let jsonString = String(data: jsonData, encoding: .utf8)!
                             self?.send(jsonString)
                             self?.currentQuestion = question
-                            print(jsonString)
-                            print(self?.currentQuestion)
                             
                         }
                         
@@ -224,14 +156,43 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             // Error handling for when the JSON message is malformed or missing necessary fields
                             return
                         }
-                        print("Mottager flagga")
-                        print(jsonQuestion)
                     
                         let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
                         self.currentQuestion = question
-                        print(self.currentQuestion)
 
+                    case "updateScore":
+                        
+                        guard let scoreUpdate = json["update"] as? [[String: Any]] else {
+                            print("Missing or malformed users array")
+                            return
+                        }
+                        
+                        for userDict in scoreUpdate {
+                            guard let userIDString = userDict["id"] as? String,
+                                  let userID = UUID(uuidString: userIDString),
+                                  let userCurrentRoundString = userDict["currentRound"] as? String,
+                                  let userCurrentRound = Int(userCurrentRoundString),
+                                  let userScoreString = userDict["score"] as? String,
+                                  let userScore = Int(userScoreString)
+                            else {
+                                print("Missing or malformed user fields")
+                                continue
+                            }
+                            
+                            DispatchQueue.main.async { [weak self] in
+                                for user in self!.users {
+                                    if user.id == userID {
+                                        user.currentRound = userCurrentRound
+                                        user.score = userScore
+                                        
+                                        
+                                    }
+                                }
+                                self?.objectWillChange.send()
 
+                            }
+
+                        }
 
                     default:
                         print("Received unknown message type: \(type)")
@@ -268,6 +229,23 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         sendUsersArray()
     }
     
+    func updateUser() {
+        //Updating the Users set with the new score and round number from the local currentUser variable
+        guard let currentUser = self.currentUser else {
+            return
+        }
+        for user in self.users {
+            if user.id == currentUser.id {
+                user.score = currentUser.score
+                user.currentRound = currentUser.currentRound
+                
+                break
+            }
+        }
+        sendScoreAndRoundUpdate()
+    }
+
+    
     func startUsersTimer() {
         stopUsersTimer() // make sure only one timer is running at a time
         usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
@@ -291,10 +269,36 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
             let jsonString = String(data: jsonData, encoding: .utf8) {
             socket.write(string: jsonString)
-            print("sendUserArray")
+            print("Sending users array")
             print(jsonString)
         }
     }
+    
+    func sendScoreAndRoundUpdate() {
+        guard let currentUser = currentUser else {
+            return
+        }
+        let userDict: [String: Any] = [
+            "type": "updateScore",
+            "update": [
+                [
+                    "id": currentUser.id.uuidString,
+                    "score": String(currentUser.score),
+                    "currentRound": String(currentUser.currentRound)
+                ]
+            ]
+        ]
+        print(userDict)
+
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print("Send Score And Round Update")
+            print(jsonString)
+        }
+    }
+
+    
 
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
@@ -386,34 +390,7 @@ class User: ObservableObject, Hashable, Identifiable {
 }
 
 
-struct GetReadyMultiplayerView: View {
-    @Binding var currentScene: String
-    
-    @State private var timerCount = 3
-    
-    var body: some View {
-        VStack {
-            Text("GET READY 4 MULTIPLAYER")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("\(timerCount)")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-        }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if self.timerCount > 0 {
-                    self.timerCount -= 1
-                } else {
-                    timer.invalidate()
-                    SocketManager.shared.currentScene = "MainMultiplayer"
-                }
-            }
-        }
-    }
-}
+
 
 
 

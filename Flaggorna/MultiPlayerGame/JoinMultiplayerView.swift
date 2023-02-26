@@ -117,10 +117,6 @@ struct JoinMultiplayerView: View {
         //name = ""
         socketManager.addUser(user)
         socketManager.currentUser = user
-        print("Detta är den lokala användaren")
-        print(socketManager.currentUser?.name)
-        
-        
     }
     
     func generateFlagQuestion() -> FlagQuestion {
