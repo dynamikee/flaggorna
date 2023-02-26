@@ -25,7 +25,7 @@ struct WrongAnswerMultiplayerView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             VStack {
-                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }), id: \.id) { user in
+                ForEach(socketManager.users.filter { $0.currentRound == rounds }.sorted(by: { $0.score < $1.score }), id: \.id) { user in
                     HStack {
                         Circle()
                             .foregroundColor(user.color)
@@ -51,5 +51,22 @@ struct WrongAnswerMultiplayerView: View {
             }
             Spacer()
         }
+        .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        if socketManager.users.filter({ $0.currentRound == rounds }).count == socketManager.users.count {
+                            if rounds > 0 {
+                                socketManager.currentScene = "MainMultiplayer"
+                            } else {
+                                socketManager.currentScene = "GameOverMultiplayer"
+                            }
+                        } else {
+                            print("Alla har inte svarat")
+                        }
+                        
+                    }
+                }
     }
+    
 }
+
+
