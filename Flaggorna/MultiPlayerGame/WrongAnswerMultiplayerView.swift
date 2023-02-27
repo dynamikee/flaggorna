@@ -27,7 +27,7 @@ struct WrongAnswerMultiplayerView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             VStack {
-                ForEach(socketManager.users.filter { $0.currentRound == rounds }.sorted(by: { $0.score < $1.score }), id: \.id) { user in
+                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).reversed(), id: \.id) { user in
                     HStack {
                         Circle()
                             .foregroundColor(user.color)

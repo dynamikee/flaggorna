@@ -66,14 +66,15 @@ struct GameOverMultiplayerView: View {
     @EnvironmentObject var socketManager: SocketManager
 
     var body: some View {
-        VStack {
-            Text("SCORES")
-                .font(.title3)
-                .fontWeight(.bold)
+        VStack(spacing: 32)  {
+            Spacer()
+            Text("ROUND RESULT")
+                .font(.largeTitle)
+                .fontWeight(.black)
                 .foregroundColor(.white)
 
             VStack {
-                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }), id: \.id) { user in
+                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).reversed(), id: \.id) { user in
                     HStack {
                         Circle()
                             .foregroundColor(user.color)
@@ -84,11 +85,6 @@ struct GameOverMultiplayerView: View {
                             .foregroundColor(.white)
                         Spacer()
                         Text(String(user.score))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(String(user.currentRound))
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -118,7 +114,7 @@ struct GameOverMultiplayerView: View {
                     currentScene = "Start"
 
                 }){
-                    Text("NEXT")
+                    Text("DONE")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
