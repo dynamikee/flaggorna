@@ -110,7 +110,10 @@ struct GameOverMultiplayerView: View {
             
                 Button(action: {
                     //self.socketManager.stopUsersTimer()
+                    
+                    socketManager.users = []
                     multiplayer = false
+                    
                     currentScene = "Start"
 
                 }){
