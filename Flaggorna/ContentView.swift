@@ -28,7 +28,7 @@ struct ContentView: View {
                 case "WrongMultiplayer":
                     WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds)
                 case "GameOverMultiplayer":
-                    GameOverMultiplayerView(currentScene: $currentScene, score: $score)
+                    GameOverMultiplayerView(currentScene: $currentScene, score: $score, multiplayer: $multiplayer)
                 default:
                     JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
                 }
@@ -58,6 +58,80 @@ struct ContentView: View {
 
 
 
+struct GameOverMultiplayerView: View {
+    @Binding var currentScene: String
+    @Binding var score: Int
+    @Binding var multiplayer: Bool
+    
+    @EnvironmentObject var socketManager: SocketManager
+
+    var body: some View {
+        VStack {
+            Text("SCORES")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+
+            VStack {
+                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }), id: \.id) { user in
+                    HStack {
+                        Circle()
+                            .foregroundColor(user.color)
+                            .frame(width: 20, height: 20)
+                        Text(user.name)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text(String(user.score))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text(String(user.currentRound))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                    }
+                    .padding(.horizontal, 16)
+                }
+            }
+            ZStack {
+                Circle()
+                    .fill(Color.blue)
+                    .frame(width: 12, height: 12)
+                    .modifier(ParticlesModifier())
+                    .offset(x: -100, y : -50)
+                        
+                Circle()
+                    .fill(Color.red)
+                    .frame(width: 12, height: 12)
+                    .modifier(ParticlesModifier())
+                    .offset(x: 60, y : 70)
+            }
+            Spacer()
+            
+                Button(action: {
+                    //self.socketManager.stopUsersTimer()
+                    multiplayer = false
+                    currentScene = "Start"
+
+                }){
+                    Text("NEXT")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+
+            
+            
+        }
+        .onAppear() {
+            
+
+        }
+    }
+}
 
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
@@ -396,15 +470,6 @@ class User: ObservableObject, Hashable, Identifiable {
 
 
 
-
-struct GameOverMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-
-    var body: some View {
-        Text("GameOverMultiplayerView")
-    }
-}
 
 
 struct CountryButtonStyle: ButtonStyle {

@@ -21,7 +21,7 @@ struct StartGameView: View {
             Button(action: {
                 loadData()
                 score = 0
-                rounds = 3
+                rounds = 10
                 multiplayer = true
                 SocketManager.shared.currentScene = "JoinMultiplayer"
                 //currentScene = "GetReadyMultiplayer"
@@ -35,7 +35,7 @@ struct StartGameView: View {
             Button(action: {
                 loadData()
                 score = 0
-                rounds = 3
+                rounds = 10
                 currentScene = "GetReady"
             }){
                 Text("SINGLE GAME")

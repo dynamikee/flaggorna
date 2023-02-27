@@ -11,16 +11,18 @@ struct WrongAnswerMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var rounds: Int
     @EnvironmentObject var socketManager: SocketManager
+    @State private var showNextButton: Bool = false
     
     var body: some View {
-        VStack {
-            Text("WRONG ANSWER")
-                .font(.title3)
-                .fontWeight(.bold)
+        VStack(spacing: 32) {
+            Spacer()
+            Text("Oh no!")
+                .font(.largeTitle)
+                .fontWeight(.black)
                 .foregroundColor(.white)
 
             let rightAnswer = socketManager.currentQuestion?.correctAnswer
-            Text("It's \(rightAnswer!)")
+            Text("It was \(rightAnswer!)")
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
@@ -39,23 +41,33 @@ struct WrongAnswerMultiplayerView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
-                        Spacer()
-                        Text(String(user.currentRound))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
                         
                     }
                     .padding(.horizontal, 16)
                 }
             }
             Spacer()
+            if showNextButton {
+                Button(action: {
+                    //self.socketManager.stopUsersTimer()
+                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                    let message: [String: Any] = ["type": "startGame"]
+                    let jsonData = try? JSONSerialization.data(withJSONObject: message)
+                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    socketManager.send(jsonString)
+                }){
+                    Text("NEXT QUESTION")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+
+            }
         }
         .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         if socketManager.users.filter({ $0.currentRound == rounds }).count == socketManager.users.count {
                             if rounds > 0 {
-                                socketManager.currentScene = "MainMultiplayer"
+                                showNextButton = true
                             } else {
                                 socketManager.currentScene = "GameOverMultiplayer"
                             }

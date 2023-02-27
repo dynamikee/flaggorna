@@ -19,23 +19,6 @@ struct MainGameMultiplayerView: View {
     var body: some View {
         VStack {
             if let question = socketManager.currentQuestion {
-                HStack {
-                    Text(socketManager.currentUser!.name)
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    Spacer()
-                    Text("Score: \(socketManager.currentUser!.score)")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    Spacer()
-                    Text("Round: \(socketManager.currentUser!.currentRound)")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                }
-                .padding(24)
 
                 Spacer()
                 Image(question.flag)
