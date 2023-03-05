@@ -28,8 +28,11 @@ struct JoinMultiplayerView: View {
         if let colorString = userDefaults.string(forKey: "userColor"),
            let color = colors.first(where: { colorToString[$0] == colorString }) {
             self.color = color
+        } else {
+            self.color = colors.randomElement()!
         }
     }
+
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -120,7 +123,7 @@ struct JoinMultiplayerView: View {
             self.socketManager.socket.connect()
             self.socketManager.startUsersTimer()
             self.currentRound = rounds
-            self.color = colors.randomElement()!
+            //self.color = colors.randomElement()!
         }
     }
 
