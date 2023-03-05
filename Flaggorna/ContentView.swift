@@ -318,7 +318,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         sendScoreAndRoundUpdate()
     }
 
-    
     func startUsersTimer() {
         stopUsersTimer() // make sure only one timer is running at a time
         usersTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
@@ -370,9 +369,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
             print(jsonString)
         }
     }
-
     
-
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
@@ -461,13 +458,6 @@ class User: ObservableObject, Hashable, Identifiable {
         self.currentRound = currentRound
     }
 }
-
-
-
-
-
-
-
 
 
 

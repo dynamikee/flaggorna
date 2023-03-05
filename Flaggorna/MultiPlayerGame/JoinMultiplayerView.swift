@@ -19,6 +19,17 @@ struct JoinMultiplayerView: View {
     
     @EnvironmentObject var socketManager: SocketManager
 
+    private let userDefaults = UserDefaults.standard
+
+    private func loadUserData() {
+        if let name = userDefaults.string(forKey: "userName") {
+            self.name = name
+        }
+        if let colorString = userDefaults.string(forKey: "userColor"),
+           let color = colors.first(where: { colorToString[$0] == colorString }) {
+            self.color = color
+        }
+    }
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -104,6 +115,7 @@ struct JoinMultiplayerView: View {
             }
         }
         .onAppear {
+            loadUserData()
             // Choose a random color for the user
             self.socketManager.socket.connect()
             self.socketManager.startUsersTimer()
@@ -114,10 +126,16 @@ struct JoinMultiplayerView: View {
 
     private func join() {
         let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
-        //name = ""
+        
+        // Save user data to UserDefaults
+        let defaults = UserDefaults.standard
+        defaults.set(name, forKey: "userName")
+        defaults.set(colorToString[color], forKey: "userColor")
+        
         socketManager.addUser(user)
         socketManager.currentUser = user
     }
+
     
     func generateFlagQuestion() -> FlagQuestion {
         let randomCountry = countries.randomElement()!
@@ -130,5 +148,10 @@ struct JoinMultiplayerView: View {
         return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
     }
 }
+
+
+
+
+
 
 
