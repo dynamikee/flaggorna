@@ -11,6 +11,7 @@ struct JoinMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var rounds: Int
+    //@Binding var currentRoom: String
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0

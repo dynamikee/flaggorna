@@ -56,86 +56,11 @@ struct ContentView: View {
     }
 }
 
-
-
-struct GameOverMultiplayerView: View {
-    @Binding var currentScene: String
-    @Binding var score: Int
-    @Binding var multiplayer: Bool
-    
-    @EnvironmentObject var socketManager: SocketManager
-
-    var body: some View {
-        VStack(spacing: 32)  {
-            Spacer()
-            Text("ROUND RESULT")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-
-            VStack {
-                ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).reversed(), id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(String(user.score))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        
-                    }
-                    .padding(.horizontal, 16)
-                }
-            }
-            ZStack {
-                Circle()
-                    .fill(Color.blue)
-                    .frame(width: 12, height: 12)
-                    .modifier(ParticlesModifier())
-                    .offset(x: -100, y : -50)
-                        
-                Circle()
-                    .fill(Color.red)
-                    .frame(width: 12, height: 12)
-                    .modifier(ParticlesModifier())
-                    .offset(x: 60, y : 70)
-            }
-            Spacer()
-            
-                Button(action: {
-                    //self.socketManager.stopUsersTimer()
-                    
-                    socketManager.users = []
-                    multiplayer = false
-                    
-                    currentScene = "Start"
-
-                }){
-                    Text("DONE")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-
-            
-            
-        }
-        .onAppear() {
-            
-
-        }
-    }
-}
-
 class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
     @Published var users: Set<User> = []
     @Published var currentScene: String
+    @Published var currentRoom: String
 
     //let objectWillChange = ObservableObjectPublisher()
     internal var socket: WebSocket
@@ -152,6 +77,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         socket = WebSocket(request: request)
         _currentScene = Published(initialValue: "Start")
         countries = []
+        currentRoom = ""
         super.init()
         socket.delegate = self
     }
@@ -204,10 +130,12 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             let randomCountry = self?.countries.randomElement()!
                             let currentCountry = randomCountry?.name
                             let countryAlternatives = self?.countries.filter { $0.name != currentCountry }
-                            let answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name } + [currentCountry]
+                            var answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name }
+                            answerOptions.insert(currentCountry!, at: Int.random(in: 0...3))
                             let correctAnswer = currentCountry
                             let flag = randomCountry?.flag
                             let question = FlagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
+
 
                             // Send the flag question to all clients
                             let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
@@ -217,8 +145,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             let jsonString = String(data: jsonData, encoding: .utf8)!
                             self?.send(jsonString)
                             self?.currentQuestion = question
-                            
                         }
+
                         
                     case "flagQuestion":
                         
@@ -233,6 +161,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
                         self.currentQuestion = question
 
+                        
                     case "updateScore":
                         
                         guard let scoreUpdate = json["update"] as? [[String: Any]] else {
@@ -419,12 +348,21 @@ struct FlagQuestion: Codable {
     let flag: String
     let answerOptions: [String]
     let correctAnswer: String
+    let answerOrder: [Int]
+
+    init(flag: String, answerOptions: [String], correctAnswer: String) {
+        self.flag = flag
+        self.answerOptions = answerOptions
+        self.correctAnswer = correctAnswer
+        self.answerOrder = Array(0..<answerOptions.count).shuffled()
+    }
 
     func toDict() -> [String: Any] {
         return [
             "flag": flag,
             "answerOptions": answerOptions,
-            "correctAnswer": correctAnswer
+            "correctAnswer": correctAnswer,
+            "answerOrder": answerOrder
         ]
     }
 }
@@ -450,7 +388,7 @@ class User: ObservableObject, Hashable, Identifiable {
     @Published var score: Int
     @Published var currentRound: Int
     
-    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0) {
+    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0, wifiName: String = "") {
         self.id = id
         self.name = name
         self.color = color
