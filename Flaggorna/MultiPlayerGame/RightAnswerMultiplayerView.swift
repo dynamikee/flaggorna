@@ -11,6 +11,7 @@
         @Binding var currentScene: String
         @Binding var score: Int
         @Binding var rounds: Int
+        @Binding var countries: [Country]
         @EnvironmentObject var socketManager: SocketManager
         @State private var showNextButton: Bool = false
 
@@ -60,12 +61,14 @@
                 Spacer()
                 if showNextButton {
                     Button(action: {
-                        //self.socketManager.stopUsersTimer()
+                        let flagQuestion = generateFlagQuestion()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                        let message: [String: Any] = ["type": "startGame"]
+                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
+                        print(message)
                         let jsonData = try? JSONSerialization.data(withJSONObject: message)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)
+                        print(jsonString)
                     }){
                         Text("NEXT QUESTION")
                     }
@@ -88,4 +91,17 @@
                 }
             }
         }
+        
+        func generateFlagQuestion() -> FlagQuestion {
+            let randomCountry = countries.randomElement()!
+            let currentCountry = randomCountry.name
+            let countryAlternatives = countries.filter { $0.name != currentCountry }
+            let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
+            let correctAnswer = currentCountry
+            let flag = randomCountry.flag
+            let answerOrder = Array(0..<answerOptions.count).shuffled()
+
+            return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
+        }
+        
     }

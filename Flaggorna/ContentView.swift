@@ -24,9 +24,9 @@ struct ContentView: View {
                 case "MainMultiplayer":
                     MainGameMultiplayerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
                 case "RightMultiplayer":
-                    RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                    RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
                 case "WrongMultiplayer":
-                    WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds)
+                    WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds, countries: $countries)
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score, multiplayer: $multiplayer)
                 default:
