@@ -21,7 +21,7 @@ struct JoinMultiplayerView: View {
     @EnvironmentObject var socketManager: SocketManager
 
     private let userDefaults = UserDefaults.standard
-
+    
     private func loadUserData() {
         if let name = userDefaults.string(forKey: "userName") {
             self.name = name
@@ -81,10 +81,14 @@ struct JoinMultiplayerView: View {
                 Button(action: {
                     self.socketManager.stopUsersTimer()
                     SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    let message: [String: Any] = ["type": "startGame"]
+                    let flagQuestion = generateFlagQuestion()
+                    
+                    let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
+                    print(message)
                     let jsonData = try? JSONSerialization.data(withJSONObject: message)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
                     socketManager.send(jsonString)
+                    print(jsonString)
                 }){
                     Text("START GAME")
                 }
@@ -148,9 +152,11 @@ struct JoinMultiplayerView: View {
         let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
         let correctAnswer = currentCountry
         let flag = randomCountry.flag
+        let answerOrder = Array(0..<answerOptions.count).shuffled()
 
-        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
     }
+
 }
 
 

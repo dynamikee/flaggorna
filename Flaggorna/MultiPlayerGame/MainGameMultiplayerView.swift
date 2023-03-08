@@ -29,7 +29,10 @@ struct MainGameMultiplayerView: View {
 
                 Spacer()
                 VStack(spacing: 24) {
-                    ForEach(question.answerOptions, id: \.self) { option in
+                    
+                    let options = question.answerOptions.enumerated().sorted(by: { question.answerOrder[$0.offset] < question.answerOrder[$1.offset] }).map { $0.element }
+                                        ForEach(options, id: \.self) { option in
+                    //ForEach(question.answerOptions, id: \.self) { option in
                         Button(action: {
                             if option == question.correctAnswer {
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
@@ -56,9 +59,11 @@ struct MainGameMultiplayerView: View {
                         }) {
                             Text(option)
                         }
+                        
                         .buttonStyle(CountryButtonStyle())
                     }
                 }
+                
                 .padding(8)
             } else {
                 ProgressView()

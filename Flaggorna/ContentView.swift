@@ -68,6 +68,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     var usersTimer: Timer?
     @Published var currentQuestion: FlagQuestion?
     @Published var currentUser: User?
+    var gameCode: String
 
     //private var currentSceneBinding: Binding<String>?
     
@@ -78,6 +79,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         _currentScene = Published(initialValue: "Start")
         countries = []
         currentRoom = ""
+        gameCode = ""
         super.init()
         socket.delegate = self
     }
@@ -113,7 +115,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                     let newUser = User(id: userID, name: userName, color: color(for: userColorString), score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0)
                                     newUsers.insert(newUser)
                                 }
-
+                                
                             }
                             DispatchQueue.main.async { [weak self] in
                                 self?.users.formUnion(newUsers)
@@ -125,40 +127,47 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             self?.stopUsersTimer()
                             self?.currentScene = "GetReadyMultiplayer"
                             self?.objectWillChange.send()
+                            
+                            if let questionDict = json["question"] as? [String: Any],
+                               let jsonData = try? JSONSerialization.data(withJSONObject: questionDict),
+                               let question = try? JSONDecoder().decode(FlagQuestion.self, from: jsonData) {
+                                
+                                let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
+                                
+                                guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
+                                    return
+                                }
+                                
+                                let jsonString = String(data: jsonData, encoding: .utf8)!
+                                self?.send(jsonString)
+                                print(jsonString)
 
-                            // Generate a flag question
-                            let randomCountry = self?.countries.randomElement()!
-                            let currentCountry = randomCountry?.name
-                            let countryAlternatives = self?.countries.filter { $0.name != currentCountry }
-                            var answerOptions = countryAlternatives!.shuffled().prefix(3).map { $0.name }
-                            answerOptions.insert(currentCountry!, at: Int.random(in: 0...3))
-                            let correctAnswer = currentCountry
-                            let flag = randomCountry?.flag
-                            let question = FlagQuestion(flag: flag!, answerOptions: answerOptions.compactMap { $0 }, correctAnswer: correctAnswer!)
-
-
-                            // Send the flag question to all clients
-                            let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
-                            guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
+                                self?.currentQuestion = question
+                                print(question)
+                                print(self?.currentQuestion)
+                                
+                            } else {
+                                print("Invalid flag question received")
                                 return
                             }
-                            let jsonString = String(data: jsonData, encoding: .utf8)!
-                            self?.send(jsonString)
-                            self?.currentQuestion = question
                         }
-
+                        
+                        
                         
                     case "flagQuestion":
-                        
                         guard let jsonQuestion = json["question"] as? [String: Any],
                               let flag = jsonQuestion["flag"] as? String,
                               let answerOptions = jsonQuestion["answerOptions"] as? [String],
-                              let correctAnswer = jsonQuestion["correctAnswer"] as? String else {
-                            // Error handling for when the JSON message is malformed or missing necessary fields
+                              let correctAnswer = jsonQuestion["correctAnswer"] as? String,
+                              let answerOrder = jsonQuestion["answerOrder"] as? [Int]
+                                
+                     else {
+                        // Error handling for when the JSON message is malformed, missing necessary fields,
+                            // or game code is incorrect
                             return
                         }
-                    
-                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+                        
+                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
                         self.currentQuestion = question
 
                         
@@ -350,12 +359,26 @@ struct FlagQuestion: Codable {
     let correctAnswer: String
     let answerOrder: [Int]
 
-    init(flag: String, answerOptions: [String], correctAnswer: String) {
+    init(flag: String, answerOptions: [String], correctAnswer: String, answerOrder: [Int]) {
         self.flag = flag
-        self.answerOptions = answerOptions
         self.correctAnswer = correctAnswer
-        self.answerOrder = Array(0..<answerOptions.count).shuffled()
+        self.answerOrder = answerOrder
+
+        // Assign unique index to each answer option
+        let indexedAnswerOptions = answerOptions.enumerated().map { (index, value) in
+            return (index, value)
+        }
+
+        // Sort answer options based on index
+        let sortedAnswerOptions = indexedAnswerOptions.sorted { (left, right) in
+            let leftIndex = answerOrder.firstIndex(of: left.0)!
+            let rightIndex = answerOrder.firstIndex(of: right.0)!
+            return leftIndex < rightIndex
+        }.map { $0.1 }
+
+        self.answerOptions = sortedAnswerOptions
     }
+
 
     func toDict() -> [String: Any] {
         return [
@@ -365,7 +388,20 @@ struct FlagQuestion: Codable {
             "answerOrder": answerOrder
         ]
     }
+
+    static func fromDict(_ dict: [String: Any]) -> FlagQuestion? {
+        guard let flag = dict["flag"] as? String,
+              let answerOptions = dict["answerOptions"] as? [String],
+              let correctAnswer = dict["correctAnswer"] as? String,
+              let answerOrder = dict["answerOrder"] as? [Int] else {
+            return nil
+        }
+        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
+    }
 }
+
+
+
 
 
 struct Country: Codable, Hashable {
