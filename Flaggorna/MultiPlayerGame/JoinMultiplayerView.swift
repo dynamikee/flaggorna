@@ -16,6 +16,8 @@ struct JoinMultiplayerView: View {
     @State private var color: Color = .white
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
+    @State private var gameCode: String = ""
+    @State private var joinOrStart = true
     @State private var showStartButton = false
     
     @EnvironmentObject var socketManager: SocketManager
@@ -54,60 +56,23 @@ struct JoinMultiplayerView: View {
     
     var body: some View {
         
-        VStack {
-            Text("Players:")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            VStack(alignment: .leading, spacing: 10) {
-                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 16)
-                }
-            }
-
-            Spacer()
-            
-            if showStartButton {
-                Button(action: {
-                    self.socketManager.stopUsersTimer()
-                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    let flagQuestion = generateFlagQuestion()
-                    
-                    let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
-                    print(message)
-                    let jsonData = try? JSONSerialization.data(withJSONObject: message)
-                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-                    socketManager.send(jsonString)
-                    print(jsonString)
-                }){
-                    Text("START GAME")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-
-            } else {
+        if joinOrStart {
+            VStack {
+                Spacer()
+                Text("JOIN GAME")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                
                 HStack {
-                    Circle()
-                        .foregroundColor(color)
-                        .frame(width: 40)
-                    TextField("Enter your name", text: $name)
+                    
+                    TextField("Enter game code", text: $gameCode)
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
                         .padding()
                     Button(action: {
-                        join()
-                        showStartButton = true
+                        joinOrStart = false
                     }) {
                         Text(Image(systemName: "arrow.forward"))
                             .font(.title)
@@ -120,16 +85,121 @@ struct JoinMultiplayerView: View {
 
                 }
                 .padding()
+                
+                Spacer()
+                
+                Button(action: {
+                    
+                    print("Create")
+                }){
+                    Text("HOST NEW GAME")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+                
             }
+            .onAppear {
+                loadUserData()
+                // Choose a random color for the user
+                self.socketManager.socket.connect()
+                self.socketManager.startUsersTimer()
+                self.currentRound = rounds
+                //self.color = colors.randomElement()!
+            }
+            
+        } else {
+            VStack {
+                Text("Players:")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
+                        HStack {
+                            Circle()
+                                .foregroundColor(user.color)
+                                .frame(width: 20, height: 20)
+                            Text(user.name)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 16)
+                    }
+                    Button(action: {
+                        let url = URL(string: "https://mygame.com")!
+                            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                        }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "plus")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                Text("Invite friends")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            }
+                            .foregroundColor(.white)
+                        }
+                        .padding()
+                    
+                }
+
+                Spacer()
+                
+                if showStartButton {
+                    Button(action: {
+                        self.socketManager.stopUsersTimer()
+                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                        let flagQuestion = generateFlagQuestion()
+                        
+                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
+                        print(message)
+                        let jsonData = try? JSONSerialization.data(withJSONObject: message)
+                        let jsonString = String(data: jsonData!, encoding: .utf8)!
+                        socketManager.send(jsonString)
+                        print(jsonString)
+                    }){
+                        Text("START GAME")
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .padding()
+
+                } else {
+                    HStack {
+                        Circle()
+                            .foregroundColor(color)
+                            .frame(width: 40)
+                        TextField("Enter your name", text: $name)
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                            .padding()
+                        Button(action: {
+                            join()
+                            showStartButton = true
+                        }) {
+                            Text(Image(systemName: "arrow.forward"))
+                                .font(.title)
+                                .fontWeight(.black)
+                                .foregroundColor(.white)
+                            
+                        }
+                        .disabled(name.isEmpty)
+                        .padding()
+
+                    }
+                    .padding()
+                }
+            }
+            
         }
-        .onAppear {
-            loadUserData()
-            // Choose a random color for the user
-            self.socketManager.socket.connect()
-            self.socketManager.startUsersTimer()
-            self.currentRound = rounds
-            //self.color = colors.randomElement()!
-        }
+        
+        
+
     }
 
     private func join() {

@@ -42,6 +42,7 @@
 		BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightAnswerMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongAnswerMultiplayerView.swift; sourceTree = "<group>"; };
+		BAD9B37829B942A200977E6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BAF21C0029994100009035E8 /* Flaggorna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flaggorna.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAF21C0329994100009035E8 /* FlaggornaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggornaApp.swift; sourceTree = "<group>"; };
 		BAF21C0529994100009035E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -118,6 +119,7 @@
 		BAF21C0229994100009035E8 /* Flaggorna */ = {
 			isa = PBXGroup;
 			children = (
+				BAD9B37829B942A200977E6F /* Info.plist */,
 				BAF21C0329994100009035E8 /* FlaggornaApp.swift */,
 				BABC466829A0AF910048AE12 /* SinglePlayerGame */,
 				BAF21C0529994100009035E8 /* ContentView.swift */,
@@ -407,6 +409,7 @@
 				DEVELOPMENT_TEAM = 37XKX4B4V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flaggorna/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -441,6 +444,7 @@
 				DEVELOPMENT_TEAM = 37XKX4B4V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flaggorna/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
