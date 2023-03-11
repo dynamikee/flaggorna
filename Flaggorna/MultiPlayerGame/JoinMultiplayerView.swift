@@ -59,8 +59,7 @@ struct JoinMultiplayerView: View {
         if joinOrStart {
             VStack {
                 Spacer()
-                
-                
+
                 HStack {
                     Text("JOIN GAME :")
                         .font(.title)
@@ -92,8 +91,9 @@ struct JoinMultiplayerView: View {
                 Spacer()
                 
                 Button(action: {
-                    
-                    print("Create")
+                    joinOrStart = false
+                    let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
+                    gameCode = code
                 }){
                     Text("HOST NEW GAME")
                 }
@@ -112,7 +112,7 @@ struct JoinMultiplayerView: View {
             
         } else {
             VStack {
-                Text("Players:")
+                Text("GAME CODE \(gameCode)")
                     .font(.title)
                     .fontWeight(.black)
                     .foregroundColor(.white)
