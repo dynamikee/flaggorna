@@ -134,9 +134,14 @@ struct JoinMultiplayerView: View {
                         .padding(.horizontal, 16)
                     }
                     Button(action: {
-                        let url = URL(string: "https://mygame.com")!
-                            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
+                            let appName = "Flag Party Quiz App - Flaggorna"
+                            let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
+                            
+                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Join the game with code \(gameCode). Download the \(appName) if you havent already", appURL], applicationActivities: nil)
                             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+
+
                         }) {
                             HStack(spacing: 10) {
                                 Image(systemName: "plus")
