@@ -60,7 +60,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     static let shared = SocketManager()
     @Published var users: Set<User> = []
     @Published var currentScene: String
-    @Published var currentRoom: String
 
     //let objectWillChange = ObservableObjectPublisher()
     internal var socket: WebSocket
@@ -78,7 +77,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         socket = WebSocket(request: request)
         _currentScene = Published(initialValue: "Start")
         countries = []
-        currentRoom = ""
         gameCode = ""
         super.init()
         socket.delegate = self

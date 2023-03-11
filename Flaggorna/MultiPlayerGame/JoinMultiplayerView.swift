@@ -11,7 +11,7 @@ struct JoinMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var rounds: Int
-    //@Binding var currentRoom: String
+
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0
@@ -156,7 +156,7 @@ struct JoinMultiplayerView: View {
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         let flagQuestion = generateFlagQuestion()
                         
-                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
+                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict()]
                         print(message)
                         let jsonData = try? JSONSerialization.data(withJSONObject: message)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
