@@ -59,18 +59,21 @@ struct JoinMultiplayerView: View {
         if joinOrStart {
             VStack {
                 Spacer()
-                Text("JOIN GAME")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
+                
                 
                 HStack {
+                    Text("JOIN GAME :")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
                     
-                    TextField("Enter game code", text: $gameCode)
+                    TextField("Code", text: $gameCode)
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
                         .padding()
+                        .frame(width: 112)
+
                     Button(action: {
                         joinOrStart = false
                     }) {
