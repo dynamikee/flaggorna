@@ -101,7 +101,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                 if let type = json["type"] as? String {
                     switch type {
                     case "usersArray":
-                        if let usersArray = json["users"] as? [[String: Any]] {
+                        if let usersArray = json["users"] as? [[String: Any]], let messageGameCode = json["gameCode"] as? String,
+                           messageGameCode == gameCode {
                             var newUsers = Set<User>()
                             for userDict in usersArray {
                                 if let userIDString = userDict["id"] as? String,

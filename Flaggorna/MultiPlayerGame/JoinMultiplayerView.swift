@@ -75,6 +75,8 @@ struct JoinMultiplayerView: View {
 
                     Button(action: {
                         joinOrStart = false
+                        socketManager.setGameCode(gameCode)
+                        
                     }) {
                         Text(Image(systemName: "arrow.forward"))
                             .font(.title)
