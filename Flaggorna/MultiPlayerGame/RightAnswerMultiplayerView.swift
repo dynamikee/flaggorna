@@ -63,7 +63,7 @@
                     Button(action: {
                         let flagQuestion = generateFlagQuestion()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict(), "answerOrder": flagQuestion.answerOrder]
+                        let message: [String: Any] = ["type": "startGame", "gameCode": socketManager.gameCode, "question": flagQuestion.toDict()]
                         print(message)
                         let jsonData = try? JSONSerialization.data(withJSONObject: message)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!

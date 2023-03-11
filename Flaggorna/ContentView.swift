@@ -122,6 +122,12 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                         }
                     case "startGame":
+                        guard let messageGameCode = json["gameCode"] as? String,
+                              messageGameCode == self.gameCode else {
+                            // Invalid game code, do nothing
+                            return
+                        }
+                        
                         DispatchQueue.main.async { [weak self] in
                             self?.stopUsersTimer()
                             self?.currentScene = "GetReadyMultiplayer"
@@ -131,7 +137,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                let jsonData = try? JSONSerialization.data(withJSONObject: questionDict),
                                let question = try? JSONDecoder().decode(FlagQuestion.self, from: jsonData) {
                                 
-                                let message: [String: Any] = ["type": "flagQuestion", "question": question.toDict()]
+                                let message: [String: Any] = ["type": "flagQuestion", "gameCode": messageGameCode, "question": question.toDict()]
                                 
                                 guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
                                     return
@@ -154,6 +160,12 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         
                         
                     case "flagQuestion":
+                        guard let messageGameCode = json["gameCode"] as? String,
+                              messageGameCode == self.gameCode else {
+                            // Invalid game code, do nothing
+                            return
+                        }
+                        
                         guard let jsonQuestion = json["question"] as? [String: Any],
                               let flag = jsonQuestion["flag"] as? String,
                               let answerOptions = jsonQuestion["answerOptions"] as? [String],
@@ -172,7 +184,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         
                     case "updateScore":
                         
-                        guard let scoreUpdate = json["update"] as? [[String: Any]] else {
+                        guard let scoreUpdate = json["update"] as? [[String: Any]], let messageGameCode = json["gameCode"] as? String,
+                              messageGameCode == gameCode else {
                             print("Missing or malformed users array")
                             return
                         }
@@ -294,6 +307,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         }
         let userDict: [String: Any] = [
             "type": "updateScore",
+            "gameCode": self.gameCode,
             "update": [
                 [
                     "id": currentUser.id.uuidString,

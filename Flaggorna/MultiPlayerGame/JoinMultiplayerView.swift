@@ -162,7 +162,7 @@ struct JoinMultiplayerView: View {
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         let flagQuestion = generateFlagQuestion()
                         
-                        let message: [String: Any] = ["type": "startGame", "question": flagQuestion.toDict()]
+                        let message: [String: Any] = ["type": "startGame", "gameCode": gameCode, "question": flagQuestion.toDict()]
                         print(message)
                         let jsonData = try? JSONSerialization.data(withJSONObject: message)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
