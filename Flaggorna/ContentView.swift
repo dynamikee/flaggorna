@@ -232,6 +232,10 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     }
     
     
+    func setGameCode(_ code: String) {
+            self.gameCode = code
+    }
+    
     func addUser(_ user: User) {
         self.users.insert(user)
         self.objectWillChange.send()
@@ -272,6 +276,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         let usersArray = Array(self.users)
         let usersDict: [String: Any] = [
             "type": "usersArray",
+            "gameCode": self.gameCode,
             "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),

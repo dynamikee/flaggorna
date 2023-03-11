@@ -94,6 +94,7 @@ struct JoinMultiplayerView: View {
                     joinOrStart = false
                     let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
                     gameCode = code
+                    socketManager.setGameCode(code)
                 }){
                     Text("HOST NEW GAME")
                 }
