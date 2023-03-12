@@ -121,6 +121,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                 self?.objectWillChange.send()
                             }
                         }
+                        
                     case "startGame":
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
@@ -136,29 +137,32 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             if let questionDict = json["question"] as? [String: Any],
                                let jsonData = try? JSONSerialization.data(withJSONObject: questionDict),
                                let question = try? JSONDecoder().decode(FlagQuestion.self, from: jsonData) {
+                                print("startGame - flagquestion object created with this:")
+                                print(question)
                                 
                                 let message: [String: Any] = ["type": "flagQuestion", "gameCode": messageGameCode, "question": question.toDict()]
-                                
+                                print("startGame - flagquestion message created as this:")
+                                print(message)
                                 guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
                                     return
                                 }
                                 
                                 let jsonString = String(data: jsonData, encoding: .utf8)!
                                 self?.send(jsonString)
+                                print("startGame - flagquestion message sent as this:")
                                 print(jsonString)
-
+                                
                                 self?.currentQuestion = question
+                                print("startGame - currentQuestion created as this:")
                                 print(question)
-                                print(self?.currentQuestion)
+
                                 
                             } else {
                                 print("Invalid flag question received")
                                 return
                             }
                         }
-                        
-                        
-                        
+                          
                     case "flagQuestion":
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
@@ -379,23 +383,22 @@ struct FlagQuestion: Codable {
 
     init(flag: String, answerOptions: [String], correctAnswer: String, answerOrder: [Int]) {
         self.flag = flag
-        self.correctAnswer = correctAnswer
         self.answerOrder = answerOrder
 
-        // Assign unique index to each answer option
-        let indexedAnswerOptions = answerOptions.enumerated().map { (index, value) in
-            return (index, value)
-        }
+        // Map answer options to tuples of (option, index) and sort based on index order
+        let sortedAnswerOptions = answerOrder.enumerated()
+            .map { (index, value) in (answerOptions[value], index) }
+            .sorted { $0.1 < $1.1 }
+            .map { $0.0 }
 
-        // Sort answer options based on index
-        let sortedAnswerOptions = indexedAnswerOptions.sorted { (left, right) in
-            let leftIndex = answerOrder.firstIndex(of: left.0)!
-            let rightIndex = answerOrder.firstIndex(of: right.0)!
-            return leftIndex < rightIndex
-        }.map { $0.1 }
+        // Find the new index of the correct answer in the sorted answer options
+        let correctAnswerIndex = answerOptions.firstIndex(of: correctAnswer)!
+        let newCorrectAnswerIndex = sortedAnswerOptions.firstIndex(of: correctAnswer)!
 
         self.answerOptions = sortedAnswerOptions
+        self.correctAnswer = sortedAnswerOptions[newCorrectAnswerIndex]
     }
+
 
 
     func toDict() -> [String: Any] {
