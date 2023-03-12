@@ -182,7 +182,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             return
                         }
                         
-                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
+                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
                         self.currentQuestion = question
 
                         
@@ -379,45 +379,30 @@ struct FlagQuestion: Codable {
     let flag: String
     let answerOptions: [String]
     let correctAnswer: String
-    let answerOrder: [Int]
 
-    init(flag: String, answerOptions: [String], correctAnswer: String, answerOrder: [Int]) {
+    init(flag: String, answerOptions: [String], correctAnswer: String) {
         self.flag = flag
-        self.answerOrder = answerOrder
-
-        // Map answer options to tuples of (option, index) and sort based on index order
-        let sortedAnswerOptions = answerOrder.enumerated()
-            .map { (index, value) in (answerOptions[value], index) }
-            .sorted { $0.1 < $1.1 }
-            .map { $0.0 }
-
-        // Find the new index of the correct answer in the sorted answer options
-        let correctAnswerIndex = answerOptions.firstIndex(of: correctAnswer)!
-        let newCorrectAnswerIndex = sortedAnswerOptions.firstIndex(of: correctAnswer)!
-
-        self.answerOptions = sortedAnswerOptions
-        self.correctAnswer = sortedAnswerOptions[newCorrectAnswerIndex]
+        var shuffledAnswerOptions = answerOptions
+        shuffledAnswerOptions.shuffle()
+        self.answerOptions = shuffledAnswerOptions
+        self.correctAnswer = correctAnswer
     }
-
-
 
     func toDict() -> [String: Any] {
         return [
             "flag": flag,
             "answerOptions": answerOptions,
             "correctAnswer": correctAnswer,
-            "answerOrder": answerOrder
         ]
     }
 
     static func fromDict(_ dict: [String: Any]) -> FlagQuestion? {
         guard let flag = dict["flag"] as? String,
               let answerOptions = dict["answerOptions"] as? [String],
-              let correctAnswer = dict["correctAnswer"] as? String,
-              let answerOrder = dict["answerOrder"] as? [Int] else {
+              let correctAnswer = dict["correctAnswer"] as? String else {
             return nil
         }
-        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
+        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
     }
 }
 

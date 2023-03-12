@@ -101,7 +101,7 @@
             let flag = randomCountry.flag
             let answerOrder = Array(0..<answerOptions.count).shuffled()
 
-            return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer, answerOrder: answerOrder)
+            return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
         }
         
     }
