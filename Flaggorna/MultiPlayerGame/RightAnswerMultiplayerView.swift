@@ -63,12 +63,10 @@
                     Button(action: {
                         let flagQuestion = generateFlagQuestion()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                        let message: [String: Any] = ["type": "startGame", "gameCode": socketManager.gameCode, "question": flagQuestion.toDict()]
-                        print(message)
-                        let jsonData = try? JSONSerialization.data(withJSONObject: message)
+                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+                        let jsonData = try? JSONEncoder().encode(startMessage)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)
-                        print(jsonString)
                     }){
                         Text("NEXT QUESTION")
                     }
@@ -99,7 +97,6 @@
             let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
             let correctAnswer = currentCountry
             let flag = randomCountry.flag
-            let answerOrder = Array(0..<answerOptions.count).shuffled()
 
             return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
         }

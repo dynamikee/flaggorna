@@ -129,40 +129,39 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             return
                         }
                         
+                        guard let jsonQuestion = json["question"] as? [String: Any],
+                              let flag = jsonQuestion["flag"] as? String,
+                              let answerOptions = jsonQuestion["answerOptions"] as? [String],
+                              let correctAnswer = jsonQuestion["correctAnswer"] as? String else {
+                            // Error handling for when the JSON message is malformed, missing necessary fields,
+                            // or game code is incorrect
+                            return
+                        }
+                        print("Anser options as we recieve them in the startmessage")
+                        print(answerOptions)
+                        
+                        let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+                        
                         DispatchQueue.main.async { [weak self] in
                             self?.stopUsersTimer()
                             self?.currentScene = "GetReadyMultiplayer"
                             self?.objectWillChange.send()
+                            self?.currentQuestion = question
                             
-                            if let questionDict = json["question"] as? [String: Any],
-                               let jsonData = try? JSONSerialization.data(withJSONObject: questionDict),
-                               let question = try? JSONDecoder().decode(FlagQuestion.self, from: jsonData) {
-                                print("startGame - flagquestion object created with this:")
-                                print(question)
-                                
-                                let message: [String: Any] = ["type": "flagQuestion", "gameCode": messageGameCode, "question": question.toDict()]
-                                print("startGame - flagquestion message created as this:")
-                                print(message)
-                                guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
-                                    return
-                                }
-                                
-                                let jsonString = String(data: jsonData, encoding: .utf8)!
-                                self?.send(jsonString)
-                                print("startGame - flagquestion message sent as this:")
-                                print(jsonString)
-                                
-                                self?.currentQuestion = question
-                                print("startGame - currentQuestion created as this:")
-                                print(question)
-
-                                
-                            } else {
-                                print("Invalid flag question received")
+                            let message: [String: Any] =
+                            ["type": "flagQuestion",
+                             "gameCode": self?.gameCode,
+                            "question": ["flag": question.flag,
+                                         "answerOptions": question.answerOptions,
+                                         "correctAnswer": question.correctAnswer]]
+                            guard let jsonData = try? JSONSerialization.data(withJSONObject: message) else {
                                 return
                             }
+                            
+                            let jsonString = String(data: jsonData, encoding: .utf8)!
+                            self?.send(jsonString)
                         }
-                          
+
                     case "flagQuestion":
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
@@ -173,8 +172,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         guard let jsonQuestion = json["question"] as? [String: Any],
                               let flag = jsonQuestion["flag"] as? String,
                               let answerOptions = jsonQuestion["answerOptions"] as? [String],
-                              let correctAnswer = jsonQuestion["correctAnswer"] as? String,
-                              let answerOrder = jsonQuestion["answerOrder"] as? [Int]
+                              let correctAnswer = jsonQuestion["correctAnswer"] as? String
                                 
                      else {
                         // Error handling for when the JSON message is malformed, missing necessary fields,
@@ -387,25 +385,13 @@ struct FlagQuestion: Codable {
         self.answerOptions = shuffledAnswerOptions
         self.correctAnswer = correctAnswer
     }
-
-    func toDict() -> [String: Any] {
-        return [
-            "flag": flag,
-            "answerOptions": answerOptions,
-            "correctAnswer": correctAnswer,
-        ]
-    }
-
-    static func fromDict(_ dict: [String: Any]) -> FlagQuestion? {
-        guard let flag = dict["flag"] as? String,
-              let answerOptions = dict["answerOptions"] as? [String],
-              let correctAnswer = dict["correctAnswer"] as? String else {
-            return nil
-        }
-        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
-    }
 }
 
+struct StartMessage: Codable {
+    let type: String
+    let gameCode: String
+    let question: FlagQuestion
+}
 
 
 
