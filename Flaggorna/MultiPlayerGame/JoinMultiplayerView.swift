@@ -20,6 +20,7 @@ struct JoinMultiplayerView: View {
     @State private var gameCode: String = ""
     @State private var joinOrStart = true
     @State private var showStartButton = false
+    @State private var showHostButton = true
     
     @EnvironmentObject var socketManager: SocketManager
 
@@ -57,13 +58,11 @@ struct JoinMultiplayerView: View {
     
     var body: some View {
         VStack {
-            
             HStack {
                 Button(action: {
                     socketManager.users = []
                     multiplayer = false
                     socketManager.countries = []
-                    
                     currentScene = "Start"
                     
                 }) {
@@ -71,72 +70,67 @@ struct JoinMultiplayerView: View {
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
-                    
                 }
                 Spacer()
-                
             }
-            .padding()
             Spacer()
         }
+        .padding()
         
         
         if joinOrStart {
-            VStack {
+            VStack (spacing: 10) {
                 Spacer()
-
-                HStack {
+                HStack{
                     Text("JOIN GAME :")
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
+                }
+                HStack {
                     
-                    TextField("Code", text: $gameCode)
+                    TextField("Enter Game Code", text: $gameCode)
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 112)
-
+                        .onTapGesture {
+                                            showHostButton = false
+                                        }
                     Button(action: {
                         joinOrStart = false
                         socketManager.setGameCode(gameCode)
-                        
                     }) {
                         Text(Image(systemName: "arrow.forward"))
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundColor(.white)
-                        
                     }
                     .disabled(name.isEmpty)
 
                 }
-                .padding()
-                
                 Spacer()
-                
-                Button(action: {
-                    joinOrStart = false
-                    let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
-                    gameCode = code
-                    socketManager.setGameCode(code)
-                }){
-                    Text("HOST NEW GAME")
+                if showHostButton {
+                    Button(action: {
+                        joinOrStart = false
+                        let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
+                        gameCode = code
+                        socketManager.setGameCode(code)
+                    }){
+                        Text("HOST NEW GAME")
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                } else {
+                    
                 }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-                
+
             }
+            .padding()
             .onAppear {
                 loadUserData()
-                // Choose a random color for the user
                 self.socketManager.socket.connect()
                 self.socketManager.startUsersTimer()
                 self.currentRound = rounds
-                //self.color = colors.randomElement()!
             }
-            
         } else {
             VStack {
                 Text("GAME CODE \(gameCode)")
@@ -155,36 +149,34 @@ struct JoinMultiplayerView: View {
                                 .foregroundColor(.white)
                             Spacer()
                         }
-                        .padding(.horizontal, 16)
                     }
-                    Button(action: {
-                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
-                            let appName = "Flag Party Quiz App - Flaggorna"
-                            let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
-                            
-                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Join the game with code \(gameCode). Download the \(appName) if you havent already", appURL], applicationActivities: nil)
-                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
-
-
-                        }) {
-                            HStack(spacing: 10) {
-                                Image(systemName: "plus")
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                Text("Invite friends")
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                    if showStartButton {
+                        Button(action: {
+                            let appURL = URL(string: "https://apple.co/3LfGM7G")!
+                                let appName = "Flag Party Quiz App - Flaggorna"
+                                let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
+                                
+                                let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Join the game with code \(gameCode). Download the \(appName) if you havent already", appURL], applicationActivities: nil)
+                                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                            }) {
+                                HStack(spacing: 10) {
+                                    Image(systemName: "plus")
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                    Text("Invite friends")
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                }
+                                .foregroundColor(.white)
                             }
-                            .foregroundColor(.white)
-                        }
-                        .padding()
+                    } else {
+                        
+                    }
                     
                 }
-
                 Spacer()
-                
                 if showStartButton {
                     Button(action: {
                         self.socketManager.stopUsersTimer()
@@ -198,9 +190,8 @@ struct JoinMultiplayerView: View {
                     }){
                         Text("START GAME")
                     }
-                    .buttonStyle(OrdinaryButtonStyle())
                     .padding()
-
+                    .buttonStyle(OrdinaryButtonStyle())
                 } else {
                     HStack {
                         Circle()
@@ -210,7 +201,6 @@ struct JoinMultiplayerView: View {
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundColor(.white)
-                            .padding()
                         Button(action: {
                             join()
                             showStartButton = true
@@ -222,20 +212,15 @@ struct JoinMultiplayerView: View {
                             
                         }
                         .disabled(name.isEmpty)
-                        .padding()
-
                     }
-                    .padding()
                 }
-                    
             }
             .padding()
-            
         }
-        
-        
-
+            
     }
+    
+    
 
     private func join() {
         let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
