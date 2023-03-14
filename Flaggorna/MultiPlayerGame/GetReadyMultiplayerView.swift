@@ -9,12 +9,17 @@ import SwiftUI
 
 struct GetReadyMultiplayerView: View {
     @Binding var currentScene: String
+    @Binding var rounds: Int
     
     @State private var timerCount = 2
     
     var body: some View {
-        VStack {
+        VStack (spacing: 10) {
             Text("GET READY!")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("Round number \(rounds)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)

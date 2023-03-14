@@ -6,7 +6,7 @@ struct ContentView: View {
     @State var currentScene = "Start"
     @State var countries: [Country] = []
     @State var score = 0
-    @State var rounds = 3
+    @State var rounds = 0
     @State var multiplayer: Bool = false
     @EnvironmentObject var socketManager: SocketManager
 
@@ -20,7 +20,7 @@ struct ContentView: View {
                 case "JoinMultiplayer":
                     JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
                 case "GetReadyMultiplayer":
-                    GetReadyMultiplayerView(currentScene: $currentScene)
+                    GetReadyMultiplayerView(currentScene: $currentScene, rounds: $rounds)
                 case "MainMultiplayer":
                     MainGameMultiplayerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
                 case "RightMultiplayer":

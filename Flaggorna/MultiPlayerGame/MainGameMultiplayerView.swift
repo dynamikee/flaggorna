@@ -18,6 +18,15 @@ struct MainGameMultiplayerView: View {
 
     var body: some View {
         VStack {
+            HStack{
+                Spacer()
+                Text(String(rounds))
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+            }
+            .padding()
+            
             if let question = socketManager.currentQuestion {
 
                 Spacer()

@@ -17,7 +17,7 @@ struct GameOverMultiplayerView: View {
     var body: some View {
         VStack(spacing: 32)  {
             Spacer()
-            Text("ROUND RESULT")
+            Text("TOP LIST")
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
