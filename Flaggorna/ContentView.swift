@@ -18,7 +18,7 @@ struct ContentView: View {
             if multiplayer {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene, rounds: $rounds)
                 case "MainMultiplayer":
@@ -30,7 +30,7 @@ struct ContentView: View {
                 case "GameOverMultiplayer":
                     GameOverMultiplayerView(currentScene: $currentScene, score: $score, multiplayer: $multiplayer)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds)
+                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 }
                 
                 

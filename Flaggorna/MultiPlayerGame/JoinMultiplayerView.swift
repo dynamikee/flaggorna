@@ -11,6 +11,7 @@ struct JoinMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var rounds: Int
+    @Binding var multiplayer: Bool
 
     @State private var name: String = ""
     @State private var color: Color = .white
@@ -55,6 +56,30 @@ struct JoinMultiplayerView: View {
     ]
     
     var body: some View {
+        VStack {
+            
+            HStack {
+                Button(action: {
+                    socketManager.users = []
+                    multiplayer = false
+                    socketManager.countries = []
+                    
+                    currentScene = "Start"
+                    
+                }) {
+                    Text(Image(systemName: "arrow.backward"))
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    
+                }
+                Spacer()
+                
+            }
+            .padding()
+            Spacer()
+        }
+        
         
         if joinOrStart {
             VStack {
@@ -85,7 +110,6 @@ struct JoinMultiplayerView: View {
                         
                     }
                     .disabled(name.isEmpty)
-                    .padding()
 
                 }
                 .padding()
@@ -203,7 +227,9 @@ struct JoinMultiplayerView: View {
                     }
                     .padding()
                 }
+                    
             }
+            .padding()
             
         }
         
