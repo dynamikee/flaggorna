@@ -93,6 +93,7 @@ struct JoinMultiplayerView: View {
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
+                        .keyboardType(.numberPad)
                         .onTapGesture {
                                             showHostButton = false
                                         }
