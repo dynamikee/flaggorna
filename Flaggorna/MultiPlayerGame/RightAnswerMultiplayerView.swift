@@ -78,7 +78,7 @@
             }
             .onAppear {
                 withAnimation {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                         if rounds > 0 {
                             showNextButton = true
                         } else {
@@ -88,6 +88,9 @@
                     }
                 }
             }
+            
+            
+            
         }
         
         func generateFlagQuestion() -> FlagQuestion {

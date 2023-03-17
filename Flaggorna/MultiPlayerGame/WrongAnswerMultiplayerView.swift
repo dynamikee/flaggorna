@@ -66,15 +66,13 @@ struct WrongAnswerMultiplayerView: View {
             }
         }
         .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                         if socketManager.users.filter({ $0.currentRound == rounds }).count == socketManager.users.count {
                             if rounds > 0 {
                                 showNextButton = true
                             } else {
                                 socketManager.currentScene = "GameOverMultiplayer"
                             }
-                        } else {
-                            print("Alla har inte svarat")
                         }
                         
                     }
