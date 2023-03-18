@@ -21,6 +21,7 @@ struct JoinMultiplayerView: View {
     @State private var joinOrStart = true
     @State private var showStartButton = false
     @State private var showHostButton = true
+    @State private var showAlert = false
     
     @EnvironmentObject var socketManager: SocketManager
 
@@ -149,8 +150,10 @@ struct JoinMultiplayerView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                             Spacer()
+                            
                         }
                     }
+                    
                     if showStartButton {
                         Button(action: {
                             let appURL = URL(string: "https://apple.co/3LfGM7G")!
@@ -177,17 +180,39 @@ struct JoinMultiplayerView: View {
                     }
                     
                 }
+                
                 Spacer()
+                if showAlert {
+                                Text("Invite some friends to play")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                                    .opacity(showAlert ? 1 : 0)
+                                    .animation(.easeInOut(duration: 0.5))
+                            }
                 if showStartButton {
                     Button(action: {
-                        self.socketManager.stopUsersTimer()
-                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    
-                        let flagQuestion = generateFlagQuestion()
-                        let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
-                        let jsonData = try? JSONEncoder().encode(startMessage)
-                        let jsonString = String(data: jsonData!, encoding: .utf8)!
-                        socketManager.send(jsonString)
+                        if socketManager.users.count < 2 {
+                                // Display an alert to inform the user that at least 2 players are required to start the game.
+                            print(showAlert)
+                            showAlert = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                                withAnimation {
+                                                    showAlert = false
+                                                }
+                                            }
+                            
+                        } else {
+                            
+                            self.socketManager.stopUsersTimer()
+                            SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                            
+                            let flagQuestion = generateFlagQuestion()
+                            let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                            let jsonData = try? JSONEncoder().encode(startMessage)
+                            let jsonString = String(data: jsonData!, encoding: .utf8)!
+                            socketManager.send(jsonString)
+                        }
                     }){
                         Text("START GAME")
                     }

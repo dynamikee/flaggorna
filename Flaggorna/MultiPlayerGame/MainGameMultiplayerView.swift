@@ -64,6 +64,8 @@ struct MainGameMultiplayerView: View {
                                 
                                 socketManager.currentScene = "RightMultiplayer"
                                 socketManager.updateUser()
+                                print("Number of remaining countries: \(socketManager.countries.count)")
+
                                 
                             } else {
                                 answered = true
@@ -74,6 +76,8 @@ struct MainGameMultiplayerView: View {
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
                                 socketManager.currentScene = "WrongMultiplayer"
                                 socketManager.updateUser()
+                                print("Number of remaining countries: \(socketManager.countries.count)")
+
                                 
                             }
                         }) {
@@ -103,6 +107,8 @@ struct MainGameMultiplayerView: View {
                         socketManager.countries.removeAll { $0.name == socketManager.currentQuestion?.correctAnswer }
                         socketManager.currentScene = "WrongMultiplayer"
                         socketManager.updateUser()
+                        print("Number of remaining countries: \(socketManager.countries.count)")
+
                     }
                 }
                 
