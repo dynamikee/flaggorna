@@ -207,7 +207,7 @@ struct JoinMultiplayerView: View {
                             self.socketManager.stopUsersTimer()
                             SocketManager.shared.currentScene = "GetReadyMultiplayer"
                             
-                            let flagQuestion = generateFlagQuestion()
+                            let flagQuestion = socketManager.generateFlagQuestion()
                             let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
                             let jsonData = try? JSONEncoder().encode(startMessage)
                             let jsonString = String(data: jsonData!, encoding: .utf8)!
@@ -260,17 +260,6 @@ struct JoinMultiplayerView: View {
         socketManager.currentUser = user
     }
 
-    
-    func generateFlagQuestion() -> FlagQuestion {
-        let randomCountry = countries.randomElement()!
-        let currentCountry = randomCountry.name
-        let countryAlternatives = countries.filter { $0.name != currentCountry }
-        let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
-        let correctAnswer = currentCountry
-        let flag = randomCountry.flag
-
-        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
-    }
 
 
 

@@ -8,6 +8,9 @@ struct ContentView: View {
     @State var score = 0
     @State var rounds = 0
     @State var multiplayer: Bool = false
+    
+    //@Binding var gameCode: String
+    
     @EnvironmentObject var socketManager: SocketManager
 
     var body: some View {
@@ -328,7 +331,18 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         }
     }
     
-    private func loadData() {
+    func generateFlagQuestion() -> FlagQuestion {
+        let randomCountry = self.countries.randomElement()!
+        let currentCountry = randomCountry.name
+        let countryAlternatives = self.countries.filter { $0.name != currentCountry }
+        let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
+        let correctAnswer = currentCountry
+        let flag = randomCountry.flag
+
+        return FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
+    }
+    
+    func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()

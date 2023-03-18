@@ -94,9 +94,9 @@
         }
         
         func generateFlagQuestion() -> FlagQuestion {
-            let randomCountry = countries.randomElement()!
+            let randomCountry = socketManager.countries.randomElement()!
             let currentCountry = randomCountry.name
-            let countryAlternatives = countries.filter { $0.name != currentCountry }
+            let countryAlternatives = socketManager.countries.filter { $0.name != currentCountry }
             let answerOptions = countryAlternatives.shuffled().prefix(3).map { $0.name } + [currentCountry]
             let correctAnswer = currentCountry
             let flag = randomCountry.flag

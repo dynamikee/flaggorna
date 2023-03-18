@@ -19,7 +19,7 @@ struct StartGameView: View {
     var body: some View {
         VStack {
             Button(action: {
-                loadData()
+                //loadData()
                 score = 0
                 rounds = 10
                 multiplayer = true

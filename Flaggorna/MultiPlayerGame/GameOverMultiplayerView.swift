@@ -11,6 +11,7 @@ struct GameOverMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var score: Int
     @Binding var multiplayer: Bool
+    //@Binding var gameCode: String
     
     @EnvironmentObject var socketManager: SocketManager
 
@@ -60,17 +61,36 @@ struct GameOverMultiplayerView: View {
                 Button(action: {
                     //self.socketManager.stopUsersTimer()
                     
-                    socketManager.users = []
-                    multiplayer = false
+                    //socketManager.users = []
+                    //multiplayer = false
+                    socketManager.loadData()
                     socketManager.countries = []
-                    
-                    currentScene = "Start"
+                    //self.socketManager.socket.disconnect()
+
+                    SocketManager.shared.currentScene = "JoinMultiplayer"
+
 
                 }){
-                    Text("DONE")
+                    Text("PLAY AGAIN")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
+            Button(action: {
+                //self.socketManager.stopUsersTimer()
+                
+                socketManager.users = []
+                multiplayer = false
+                socketManager.countries = []
+                self.socketManager.socket.disconnect()
+
+                
+                currentScene = "Start"
+
+            }){
+                Text("DONE")
+            }
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
 
             
             
