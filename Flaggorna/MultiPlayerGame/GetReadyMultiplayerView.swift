@@ -19,7 +19,7 @@ struct GetReadyMultiplayerView: View {
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            Text("Round number \(rounds)")
+            Text("REMAINING ROUNDS: \(rounds)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)

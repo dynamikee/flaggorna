@@ -237,7 +237,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                 print("Missing or malformed game code")
                                 return
                             }
-                        
+                        //reset the number of countries
+                        loadData()
                         // Reset the rounds and scores of all users in the game
                         for user in users {
                             user.currentRound = 10

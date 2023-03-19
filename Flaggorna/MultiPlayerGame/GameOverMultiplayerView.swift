@@ -19,7 +19,7 @@ struct GameOverMultiplayerView: View {
     var body: some View {
         VStack(spacing: 32)  {
             Spacer()
-            Text("TOP LIST")
+            Text("GAME OVER!")
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
@@ -64,6 +64,7 @@ struct GameOverMultiplayerView: View {
                     score = 0
                     
                     resetGame()
+                    socketManager.loadData()
                     
                     SocketManager.shared.currentScene = "GetReadyMultiplayer"
                     
