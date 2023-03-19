@@ -10,6 +10,7 @@ import SwiftUI
 struct GameOverMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var score: Int
+    @Binding var rounds: Int
     @Binding var multiplayer: Bool
     //@Binding var gameCode: String
     
@@ -59,15 +60,18 @@ struct GameOverMultiplayerView: View {
             Spacer()
             
                 Button(action: {
-                    //self.socketManager.stopUsersTimer()
                     
-                    //socketManager.users = []
-                    //multiplayer = false
-                    socketManager.loadData()
-                    socketManager.countries = []
-                    //self.socketManager.socket.disconnect()
-
-                    SocketManager.shared.currentScene = "JoinMultiplayer"
+                    score = 0
+                    
+                    resetGame()
+                    
+                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                    
+                    let flagQuestion = socketManager.generateFlagQuestion()
+                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+                    let jsonData = try? JSONEncoder().encode(startMessage)
+                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    socketManager.send(jsonString)
 
 
                 }){
@@ -87,7 +91,7 @@ struct GameOverMultiplayerView: View {
                 currentScene = "Start"
 
             }){
-                Text("DONE")
+                Text("EXIT GAME")
             }
             .buttonStyle(OrdinaryButtonStyle())
             .padding()
@@ -96,8 +100,23 @@ struct GameOverMultiplayerView: View {
             
         }
         .onAppear() {
-            
+            rounds = 10
 
         }
     }
+    func resetGame() {
+        // Reset the rounds and scores of all users in the game
+        for user in socketManager.users {
+            user.currentRound = 10
+            user.score = 0
+        }
+        
+        // Send a message to all users to inform them of the reset
+        let resetMessage = ResetMessage(type: "resetGame", gameCode: socketManager.gameCode)
+        let jsonData = try? JSONEncoder().encode(resetMessage)
+        let jsonString = String(data: jsonData!, encoding: .utf8)!
+        socketManager.send(jsonString)
+    }
 }
+
+

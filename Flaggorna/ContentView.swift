@@ -31,7 +31,7 @@ struct ContentView: View {
                 case "WrongMultiplayer":
                     WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds, countries: $countries)
                 case "GameOverMultiplayer":
-                    GameOverMultiplayerView(currentScene: $currentScene, score: $score, multiplayer: $multiplayer)
+                    GameOverMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, multiplayer: $multiplayer)
                 default:
                     JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 }
@@ -71,6 +71,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     @Published var currentQuestion: FlagQuestion?
     @Published var currentUser: User?
     var gameCode: String
+    var rounds: Int
+    var score: Int
 
     //private var currentSceneBinding: Binding<String>?
     
@@ -81,6 +83,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         _currentScene = Published(initialValue: "Start")
         countries = []
         gameCode = ""
+        rounds = 10
+        score = 0
         super.init()
         socket.delegate = self
     }
@@ -146,6 +150,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
                         
                         DispatchQueue.main.async { [weak self] in
+                            
                             self?.stopUsersTimer()
                             self?.currentScene = "GetReadyMultiplayer"
                             self?.objectWillChange.send()
@@ -165,6 +170,10 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             self?.send(jsonString)
                         }
 
+                    case "restoreGame":
+                        rounds = 10
+                        score = 0
+                        
                     case "flagQuestion":
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
@@ -221,6 +230,24 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
 
                         }
+                    case "resetGame":
+
+                        
+                        guard let messageGameCode = json["gameCode"] as? String, messageGameCode == gameCode else {
+                                print("Missing or malformed game code")
+                                return
+                            }
+                        
+                        // Reset the rounds and scores of all users in the game
+                        for user in users {
+                            user.currentRound = 10
+                            user.score = 0
+                        }
+                        DispatchQueue.main.async { [weak self] in
+                            self?.objectWillChange.send()
+                                
+                        }
+                            
 
                     default:
                         print("Received unknown message type: \(type)")
@@ -407,8 +434,11 @@ struct StartMessage: Codable {
     let question: FlagQuestion
 }
 
-
-
+struct ResetMessage: Codable {
+    let type: String
+    let gameCode: String
+    
+}
 
 struct Country: Codable, Hashable {
     var name: String
