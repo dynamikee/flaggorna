@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "el_salvador.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

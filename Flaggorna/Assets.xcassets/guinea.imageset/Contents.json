@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "guinea.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

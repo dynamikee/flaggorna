@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "great_britain.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
