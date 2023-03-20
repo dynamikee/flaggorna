@@ -1,272 +1,1240 @@
 [
   {
     "id": 1,
-    "name": "Albania",
-    "flag": "albania",
+    "name": "Åland",
+    "flag": "aland",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 2,
-    "name": "Andorra",
-    "flag": "andorra",
+    "name": "Albania",
+    "flag": "albania",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 3,
-    "name": "Armenia",
-    "flag": "armenia",
+    "name": "Andorra",
+    "flag": "andorra",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 4,
     "name": "Austria",
     "flag": "austria",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 5,
-    "name": "Azerbaijan",
-    "flag": "azerbaijan",
+    "name": "Belarus",
+    "flag": "belarus",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 6,
-    "name": "Belarus",
-    "flag": "belarus",
+    "name": "Belgium",
+    "flag": "belgium",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 7,
-    "name": "Belgium",
-    "flag": "belgium",
+    "name": "Bosnia Herzegovina",
+    "flag": "bosnia_herzegovina",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 8,
-    "name": "Bosnia and Herzegovina",
-    "flag": "bosnia_herzegovina",
+    "name": "Bulgaria",
+    "flag": "bulgaria",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 9,
-    "name": "Bulgaria",
-    "flag": "bulgaria",
+    "name": "Catalonia",
+    "flag": "catalonia",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 10,
     "name": "Croatia",
     "flag": "croatia",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 11,
     "name": "Cyprus",
     "flag": "cyprus",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 12,
     "name": "Czech Republic",
     "flag": "czech_republic",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 13,
     "name": "Denmark",
     "flag": "denmark",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 14,
-    "name": "Estonia",
-    "flag": "estonia",
+    "name": "England",
+    "flag": "england",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 15,
-    "name": "Finland",
-    "flag": "finland",
+    "name": "Estonia",
+    "flag": "estonia",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 16,
-    "name": "France",
-    "flag": "france",
+    "name": "European Union",
+    "flag": "european_union",
     "continent": "Europe"
   },
   {
     "id": 17,
-    "name": "Georgia",
-    "flag": "georgia",
+    "name": "Faroe Islands",
+    "flag": "faroe_islands",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 18,
-    "name": "Germany",
-    "flag": "germany",
+    "name": "Finland",
+    "flag": "finland",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 19,
-    "name": "Greece",
-    "flag": "greece",
+    "name": "France",
+    "flag": "france",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 20,
-    "name": "Hungary",
-    "flag": "hungary",
+    "name": "Germany",
+    "flag": "germany",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 21,
-    "name": "Iceland",
-    "flag": "iceland",
+    "name": "Gibraltar",
+    "flag": "gibraltar",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 22,
-    "name": "Ireland",
-    "flag": "ireland",
+    "name": "Great Britain",
+    "flag": "great_britain",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 23,
-    "name": "Italy",
-    "flag": "italy",
+    "name": "Greece",
+    "flag": "greece",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 24,
-    "name": "Latvia",
-    "flag": "latvia",
+    "name": "Guernsey",
+    "flag": "guernsey",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 25,
-    "name": "Lithuania",
-    "flag": "lithuania",
+    "name": "Hungary",
+    "flag": "hungary",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 26,
-    "name": "Luxembourg",
-    "flag": "luxembourg",
+    "name": "Iceland",
+    "flag": "iceland",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 27,
-    "name": "Malta",
-    "flag": "malta",
+    "name": "Ireland",
+    "flag": "ireland",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 28,
-    "name": "Moldova",
-    "flag": "moldova",
+    "name": "Isle of Man",
+    "flag": "isle_of_man",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 29,
-    "name": "Monaco",
-    "flag": "monaco",
+    "name": "Italy",
+    "flag": "italy",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 30,
-    "name": "Montenegro",
-    "flag": "montenegro",
+    "name": "Jersey",
+    "flag": "jersey",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 31,
-    "name": "Netherlands",
-    "flag": "netherlands",
+    "name": "Kosovo",
+    "flag": "kosovo",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 32,
-    "name": "North Macedonia",
-    "flag": "north_macedonia",
+    "name": "Latvia",
+    "flag": "latvia",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 33,
-    "name": "Norway",
-    "flag": "norway",
+    "name": "Liechtenstein",
+    "flag": "liechtenstein",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 34,
-    "name": "Poland",
-    "flag": "poland",
+    "name": "Lithuania",
+    "flag": "lithuania",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 35,
-    "name": "Portugal",
-    "flag": "portugal",
+    "name": "Luxembourg",
+    "flag": "luxembourg",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 36,
-    "name": "Romania",
-    "flag": "romania",
+    "name": "Macedonia",
+    "flag": "macedonia",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 37,
-    "name": "Russia",
-    "flag": "russia",
+    "name": "Malta",
+    "flag": "malta",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 38,
-    "name": "San Marino",
-    "flag": "san_marino",
+    "name": "Moldova",
+    "flag": "moldova",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 39,
-    "name": "Serbia",
-    "flag": "serbia",
+    "name": "Monaco",
+    "flag": "monaco",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 40,
-    "name": "Slovakia",
-    "flag": "slovakia",
+    "name": "Montenegro",
+    "flag": "montenegro",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 41,
-    "name": "Slovenia",
-    "flag": "slovenia",
+    "name": "Netherlands",
+    "flag": "netherlands",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 42,
-    "name": "Spain",
-    "flag": "spain",
+    "name": "Northern Ireland",
+    "flag": "northern_ireland",
+    "level": "Hard",
     "continent": "Europe"
   },
   {
     "id": 43,
-    "name": "Sweden",
-    "flag": "sweden",
+    "name": "Norway",
+    "flag": "norway",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
     "id": 44,
-    "name": "Switzerland",
-    "flag": "switzerland",
+    "name": "Poland",
+    "flag": "poland",
+    "level": "Easy",
     "continent": "Europe"
   },
   {
     "id": 45,
+    "name": "Portugal",
+    "flag": "portugal",
+    "level": "Easy",
+    "continent": "Europe"
+  },
+  {
+    "id": 46,
+    "name": "Romania",
+    "flag": "romania",
+    "level": "Intermediate",
+    "continent": "Europe"
+  },
+  {
+    "id": 47,
+    "name": "Russia",
+    "flag": "russia",
+    "level": "Easy",
+    "continent": "Europe"
+  },
+  {
+    "id": 48,
+    "name": "San Marino",
+    "flag": "san_marino",
+    "level": "Hard",
+    "continent": "Europe"
+  },
+  {
+    "id": 49,
+    "name": "Scotland",
+    "flag": "scotland",
+    "level": "Hard",
+    "continent": "Europe"
+  },
+  {
+    "id": 50,
+    "name": "Serbia",
+    "flag": "serbia",
+    "level": "Intermediate",
+    "continent": "Europe"
+  },
+  {
+    "id": 51,
+    "name": "Slovakia",
+    "flag": "slovakia",
+    "level": "Intermediate",
+    "continent": "Europe"
+  },
+  {
+    "id": 52,
+    "name": "Slovenia",
+    "flag": "slovenia",
+    "level": "Intermediate",
+    "continent": "Europe"
+  },
+  {
+    "id": 53,
+    "name": "Spain",
+    "flag": "spain",
+    "level": "Easy",
+    "continent": "Europe"
+  },
+  {
+    "id": 54,
+    "name": "Sweden",
+    "flag": "sweden",
+    "level": "Intermediate",
+    "continent": "Europe"
+  },
+  {
+    "id": 55,
+    "name": "Switzerland",
+    "flag": "switzerland",
+    "level": "Easy",
+    "continent": "Europe"
+  },
+  {
+    "id": 56,
+    "name": "Turkey",
+    "flag": "turkey",
+    "level": "Easy",
+    "continent": "Europe"
+  },
+  {
+    "id": 57,
     "name": "Ukraine",
     "flag": "ukraine",
+    "level": "Easy",
     "continent": "Europe"
+  },
+  {
+    "id": 58,
+    "name": "Canada",
+    "flag": "canada",
+    "level": "Easy",
+    "continent": "North_America"
+  },
+  {
+    "id": 59,
+    "name": "Costa Rica",
+    "flag": "costa_rica",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 60,
+    "name": "Cuba",
+    "flag": "cuba",
+    "level": "Easy",
+    "continent": "North_America"
+  },
+  {
+    "id": 61,
+    "name": "El Salvador",
+    "flag": "el_salvador",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 62,
+    "name": "Greenland",
+    "flag": "greenland",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 63,
+    "name": "Guatemala",
+    "flag": "guatemala",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 64,
+    "name": "Haiti",
+    "flag": "haiti",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 65,
+    "name": "Honduras",
+    "flag": "honduras",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 66,
+    "name": "Jamaica",
+    "flag": "jamaica",
+    "level": "Easy",
+    "continent": "North_America"
+  },
+  {
+    "id": 67,
+    "name": "Mexico",
+    "flag": "mexico",
+    "level": "Easy",
+    "continent": "North_America"
+  },
+  {
+    "id": 68,
+    "name": "Nicaragua",
+    "flag": "nicaragua",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 69,
+    "name": "Panama",
+    "flag": "panama",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 70,
+    "name": "Puerto Rico",
+    "flag": "puerto_rico",
+    "level": "Intermediate",
+    "continent": "North_America"
+  },
+  {
+    "id": 71,
+    "name": "USA",
+    "flag": "usa",
+    "level": "Easy",
+    "continent": "North_America"
+  },
+  {
+    "id": 72,
+    "name": "Argentina",
+    "flag": "argentina",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 73,
+    "name": "Bolivia",
+    "flag": "bolivia",
+    "level": "Intermediate",
+    "continent": "South_America"
+  },
+  {
+    "id": 74,
+    "name": "Brazil",
+    "flag": "brazil",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 75,
+    "name": "Chile",
+    "flag": "chile",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 76,
+    "name": "Colombia",
+    "flag": "colombia",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 77,
+    "name": "Ecuador",
+    "flag": "ecuador",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 78,
+    "name": "French Guiana",
+    "flag": "french_guiana",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 79,
+    "name": "Guyana",
+    "flag": "guyana",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 80,
+    "name": "Paraguay",
+    "flag": "paraguay",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 81,
+    "name": "Peru",
+    "flag": "peru",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 82,
+    "name": "Suriname",
+    "flag": "suriname",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 83,
+    "name": "Trinidad Tobago",
+    "flag": "trinidad_tobago",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 84,
+    "name": "Uruguay",
+    "flag": "uruguay",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 85,
+    "name": "Venezuela",
+    "flag": "venezuela",
+    "level": "Easy",
+    "continent": "South_America"
+  },
+  {
+    "id": 86,
+    "name": "Afghanistan",
+    "flag": "afghanistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 87,
+    "name": "Armenia",
+    "flag": "armenia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 88,
+    "name": "Azerbaijan",
+    "flag": "azerbaijan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 89,
+    "name": "Bahrain",
+    "flag": "bahrain",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 90,
+    "name": "Bangladesh",
+    "flag": "bangladesh",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 91,
+    "name": "Bhutan",
+    "flag": "bhutan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 92,
+    "name": "Brunei",
+    "flag": "brunei",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 93,
+    "name": "Cambodia",
+    "flag": "cambodia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 94,
+    "name": "China",
+    "flag": "china",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 95,
+    "name": "Dubai",
+    "flag": "dubai",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 96,
+    "name": "East Timor",
+    "flag": "east_timor",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 97,
+    "name": "Georgia",
+    "flag": "georgia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 98,
+    "name": "India",
+    "flag": "india",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 99,
+    "name": "Iran",
+    "flag": "iran",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 100,
+    "name": "Iraq",
+    "flag": "iraq",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 101,
+    "name": "Israel",
+    "flag": "israel",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 102,
+    "name": "Japan",
+    "flag": "japan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 103,
+    "name": "Jordan",
+    "flag": "jordan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 104,
+    "name": "Kazakhstan",
+    "flag": "kazakhstan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 105,
+    "name": "Kurdistan",
+    "flag": "kurdistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 106,
+    "name": "Kuwait",
+    "flag": "kuwait",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 107,
+    "name": "Laos",
+    "flag": "laos",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 108,
+    "name": "Macao",
+    "flag": "macao",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 109,
+    "name": "Malaysia",
+    "flag": "malaysia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 110,
+    "name": "Maldives",
+    "flag": "maldives",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 111,
+    "name": "Mongolia",
+    "flag": "mongolia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 112,
+    "name": "Myanmar",
+    "flag": "myanmar",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 113,
+    "name": "Nepal",
+    "flag": "nepal",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 114,
+    "name": "North Korea",
+    "flag": "north_korea",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 115,
+    "name": "Oman",
+    "flag": "oman",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 116,
+    "name": "Pakistan",
+    "flag": "pakistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 117,
+    "name": "Philippines",
+    "flag": "philippines",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 118,
+    "name": "Qatar",
+    "flag": "qatar",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 119,
+    "name": "Saudi Arabia",
+    "flag": "saudi_arabia",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 120,
+    "name": "Singapore",
+    "flag": "singapore",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 121,
+    "name": "South Korea",
+    "flag": "south_korea",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 122,
+    "name": "Sri Lanka",
+    "flag": "sri_lanka",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 123,
+    "name": "Syria",
+    "flag": "syria",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 124,
+    "name": "Taiwan",
+    "flag": "taiwan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 125,
+    "name": "Tajikistan",
+    "flag": "tajikistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 126,
+    "name": "Thailand",
+    "flag": "thailand",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 127,
+    "name": "Turkmenistan",
+    "flag": "turkmenistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 128,
+    "name": "Uzbekistan",
+    "flag": "uzbekistan",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 129,
+    "name": "Vietnam",
+    "flag": "vietnam",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 130,
+    "name": "Yemen",
+    "flag": "yemen",
+    "level": "Easy",
+    "continent": "Asia"
+  },
+  {
+    "id": 131,
+    "name": "Algeria",
+    "flag": "algeria",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 132,
+    "name": "Angola",
+    "flag": "angola",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 133,
+    "name": "Botswana",
+    "flag": "botswana",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 134,
+    "name": "Burkina Faso",
+    "flag": "burkina_faso",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 135,
+    "name": "Burundi",
+    "flag": "burundi",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 136,
+    "name": "Cameroon",
+    "flag": "cameroon",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 137,
+    "name": "Central Africa",
+    "flag": "central_africa",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 138,
+    "name": "Chad",
+    "flag": "chad",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 139,
+    "name": "Congo",
+    "flag": "congo",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 140,
+    "name": "Djibouti",
+    "flag": "djibouti",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 141,
+    "name": "Egypt",
+    "flag": "egypt",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 142,
+    "name": "Eritrea",
+    "flag": "eritrea",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 143,
+    "name": "Ethiopia",
+    "flag": "ethiopia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 144,
+    "name": "Gabon",
+    "flag": "gabon",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 145,
+    "name": "Gambia",
+    "flag": "gambia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 146,
+    "name": "Ghana",
+    "flag": "ghana",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 147,
+    "name": "Guinea",
+    "flag": "guinea",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 148,
+    "name": "Kenya",
+    "flag": "kenya",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 149,
+    "name": "Liberia",
+    "flag": "liberia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 150,
+    "name": "Libya",
+    "flag": "libya",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 151,
+    "name": "Madagascar",
+    "flag": "madagascar",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 152,
+    "name": "Malawi",
+    "flag": "malawi",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 153,
+    "name": "Mali",
+    "flag": "mali",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 154,
+    "name": "Morocco",
+    "flag": "morocco",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 155,
+    "name": "Mozambique",
+    "flag": "mozambique",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 156,
+    "name": "Namibia",
+    "flag": "namibia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 157,
+    "name": "Niger",
+    "flag": "niger",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 158,
+    "name": "Nigeria",
+    "flag": "nigeria",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 159,
+    "name": "Rwanda",
+    "flag": "rwanda",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 160,
+    "name": "Senegal",
+    "flag": "senegal",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 161,
+    "name": "Sierra Leone",
+    "flag": "sierra_leone",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 162,
+    "name": "Somalia",
+    "flag": "somalia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 163,
+    "name": "South Africa",
+    "flag": "south_africa",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 164,
+    "name": "Sudan",
+    "flag": "sudan",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 165,
+    "name": "Togo",
+    "flag": "togo",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 166,
+    "name": "Tunisia",
+    "flag": "tunisia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 167,
+    "name": "Uganda",
+    "flag": "uganda",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 168,
+    "name": "Western Sahara",
+    "flag": "western_sahara",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 169,
+    "name": "Zambia",
+    "flag": "zambia",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 170,
+    "name": "Zimbabwe",
+    "flag": "zimbabwe",
+    "level": "Easy",
+    "continent": "Africa"
+  },
+  {
+    "id": 171,
+    "name": "Australia",
+    "flag": "australia",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 172,
+    "name": "Fiji",
+    "flag": "fiji",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 173,
+    "name": "Indonesia",
+    "flag": "indonesia",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 174,
+    "name": "New Zealand",
+    "flag": "new_zealand",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 175,
+    "name": "Papua New Guinea",
+    "flag": "papua_new_guinea",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 176,
+    "name": "Samoa",
+    "flag": "samoa",
+    "level": "Easy",
+    "continent": "Oceania"
+  },
+  {
+    "id": 177,
+    "name": "Antarctica",
+    "flag": "antarctica",
+    "level": "Easy",
+    "continent": "Antartica"
   }
 ]
