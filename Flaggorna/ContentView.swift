@@ -97,7 +97,6 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
 
         switch event {
         case .connected(_):
-            loadData()
             break
         case .disconnected(_):
             break
@@ -133,6 +132,9 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
                             // Invalid game code, do nothing
+                            return
+                        }
+                        if (self.currentUser == nil) {
                             return
                         }
                         

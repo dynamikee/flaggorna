@@ -19,13 +19,12 @@ struct StartGameView: View {
     var body: some View {
         VStack {
             Button(action: {
-                //loadData()
                 score = 0
                 rounds = 10
                 multiplayer = true
                 SocketManager.shared.currentScene = "JoinMultiplayer"
-                //currentScene = "GetReadyMultiplayer"
-                
+                SocketManager.shared.socket.connect()
+
             }){
                 Text("PARTY GAME")
             }
@@ -62,6 +61,9 @@ struct StartGameView: View {
                 }
         )
         .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            SocketManager.shared.loadData()
+        }
     }
     
     private func loadData() {

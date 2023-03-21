@@ -67,7 +67,7 @@ struct JoinMultiplayerView: View {
                     currentScene = "Start"
                     
                 }) {
-                    Text(Image(systemName: "arrow.backward"))
+                    Text(Image(systemName: "xmark"))
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.white)
@@ -107,7 +107,6 @@ struct JoinMultiplayerView: View {
                             .fontWeight(.black)
                             .foregroundColor(.white)
                     }
-                    .disabled(name.isEmpty)
 
                 }
                 Spacer()

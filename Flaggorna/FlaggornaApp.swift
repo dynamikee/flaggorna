@@ -16,9 +16,9 @@ struct FlaggornaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            
             ContentView()
                 .environmentObject(socketManager)
         }
     }
 }
+
