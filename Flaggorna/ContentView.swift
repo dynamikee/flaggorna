@@ -10,8 +10,9 @@ struct ContentView: View {
     @State var multiplayer: Bool = false
     @State var currentCountry: String = ""
     
-    //@Binding var gameCode: String
-    
+    @State var numberOfRounds = 10 //Number of rounds in a game - could be set by a user later
+    @State var roundsArray: [RoundStatus] = []
+
     @EnvironmentObject var socketManager: SocketManager
 
     var body: some View {
@@ -41,7 +42,7 @@ struct ContentView: View {
             } else {
                 switch currentScene {
                 case "Start":
-                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 case "GetReady":
                     GetReadyView(currentScene: $currentScene)
                 case "Main":
@@ -53,7 +54,7 @@ struct ContentView: View {
                 case "GameOver":
                     GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
                 default:
-                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 }
             }
         }
@@ -416,6 +417,17 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         .gray: ".gray"
     ]
     
+}
+
+
+struct Round {
+    var status: RoundStatus = .notAnswered
+}
+
+enum RoundStatus {
+    case notAnswered
+    case correct
+    case incorrect
 }
 
 struct FlagQuestion: Codable {

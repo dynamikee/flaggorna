@@ -13,6 +13,8 @@ struct StartGameView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var multiplayer: Bool
+    @Binding var numberOfRounds: Int
+    @Binding var roundsArray: [RoundStatus]
 
     @State private var offset = CGSize.zero
     
@@ -35,6 +37,7 @@ struct StartGameView: View {
                 loadData()
                 score = 0
                 rounds = 10
+                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
                 currentScene = "GetReady"
             }){
                 Text("SINGLE GAME")

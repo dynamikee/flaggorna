@@ -23,20 +23,16 @@ struct WrongAnswerView: View {
                 .fontWeight(.black)
                 .foregroundColor(.white)
             Text("It was \(currentCountry)")
-                .font(.title)
-                .fontWeight(.black)
+                .font(.title3)
+                .fontWeight(.bold)
                 .foregroundColor(.white)
-            Text("Your score: \(score)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-
             Spacer()
+
             
         }
         .onAppear {
             withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     if rounds > 0 {
                         self.currentScene = "Main"
                     } else {
