@@ -48,11 +48,11 @@ struct ContentView: View {
                 case "Main":
                     MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry, roundsArray: $roundsArray)
                 case "Right":
-                    RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                    RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, roundsArray: $roundsArray)
                 case "Wrong":
                     WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, currentCountry: $currentCountry, roundsArray: $roundsArray)
                 case "GameOver":
-                    GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
+                    GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 default:
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 }

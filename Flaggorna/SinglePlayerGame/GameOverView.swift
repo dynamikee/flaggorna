@@ -13,12 +13,14 @@ struct GameOverView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var countries: [Country]
+    @Binding var numberOfRounds: Int
+    @Binding var roundsArray: [RoundStatus]
 
     
     var body: some View {
         VStack {
             Spacer()
-            Text("Your score: \(score) of 10")
+            Text("Your score: \(score) of \(numberOfRounds)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
@@ -26,6 +28,7 @@ struct GameOverView: View {
                 loadData()
                 score = 0
                 rounds = 10
+                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
                 currentScene = "GetReady"
             }){
                 Text("PLAY AGAIN")

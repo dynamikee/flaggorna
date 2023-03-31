@@ -20,24 +20,24 @@ struct WrongAnswerView: View {
         VStack(spacing: 32) {
             HStack {
                 ForEach(roundsArray.reversed(), id: \.self) { roundStatus in
-                    
                     switch roundStatus {
                     case .notAnswered:
                         Image(systemName: "circle.dotted")
                             .foregroundColor(.gray)
                     case .correct:
                         Image(systemName: "circle.fill")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.green)
                     case .incorrect:
                         Image(systemName: "circle.slash")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.red)
                     }
                     
                 }
             }
+            
             Spacer()
             Text("Oh no!")
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
             Text("It was \(currentCountry)")

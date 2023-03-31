@@ -11,17 +11,31 @@ struct RightAnswerView: View {
     @Binding var currentScene: String
     @Binding var score: Int
     @Binding var rounds: Int
+    @Binding var roundsArray: [RoundStatus]
    
 
     var body: some View {
         VStack {
+            HStack {
+                ForEach(roundsArray.reversed(), id: \.self) { roundStatus in
+                    switch roundStatus {
+                    case .notAnswered:
+                        Image(systemName: "circle.dotted")
+                            .foregroundColor(.gray)
+                    case .correct:
+                        Image(systemName: "circle.fill")
+                            .foregroundColor(.green)
+                    case .incorrect:
+                        Image(systemName: "circle.slash")
+                            .foregroundColor(.red)
+                    }
+                    
+                }
+            }
+            
             Spacer()
             Text("Right answer!")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("Your score: \(score)")
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
             ZStack {

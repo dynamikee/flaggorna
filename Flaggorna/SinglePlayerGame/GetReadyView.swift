@@ -16,13 +16,10 @@ struct GetReadyView: View {
     var body: some View {
         VStack {
             Text("GET READY!")
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            //Text("\(count)")
-            //    .font(.largeTitle)
-            //    .fontWeight(.black)
-            //    .foregroundColor(.white)
+
         }
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
