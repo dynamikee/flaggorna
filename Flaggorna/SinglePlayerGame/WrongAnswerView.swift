@@ -13,10 +13,28 @@ struct WrongAnswerView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var currentCountry: String
+    @Binding var roundsArray: [RoundStatus]
     
     
     var body: some View {
         VStack(spacing: 32) {
+            HStack {
+                ForEach(roundsArray.reversed(), id: \.self) { roundStatus in
+                    
+                    switch roundStatus {
+                    case .notAnswered:
+                        Image(systemName: "circle.dotted")
+                            .foregroundColor(.gray)
+                    case .correct:
+                        Image(systemName: "circle.fill")
+                            .foregroundColor(.gray)
+                    case .incorrect:
+                        Image(systemName: "circle.slash")
+                            .foregroundColor(.gray)
+                    }
+                    
+                }
+            }
             Spacer()
             Text("Oh no!")
                 .font(.title)
@@ -27,7 +45,7 @@ struct WrongAnswerView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             Spacer()
-
+            
             
         }
         .onAppear {

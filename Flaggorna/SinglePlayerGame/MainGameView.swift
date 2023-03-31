@@ -13,6 +13,7 @@ struct MainGameView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var currentCountry: String
+    @Binding var roundsArray: [RoundStatus]
     
     @State private var timeRemaining = 4 // 4 seconds timer
     @State private var answered = false
@@ -34,26 +35,10 @@ struct MainGameView: View {
             .progressViewStyle(MyProgressViewStyle())
             .animation(.linear(duration: 1), value: timeRemaining) // Add an animation modifier with a linear timing curve
 
-            HStack{
-                Text("Score: \(score)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                Spacer()
-                Text("Round: \(rounds)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-            }
-            .padding()
-
-
             Spacer()
 
             if let randomCountry = randomCountry {
-                
-            
-                
+  
             Image(randomCountry.flag)
                     .resizable()
                     .border(.gray, width: 1)
@@ -71,6 +56,7 @@ struct MainGameView: View {
                                     self.rounds -= 1
                                 }
                                 self.countries.removeAll { $0.name == currentCountry }
+                                self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
 
                                 
@@ -79,6 +65,7 @@ struct MainGameView: View {
                                     self.rounds -= 1
                                 }
                                 self.countries.removeAll { $0.name == currentCountry }
+                                self.roundsArray[self.rounds] = .incorrect
                                 self.currentScene = "Wrong"
                                 
                             }
@@ -131,7 +118,7 @@ struct MainGameView: View {
                         if self.rounds > 0 {
                             self.rounds -= 1
                         }
-                        //self.countries.removeAll { $0.name == self.currentCountry }
+                        self.roundsArray[self.rounds] = .incorrect
                         self.currentScene = "Wrong"
 
                     }

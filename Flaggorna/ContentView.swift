@@ -46,11 +46,11 @@ struct ContentView: View {
                 case "GetReady":
                     GetReadyView(currentScene: $currentScene)
                 case "Main":
-                    MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry)
+                    MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry, roundsArray: $roundsArray)
                 case "Right":
                     RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
                 case "Wrong":
-                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, currentCountry: $currentCountry)
+                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, currentCountry: $currentCountry, roundsArray: $roundsArray)
                 case "GameOver":
                     GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
                 default:
