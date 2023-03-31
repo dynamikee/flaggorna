@@ -11,7 +11,7 @@ struct GetReadyView: View {
     
     @Binding var currentScene: String
     
-    @State private var count = 3
+    @State private var count = 1
     
     var body: some View {
         VStack {
@@ -19,10 +19,10 @@ struct GetReadyView: View {
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            Text("\(count)")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(.white)
+            //Text("\(count)")
+            //    .font(.largeTitle)
+            //    .fontWeight(.black)
+            //    .foregroundColor(.white)
         }
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
