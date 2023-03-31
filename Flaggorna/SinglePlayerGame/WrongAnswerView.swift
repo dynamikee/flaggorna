@@ -12,6 +12,7 @@ struct WrongAnswerView: View {
     @Binding var currentScene: String
     @Binding var score: Int
     @Binding var rounds: Int
+    @Binding var currentCountry: String
     
     
     var body: some View {
@@ -21,7 +22,7 @@ struct WrongAnswerView: View {
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            Text("It was ...")
+            Text("It was \(currentCountry)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
@@ -35,7 +36,7 @@ struct WrongAnswerView: View {
         }
         .onAppear {
             withAnimation {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     if rounds > 0 {
                         self.currentScene = "Main"
                     } else {

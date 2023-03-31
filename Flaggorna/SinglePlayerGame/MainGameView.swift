@@ -12,13 +12,14 @@ struct MainGameView: View {
     @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
+    @Binding var currentCountry: String
     
     @State private var timeRemaining = 4 // 4 seconds timer
     @State private var answered = false
     
     @State private var randomCountry: Country?
     @State private var randomCountryNames: [String] = []
-    @State private var currentCountry = ""
+    //@State private var currentCountry = ""
     
     var timer: Timer?
 

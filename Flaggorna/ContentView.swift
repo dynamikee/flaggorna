@@ -8,6 +8,7 @@ struct ContentView: View {
     @State var score = 0
     @State var rounds = 0
     @State var multiplayer: Bool = false
+    @State var currentCountry: String = ""
     
     //@Binding var gameCode: String
     
@@ -44,11 +45,11 @@ struct ContentView: View {
                 case "GetReady":
                     GetReadyView(currentScene: $currentScene)
                 case "Main":
-                    MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
+                    MainGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry)
                 case "Right":
                     RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
                 case "Wrong":
-                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
+                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, currentCountry: $currentCountry)
                 case "GameOver":
                     GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
                 default:
