@@ -15,9 +15,13 @@ struct WrongAnswerView: View {
     
     
     var body: some View {
-        VStack {
+        VStack(spacing: 32) {
             Spacer()
-            Text("Wrong answer")
+            Text("Oh no!")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            Text("It was ...")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)

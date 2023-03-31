@@ -50,7 +50,7 @@ struct ContentView: View {
                 case "Wrong":
                     WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds)
                 case "GameOver":
-                    GameOverView(currentScene: $currentScene, score: $score)
+                    GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries)
                 default:
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer)
                 }
@@ -509,8 +509,6 @@ struct OrdinaryButtonStyle: ButtonStyle {
                 
         }
 }
-
-
 
 struct FireworkParticlesGeometryEffect : GeometryEffect {
     var time : Double
