@@ -23,7 +23,6 @@ struct MainGameView: View {
     @State private var startTime: Date?
     
     var timer: Timer?
-    //var startTime: Date?
 
     var body: some View {
 
@@ -53,13 +52,17 @@ struct MainGameView: View {
                         Button(action: {
                             let endTime = Date() // Get the end time when the user taps the button
                             let timeTaken = endTime.timeIntervalSince(self.startTime ?? Date())
-                            print(timeTaken)
+                            
                             if strcmp(currentCountry, countryName) == 0 {
-                                self.score += 1
+                                //self.score += 1
                                 if self.rounds > 0 {
                                     self.rounds -= 1
                                 }
 
+                                self.score += calculateScore(timeTaken: timeTaken)
+                                print(timeTaken)
+                                print(self.score)
+                                
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
@@ -74,6 +77,7 @@ struct MainGameView: View {
                                 self.currentScene = "Wrong"
                                 
                             }
+                            
                             self.answered = true // set answered to true to invalidate the timer
                             if let timer = timer {
                                 timer.invalidate()
@@ -132,5 +136,23 @@ struct MainGameView: View {
                 
             }
         }
+    }
+}
+
+func calculateScore(timeTaken: TimeInterval) -> Int {
+    let maxScore = 10
+    let minScore = 1
+    let maxTime = 4.0
+    let minTime = 0.1
+    
+    if timeTaken >= maxTime {
+        return minScore
+    } else if timeTaken <= minTime {
+        return maxScore
+    } else {
+        let slope = Double(maxScore - minScore) / (maxTime - minTime)
+        let intercept = Double(maxScore) - slope * maxTime
+        let score = Int(slope * timeTaken + intercept)
+        return score
     }
 }

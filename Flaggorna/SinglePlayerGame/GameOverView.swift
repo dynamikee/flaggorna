@@ -20,7 +20,7 @@ struct GameOverView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Your score: \(score) of \(numberOfRounds)")
+            Text("Your score: \(score)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
