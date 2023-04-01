@@ -33,7 +33,13 @@ struct WrongAnswerView: View {
                     }
                     
                 }
+                Spacer()
+                Text("Score: \(score)")
             }
+            .padding()
+            .foregroundColor(.white)
+            .fontWeight(.bold)
+
             
             Spacer()
             Text("Oh no!")

@@ -31,7 +31,12 @@ struct RightAnswerView: View {
                     }
                     
                 }
+                Spacer()
+                Text("Score: \(score)")
             }
+            .padding()
+            .foregroundColor(.white)
+            .fontWeight(.bold)
             
             Spacer()
             Text("Right answer!")
