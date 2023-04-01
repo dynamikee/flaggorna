@@ -41,9 +41,11 @@ struct GameOverView: View {
             Button(action: {
                 currentScene = "Start"
             }){
-                Text("EXIT")
+                Text(Image(systemName: "xmark"))
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
             }
-            .buttonStyle(OrdinaryButtonStyle())
             .padding()
         }
         

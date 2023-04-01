@@ -20,9 +20,10 @@ struct MainGameView: View {
     
     @State private var randomCountry: Country?
     @State private var randomCountryNames: [String] = []
-    //@State private var currentCountry = ""
+    @State private var startTime: Date?
     
     var timer: Timer?
+    //var startTime: Date?
 
     var body: some View {
 
@@ -50,11 +51,15 @@ struct MainGameView: View {
                 VStack(spacing: 24){
                     ForEach(randomCountryNames, id: \.self) { countryName in
                         Button(action: {
+                            let endTime = Date() // Get the end time when the user taps the button
+                            let timeTaken = endTime.timeIntervalSince(self.startTime ?? Date())
+                            print(timeTaken)
                             if strcmp(currentCountry, countryName) == 0 {
                                 self.score += 1
                                 if self.rounds > 0 {
                                     self.rounds -= 1
                                 }
+
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
@@ -90,7 +95,7 @@ struct MainGameView: View {
             
         }
         .onAppear {
-            
+
             if let randomCountry = countries.randomElement() {
                 self.randomCountry = randomCountry
                 self.currentCountry = randomCountry.name
@@ -101,6 +106,7 @@ struct MainGameView: View {
                     .map { $0.name }
                 self.randomCountryNames = countryAlternatives + [randomCountry.name]
                 self.randomCountryNames.shuffle()
+                self.startTime = Date()
             } else {
                 // Handle the case where the countries array is empty
                 print("Error: The countries array is empty!")

@@ -25,7 +25,6 @@ struct StartGameView: View {
                 rounds = 10
                 multiplayer = true
                 SocketManager.shared.currentScene = "JoinMultiplayer"
-                //SocketManager.shared.socket.connect()
 
             }){
                 Text("PARTY GAME")

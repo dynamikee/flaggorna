@@ -422,6 +422,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
 
 struct Round {
     var status: RoundStatus = .notAnswered
+    var timeTaken: TimeInterval = 0
 }
 
 enum RoundStatus {
@@ -429,7 +430,7 @@ enum RoundStatus {
     case correct
     case incorrect
 }
-
+    
 struct FlagQuestion: Codable {
     let flag: String
     let answerOptions: [String]
