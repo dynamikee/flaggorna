@@ -21,16 +21,47 @@ struct GameOverView: View {
     
     
     var body: some View {
-        VStack {
+        
+
+        
+        VStack (spacing: 16) {
             Spacer()
-            Text("Your high score: \(highestScore)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("Your score: \(score)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
+            if score > highestScore {
+                Text("NEW HIGH SCORE!")
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                Text("\(score)")
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                ZStack {
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 12, height: 12)
+                        .modifier(ParticlesModifier())
+                        .offset(x: -100, y : -50)
+                            
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 12, height: 12)
+                        .modifier(ParticlesModifier())
+                        .offset(x: 60, y : 70)
+                }
+                
+            } else {
+                Text("Current high score: \(highestScore)")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                Text("Your score: \(score)")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                
+            }
+            
+
             Button(action: {
                 loadData()
                 score = 0
@@ -59,6 +90,11 @@ struct GameOverView: View {
             if score > highestScore {
                 UserDefaults.standard.set(score, forKey: "highScore")
                 UserDefaults.standard.synchronize()
+            }
+            withAnimation {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    //what?
+                }
             }
         }
         
