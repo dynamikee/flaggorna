@@ -16,10 +16,17 @@ struct GameOverView: View {
     @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
 
+    @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
+
+    
     
     var body: some View {
         VStack {
             Spacer()
+            Text("Your high score: \(highestScore)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
             Text("Your score: \(score)")
                 .font(.title)
                 .fontWeight(.black)
@@ -47,6 +54,12 @@ struct GameOverView: View {
                     .foregroundColor(.white)
             }
             .padding()
+        }
+        .onAppear() {
+            if score > highestScore {
+                UserDefaults.standard.set(score, forKey: "highScore")
+                UserDefaults.standard.synchronize()
+            }
         }
         
     }

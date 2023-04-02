@@ -142,17 +142,18 @@ struct MainGameView: View {
 func calculateScore(timeTaken: TimeInterval) -> Int {
     let maxScore = 10
     let minScore = 1
-    let maxTime = 4.0
-    let minTime = 0.1
+    let timeLimit = 4.0
     
-    if timeTaken >= maxTime {
+    if timeTaken >= timeLimit {
         return minScore
-    } else if timeTaken <= minTime {
+    } else if timeTaken == 0 {
         return maxScore
     } else {
-        let slope = Double(maxScore - minScore) / (maxTime - minTime)
-        let intercept = Double(maxScore) - slope * maxTime
+        let slope = Double(maxScore - minScore) / timeLimit
+        let intercept = Double(maxScore) - slope * 0
         let score = Int(slope * timeTaken + intercept)
-        return score
+        return max(min(score, maxScore), minScore)
     }
 }
+
+
