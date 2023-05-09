@@ -6,6 +6,8 @@
 //
 
 import SceneKit
+import CoreGraphics
+
 
 class FlagNode: SCNNode {
      var xyCount: CGSize
@@ -34,10 +36,31 @@ class FlagNode: SCNNode {
         self.flagAction = SCNAction.customAction(duration: 100000) { (_, elapsedTime) in
             // using duration: Double.infinity or Double.greatestFiniteMagnitude breaks `elapsedTime`
             // I'll try find some alternative that's nicer than `100000` later
-            self.animateFlag(elapsedTime: elapsedTime+5000)
+            self.animateFlagXY(elapsedTime: elapsedTime+2)
         }
         self.material.diffuse.contents = diffuse
         self.runAction(SCNAction.repeatForever(self.flagAction))
+        self.addLights()
+    }
+    
+    private func addLights() {
+        // Create ambient light
+        let ambientLight = SCNLight()
+        ambientLight.type = .ambient
+        ambientLight.color = UIColor(white: 0.5, alpha: 1.0)
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = ambientLight
+        addChildNode(ambientLightNode)
+
+        // Create directional light
+        let directionalLight = SCNLight()
+        directionalLight.type = .directional
+        directionalLight.color = UIColor(white: 0.8, alpha: 1.0)
+        let directionalLightNode = SCNNode()
+        directionalLightNode.light = directionalLight
+        directionalLightNode.position = SCNVector3(x: 0, y: 10, z: 0)
+        directionalLightNode.eulerAngles = SCNVector3(-Float.pi / 4, 0, 0)
+        addChildNode(directionalLightNode)
     }
 
     /// Update the geometry of this node with the vertices, texture coordinates and indices
@@ -68,6 +91,24 @@ class FlagNode: SCNNode {
         }
         self.updateGeometry()
     }
+    
+    private func animateFlagXY(elapsedTime: CGFloat) {
+        let yCount = Int(xyCount.height)
+        let xCount = Int(xyCount.width)
+        let furthest = Float((yCount - 1) + (xCount - 1))
+        let tNow = elapsedTime
+        let waveScale = Float(0.1 * (min(tNow / 10, 1)))
+        for x in 0..<xCount {
+            let distanceX = Float(x) / furthest
+            for y in 0..<yCount {
+                let distance = distanceX + Float(y) / furthest
+                let newZ = waveScale * (sinf(15 * (Float(tNow) - distance)) * distanceX)
+                self.vertices[y * xCount + x].z = newZ
+            }
+        }
+        self.updateGeometry()
+    }
+    
 
     /// Adds a shader to the geometry instead of an animation
     func addShader() {
