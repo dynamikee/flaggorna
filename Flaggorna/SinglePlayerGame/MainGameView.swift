@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import UIKit
+import SceneKit
 
 struct MainGameView: View {
     @Binding var currentScene: String
@@ -22,11 +24,14 @@ struct MainGameView: View {
     @State private var randomCountryNames: [String] = []
     @State private var startTime: Date?
     
+    @State private var scene = SCNScene()
+
+    
     var timer: Timer?
-
+    
     var body: some View {
-
-  
+        
+        
         VStack {
             ProgressView(value: Double(timeRemaining), total: 4) {
                 
@@ -34,18 +39,15 @@ struct MainGameView: View {
             .frame(height: 10)
             .progressViewStyle(MyProgressViewStyle())
             .animation(.linear(duration: 1), value: timeRemaining) // Add an animation modifier with a linear timing curve
-
+            
             Spacer()
-
+            
             if let randomCountry = randomCountry {
-  
-            Image(randomCountry.flag)
-                    .resizable()
-                    .border(.gray, width: 1)
-                    
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: UIScreen.main.bounds.width * 0.8)
                 
+                SceneViewContainer(scene: scene)
+
+                                .edgesIgnoringSafeArea(.all)
+                                .padding()
                 Spacer()
                 VStack(spacing: 24){
                     ForEach(randomCountryNames, id: \.self) { countryName in
@@ -58,7 +60,7 @@ struct MainGameView: View {
                                 if self.rounds > 0 {
                                     self.rounds -= 1
                                 }
-
+                                
                                 self.score += calculateScore(timeTaken: timeTaken)
                                 print(timeTaken)
                                 print(self.score)
@@ -66,7 +68,7 @@ struct MainGameView: View {
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
-
+                                
                                 
                             } else {
                                 if self.rounds > 0 {
@@ -92,14 +94,14 @@ struct MainGameView: View {
                 .padding(8)
                 
                 
-            
-            }
-
                 
+            }
+            
+            
             
         }
         .onAppear {
-
+            
             if let randomCountry = countries.randomElement() {
                 self.randomCountry = randomCountry
                 self.currentCountry = randomCountry.name
@@ -115,7 +117,7 @@ struct MainGameView: View {
                 // Handle the case where the countries array is empty
                 print("Error: The countries array is empty!")
             }
-
+            
             
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 if answered {
@@ -130,7 +132,7 @@ struct MainGameView: View {
                         }
                         self.roundsArray[self.rounds] = .incorrect
                         self.currentScene = "Wrong"
-
+                        
                     }
                 }
                 
@@ -154,6 +156,34 @@ func calculateScore(timeTaken: TimeInterval) -> Int {
         let intercept = Double(maxScore) - slope * minTime
         let score = Int(slope * timeTaken + intercept)
         return max(min(score, maxScore), minScore)
+    }
+}
+
+struct SceneViewContainer: UIViewRepresentable {
+    var scene: SCNScene
+
+    func makeUIView(context: Context) -> SCNView {
+        let sceneView = SCNView()
+        sceneView.scene = scene
+
+        // Set background color to match the app's background color
+        sceneView.backgroundColor = UIColor.clear
+
+        addFlagNode(to: scene)
+        return sceneView
+    }
+
+    func updateUIView(_ uiView: SCNView, context: Context) {
+    }
+
+    private func addFlagNode(to scene: SCNScene) {
+        let flagTexture = UIImage(named: "flag_texture.png")
+        let flagNode = FlagNode(frameSize: CGSize(width: 1.2, height: 0.8), xyCount: CGSize(width: 144, height: 96), diffuse: flagTexture)
+        flagNode.position.z = -1
+        flagNode.runAction(SCNAction.repeatForever(flagNode.flagAction))
+        flagNode.addShader() // Optional: Apply a shader to the geometry for animation effect
+        flagNode.scale = SCNVector3(10, 10, 10) // Optional: Adjust the scale of the flag
+        scene.rootNode.addChildNode(flagNode)
     }
 }
 

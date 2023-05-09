@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
 		BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */; };
+		BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */; };
+		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -31,6 +33,8 @@
 		8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flaggorna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flaggorna.release.xcconfig"; path = "Target Support Files/Pods-Flaggorna/Pods-Flaggorna.release.xcconfig"; sourceTree = "<group>"; };
 		BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameMultiplayerView.swift; sourceTree = "<group>"; };
+		BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNGeometry+Extensions.swift"; sourceTree = "<group>"; };
+		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -71,6 +75,15 @@
 				9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BA696B0A2A098CEE00FE8348 /* 3DFlag */ = {
+			isa = PBXGroup;
+			children = (
+				BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */,
+				BA696B0D2A098D6E00FE8348 /* FlagNode.swift */,
+			);
+			path = 3DFlag;
 			sourceTree = "<group>";
 		};
 		BABC466829A0AF910048AE12 /* SinglePlayerGame */ = {
@@ -123,6 +136,7 @@
 				BAF21C0329994100009035E8 /* FlaggornaApp.swift */,
 				BABC466829A0AF910048AE12 /* SinglePlayerGame */,
 				BAF21C0529994100009035E8 /* ContentView.swift */,
+				BA696B0A2A098CEE00FE8348 /* 3DFlag */,
 				BABC467329A0B6D20048AE12 /* MultiPlayerGame */,
 				BABC466B29A0B0320048AE12 /* StartGameView.swift */,
 				BAF21C0729994103009035E8 /* Assets.xcassets */,
@@ -265,12 +279,14 @@
 			files = (
 				BAD40D2529ABD8300054E972 /* RightAnswerMultiplayerView.swift in Sources */,
 				BABC78E229B66E8D006E3129 /* GameOverMultiplayerView.swift in Sources */,
+				BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */,
 				BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */,
 				BABC467029A0B0D40048AE12 /* WrongAnswerView.swift in Sources */,
 				BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */,
 				BAF21C0629994100009035E8 /* ContentView.swift in Sources */,
 				BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */,
 				BAF21C0429994100009035E8 /* FlaggornaApp.swift in Sources */,
+				BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */,
 				BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */,
 				BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */,
 				BABC469129A282420048AE12 /* JoinMultiplayerView.swift in Sources */,
