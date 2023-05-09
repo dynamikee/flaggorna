@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "british_virgin_islands.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

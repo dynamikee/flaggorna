@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cabo_verde.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

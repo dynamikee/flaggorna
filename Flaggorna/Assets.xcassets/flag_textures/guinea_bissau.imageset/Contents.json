@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "guinea_bissau.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

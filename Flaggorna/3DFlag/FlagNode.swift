@@ -48,9 +48,6 @@ class FlagNode: SCNNode {
         self.geometry = geo
     }
 
-    // I appreciate the next few functions are not very DRY, it's annoying me (author)
-    // but am keeping the math clear for the tutorial
-
     /// Wave the flag using just the x coordinate
     ///
     /// - Parameter elapsedTime: time since animation started [0-duration] in seconds
