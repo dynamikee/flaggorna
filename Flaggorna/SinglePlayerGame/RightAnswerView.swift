@@ -12,6 +12,8 @@ struct RightAnswerView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var roundsArray: [RoundStatus]
+    @State private var isShimmering = false
+
    
 
     var body: some View {
@@ -32,7 +34,20 @@ struct RightAnswerView: View {
                     
                 }
                 Spacer()
-                Text("Score: \(score)")
+                ZStack {
+                    Circle()
+                        .foregroundColor(.yellow)
+                        .frame(width: 32, height: 32)
+                        .overlay(
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.7), lineWidth: 2)
+                                        .scaleEffect(isShimmering ? 1.2 : 1.0)
+                                        .opacity(isShimmering ? 0.7 : 0.0)
+                                        .animation(Animation.linear(duration: 1).repeatForever(autoreverses: true))
+                        )
+                    Text(String(score))
+                        .foregroundColor(.black)
+                }
             }
             .padding()
             .foregroundColor(.white)
@@ -60,6 +75,7 @@ struct RightAnswerView: View {
             
         }
         .onAppear {
+            isShimmering = true
             withAnimation {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     if rounds > 0 {

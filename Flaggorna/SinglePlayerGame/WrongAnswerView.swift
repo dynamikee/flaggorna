@@ -34,7 +34,13 @@ struct WrongAnswerView: View {
                     
                 }
                 Spacer()
-                Text("Score: \(score)")
+                ZStack {
+                    Circle()
+                        .foregroundColor(.yellow)
+                        .frame(width: 32, height: 32)
+                    Text(String(score))
+                        .foregroundColor(.black)
+                }
             }
             .padding()
             .foregroundColor(.white)
