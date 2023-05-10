@@ -36,7 +36,7 @@ class FlagNode: SCNNode {
         self.flagAction = SCNAction.customAction(duration: 100000) { (_, elapsedTime) in
             // using duration: Double.infinity or Double.greatestFiniteMagnitude breaks `elapsedTime`
             // I'll try find some alternative that's nicer than `100000` later
-            self.animateFlagXY(elapsedTime: elapsedTime+2)
+            self.animateFlagXY(elapsedTime: elapsedTime+200)
         }
         self.material.diffuse.contents = diffuse
         self.runAction(SCNAction.repeatForever(self.flagAction))

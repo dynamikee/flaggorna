@@ -11,6 +11,7 @@
 		BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */; };
 		BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */; };
 		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
+		BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -35,6 +36,7 @@
 		BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameMultiplayerView.swift; sourceTree = "<group>"; };
 		BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNGeometry+Extensions.swift"; sourceTree = "<group>"; };
 		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
+		BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewContainer.swift; sourceTree = "<group>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */,
+				BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */,
 				BA696B0D2A098D6E00FE8348 /* FlagNode.swift */,
 			);
 			path = 3DFlag;
@@ -279,6 +282,7 @@
 			files = (
 				BAD40D2529ABD8300054E972 /* RightAnswerMultiplayerView.swift in Sources */,
 				BABC78E229B66E8D006E3129 /* GameOverMultiplayerView.swift in Sources */,
+				BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */,
 				BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */,
 				BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */,
 				BABC467029A0B0D40048AE12 /* WrongAnswerView.swift in Sources */,

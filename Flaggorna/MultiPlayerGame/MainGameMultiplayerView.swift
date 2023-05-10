@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SceneKit
+import UIKit
 
 struct MainGameMultiplayerView: View {
     @Binding var currentScene: String
@@ -17,6 +19,8 @@ struct MainGameMultiplayerView: View {
     
     @State private var timeRemaining = 4 // 4 seconds timer
     @State private var answered = false
+    
+    @State private var scene = SCNScene()
 
     var body: some View {
         VStack {
@@ -28,23 +32,20 @@ struct MainGameMultiplayerView: View {
             .animation(.linear(duration: 1), value: timeRemaining) // Add an animation modifier with a linear timing curve
 
             
-            HStack{
-                Spacer()
-                Text(String(rounds))
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-            }
-            .padding()
-            
             if let question = socketManager.currentQuestion {
 
                 Spacer()
-                Image(question.flag)
-                    .resizable()
-                    .border(.gray, width: 1)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: UIScreen.main.bounds.width * 0.8)
+                
+                SceneViewContainer(scene: scene, randomCountry: question.flag)
+
+                    .padding(.horizontal, 24)
+                
+                
+//                Image(question.flag)
+//                    .resizable()
+//                    .border(.gray, width: 1)
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: UIScreen.main.bounds.width * 0.8)
 
                 Spacer()
                 VStack(spacing: 24) {
@@ -135,4 +136,6 @@ struct MyProgressViewStyle: ProgressViewStyle {
         }
     }
 }
+
+
 
