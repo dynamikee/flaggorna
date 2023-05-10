@@ -22,6 +22,7 @@ struct JoinMultiplayerView: View {
     @State private var showStartButton = false
     @State private var showHostButton = true
     @State private var showAlert = false
+    @State private var showHelp = false
     
     @EnvironmentObject var socketManager: SocketManager
 
@@ -73,6 +74,25 @@ struct JoinMultiplayerView: View {
                         .foregroundColor(.white)
                 }
                 Spacer()
+                if joinOrStart{
+                    Button(action: {
+                        showHelp = true
+                        
+                        showHelp = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                            withAnimation {
+                                                showHelp = false
+                                            }
+                                        }
+                        
+                    }) {
+                        Text(Image(systemName: "questionmark.circle.fill"))
+                            .font(.title)
+                            .foregroundColor(.gray.opacity(0.2))
+                        
+                    }
+                }
+                
             }
             Spacer()
         }
@@ -82,6 +102,23 @@ struct JoinMultiplayerView: View {
         if joinOrStart {
             VStack (spacing: 10) {
                 Spacer()
+                if showHelp {
+                    Text("Here you join a game started by a friend. Enter the game code your friend sent you.")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                                    .opacity(showHelp ? 1 : 0)
+                                    .animation(.easeInOut(duration: 3.5))
+                    Text(Image(systemName: "arrowtriangle.down.fill"))
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                                    .opacity(showHelp ? 1 : 0)
+                                    .animation(.easeInOut(duration: 3.5))
+                        
+                }
                 HStack{
                     Text("JOIN GAME :")
                         .font(.title)
@@ -110,6 +147,24 @@ struct JoinMultiplayerView: View {
 
                 }
                 Spacer()
+                if showHelp {
+                    Text("Here you start a new game. It will create a game code that you share with friends to play together.")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                                    .opacity(showHelp ? 1 : 0)
+                                    .animation(.easeInOut(duration: 3.5))
+                    Text(Image(systemName: "arrowtriangle.down.fill"))
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                                    .opacity(showHelp ? 1 : 0)
+                                    .animation(.easeInOut(duration: 3.5))
+                        
+                }
+                
                 if showHostButton {
                     Button(action: {
                         joinOrStart = false
@@ -189,6 +244,7 @@ struct JoinMultiplayerView: View {
                                     .opacity(showAlert ? 1 : 0)
                                     .animation(.easeInOut(duration: 0.5))
                             }
+
                 if showStartButton {
                     Button(action: {
                         if socketManager.users.count < 2 {
