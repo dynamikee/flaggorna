@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct JoinMultiplayerView: View {
     @Binding var currentScene: String
@@ -77,8 +78,6 @@ struct JoinMultiplayerView: View {
                 if joinOrStart{
                     Button(action: {
                         showHelp = true
-                        
-                        showHelp = true
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                                             withAnimation {
                                                 showHelp = false
@@ -132,6 +131,7 @@ struct JoinMultiplayerView: View {
                         .fontWeight(.black)
                         .foregroundColor(.white)
                         .keyboardType(.numberPad)
+                        .textContentType(.oneTimeCode)
                         .onTapGesture {
                                             showHostButton = false
                                         }
