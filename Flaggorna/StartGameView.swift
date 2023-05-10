@@ -22,7 +22,7 @@ struct StartGameView: View {
         VStack {
             Button(action: {
                 score = 0
-                rounds = 10
+                rounds = numberOfRounds
                 multiplayer = true
                 SocketManager.shared.currentScene = "JoinMultiplayer"
 
@@ -35,7 +35,7 @@ struct StartGameView: View {
             Button(action: {
                 loadData()
                 score = 0
-                rounds = 10
+                rounds = numberOfRounds
                 self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
                 currentScene = "GetReady"
             }){

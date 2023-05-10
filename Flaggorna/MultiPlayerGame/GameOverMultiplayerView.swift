@@ -57,7 +57,6 @@ struct GameOverMultiplayerView: View {
                     .modifier(ParticlesModifier())
                     .offset(x: 60, y : 70)
             }
-            Spacer()
             
                 Button(action: {
                     
@@ -80,6 +79,10 @@ struct GameOverMultiplayerView: View {
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
+            
+            Spacer()
+
+            
             Button(action: {
                 //self.socketManager.stopUsersTimer()
                 
@@ -87,14 +90,15 @@ struct GameOverMultiplayerView: View {
                 multiplayer = false
                 socketManager.countries = []
                 self.socketManager.socket.disconnect()
-
-                
                 currentScene = "Start"
 
             }){
-                Text("EXIT GAME")
+                Text(Image(systemName: "xmark"))
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                
             }
-            .buttonStyle(OrdinaryButtonStyle())
             .padding()
 
             

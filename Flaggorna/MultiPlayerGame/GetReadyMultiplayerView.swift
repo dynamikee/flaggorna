@@ -10,23 +10,33 @@ import SwiftUI
 struct GetReadyMultiplayerView: View {
     @Binding var currentScene: String
     @Binding var rounds: Int
+    @Binding var numberOfRounds: Int
     
     @State private var timerCount = 2
     
     var body: some View {
         VStack (spacing: 10) {
+            HStack {
+                ForEach((0..<numberOfRounds).reversed(), id: \.self) { index in
+                    if index < rounds {
+                        Image(systemName: "circle.dotted")
+                            .foregroundColor(.gray)
+                        
+                    } else {
+                        Image(systemName: "circle.fill")
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            Spacer()
+        
             Text("GET READY!")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("REMAINING ROUNDS: \(rounds)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            Text("\(timerCount)")
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
+            
+            Spacer()
+
         }
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in

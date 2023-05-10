@@ -11,6 +11,7 @@
         @Binding var currentScene: String
         @Binding var score: Int
         @Binding var rounds: Int
+        @Binding var numberOfRounds: Int
         @Binding var countries: [Country]
         @EnvironmentObject var socketManager: SocketManager
         @State private var showNextButton: Bool = false
@@ -20,6 +21,19 @@
         var body: some View {
             
             VStack(spacing: 32)  {
+                HStack {
+                    ForEach((0..<numberOfRounds).reversed(), id: \.self) { index in
+                        if index < rounds {
+                            Image(systemName: "circle.dotted")
+                                .foregroundColor(.gray)
+                            
+                        } else {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.white)
+                        }
+                    }
+                }
+                
                 Spacer()
                 Text("You are right!")
                     .font(.largeTitle)
