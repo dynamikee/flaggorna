@@ -19,94 +19,173 @@ struct GameOverView: View {
     
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
+    @State private var name: String = ""
+    @State private var showSubmitHighscore = true
+    
     
     
     var body: some View {
         
-        
-        
         VStack (spacing: 16) {
             Spacer()
-            if score > highestScore {
-                Text("NEW HIGH SCORE!")
-                    .font(.largeTitle)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                Text("\(score)")
-                    .font(.largeTitle)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                ZStack {
-                    Circle()
-                        .fill(Color.blue)
-                        .frame(width: 12, height: 12)
-                        .modifier(ParticlesModifier())
-                        .offset(x: -100, y : -50)
-                    
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 12, height: 12)
-                        .modifier(ParticlesModifier())
-                        .offset(x: 60, y : 70)
-                }
-                
-            } else {
-                Text("Current high score: \(highestScore)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                Text("Your score: \(score)")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                
-            }
             
-            
-            ScrollView {
-                VStack(spacing: 8) {
-                    ForEach(highscores.indices, id: \.self) { index in
-                        let highscore = highscores[index]
-                        HStack {
-                            Text("\(highscore.rank).")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                            Text(highscore.playerName)
-                            Spacer()
-                            Text("\(highscore.score)")
-                        }
+            if score > highestScore || highscores.prefix(5).contains(where: { $0.score < score }) {
+                if showSubmitHighscore {
+                    Text("NEW HIGH SCORE!")
+                        .font(.largeTitle)
+                        .fontWeight(.black)
                         .foregroundColor(.white)
-                        .padding(.vertical, 8)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.red)
+                    Text("\(score)")
+                        .font(.largeTitle)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    HStack {
+                        TextField("Enter your name", text: $name)
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                        Button(action: {
+                            showSubmitHighscore = false
+                            updateHighscoreRanks()
+                            
+                        }) {
+                            Text(Image(systemName: "arrow.forward"))
+                                .font(.title)
+                                .fontWeight(.black)
+                                .foregroundColor(.white)
+                            
+                        }
+                        .disabled(name.isEmpty)
                     }
+                    .padding()
+                    
+                    ZStack {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 12, height: 12)
+                            .modifier(ParticlesModifier())
+                            .offset(x: -100, y : -50)
+                        
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 12, height: 12)
+                            .modifier(ParticlesModifier())
+                            .offset(x: 60, y : 70)
+                    }
+                    
+                    } else {
+                        ScrollView {
+                            VStack(spacing: 8) {
+                                ForEach(highscores.indices, id: \.self) { index in
+                                    let highscore = highscores[index]
+                                    HStack {
+                                        Text("\(highscore.rank).")
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                        Text(highscore.playerName)
+                                        Spacer()
+                                        Text("\(highscore.score)")
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 8)
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.red)
+                                }
+                            }
+                        }
+                        Text("Current high score: \(highestScore)")
+                            .font(.body)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                        Text("Your score: \(score)")
+                            .font(.body)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                        
+                        Button(action: {
+                            loadData()
+                            score = 0
+                            rounds = 10
+                            roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                            currentScene = "GetReady"
+                        }) {
+                            Text("PLAY AGAIN")
+                        }
+                        .buttonStyle(OrdinaryButtonStyle())
+                        .padding()
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            currentScene = "Start"
+                        }) {
+                            Image(systemName: "xmark")
+                                .font(.title)
+                                .fontWeight(.black)
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                        
+                        
+                    }
+                    
+                } else {
+                    ScrollView {
+                        VStack(spacing: 8) {
+                            ForEach(highscores.indices, id: \.self) { index in
+                                let highscore = highscores[index]
+                                HStack {
+                                    Text("\(highscore.rank).")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text(highscore.playerName)
+                                    Spacer()
+                                    Text("\(highscore.score)")
+                                }
+                                .foregroundColor(.white)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                            }
+                        }
+                    }
+                    Text("Current high score: \(highestScore)")
+                        .font(.body)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    Text("Your score: \(score)")
+                        .font(.body)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    
+                    Button(action: {
+                        loadData()
+                        score = 0
+                        rounds = 10
+                        roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                        currentScene = "GetReady"
+                    }) {
+                        Text("PLAY AGAIN")
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .padding()
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        currentScene = "Start"
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                    
+                    
+                    
                 }
-            }
             
-            
-            Button(action: {
-                loadData()
-                score = 0
-                rounds = 10
-                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                currentScene = "GetReady"
-            }){
-                Text("PLAY AGAIN")
-            }
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
-            
-            Spacer()
-            
-            Button(action: {
-                currentScene = "Start"
-            }){
-                Text(Image(systemName: "xmark"))
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-            }
-            .padding()
         }
         .onAppear() {
             fetchTopHighscores()
@@ -128,6 +207,10 @@ struct GameOverView: View {
         }
         
     }
+
+    
+    
+    
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
@@ -170,30 +253,29 @@ struct GameOverView: View {
             }
         }.resume()
     }
-
-
+    
+    
     private func checkUserHighscore() {
         // Check if user's score qualifies for the leaderboard
         let userScore = score
-
+        
         let userRank = highscores.firstIndex { $0.score < userScore } ?? highscores.count
-
-        if userRank < 10 {
+        
+        if userRank < 5 {
             // User's score qualifies for the leaderboard
-            let playerName = "Tom" // Replace with the player's name
-            let newHighscore = Highscore(id: UUID().uuidString, score: userScore, playerName: playerName, rank: userRank + 1)
-
+            let newHighscore = Highscore(id: UUID().uuidString, score: userScore, playerName: name, rank: userRank + 1)
+            
             // Insert the new highscore at the appropriate position
             highscores.insert(newHighscore, at: userRank)
-
+            
             // Trim the highscores array to contain only the top 10 scores
-            if highscores.count > 10 {
-                highscores.removeLast(highscores.count - 10)
+            if highscores.count > 5 {
+                highscores.removeLast(highscores.count - 5)
             }
-
+            
             // Update the ranks of the highscores
             updateHighscoreRanks()
-
+            
             // Update the leaderboard on the server
             postUpdatedHighscores()
         } else {
@@ -201,20 +283,20 @@ struct GameOverView: View {
             print("Your score does not make it to the top 10.")
         }
     }
-
-
+    
+    
     private func updateHighscoreRanks() {
         for (index, _) in highscores.enumerated() {
             highscores[index].rank = index + 1
         }
     }
-
-
-
+    
+    
+    
     private func postUpdatedHighscores() {
         // Prepare the updated highscores array to send to the server
-        let updatedHighscores = UpdatedHighscores(highscores: highscores)
-        
+        let updatedHighscores = UpdatedHighscores(highscores: highscores, name: name) // Pass the name
+
         guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores/d26F26cYyUpPdHmCUnyd6H") else {
             return
         }
@@ -268,7 +350,7 @@ struct Highscore: Codable, Identifiable {
     let score: Int
     let playerName: String
     var rank: Int
-
+    
     private enum CodingKeys: String, CodingKey {
         case id, score, playerName = "player_name", rank
     }
@@ -278,5 +360,6 @@ struct Highscore: Codable, Identifiable {
 
 struct UpdatedHighscores: Codable {
     let highscores: [Highscore]
+    let name: String
 }
 
