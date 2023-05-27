@@ -19,10 +19,8 @@ struct GameOverView: View {
     
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
-    @State private var name: String = ""
+    @State private var enteredPlayerName: String = ""
     @State private var showSubmitHighscore = true
-    
-    
     
     var body: some View {
         
@@ -40,24 +38,24 @@ struct GameOverView: View {
                         .fontWeight(.black)
                         .foregroundColor(.white)
                     HStack {
-                        TextField("Enter your name", text: $name)
-                            .font(.title)
-                            .fontWeight(.black)
-                            .foregroundColor(.white)
+                                        TextField("Enter your name", text: $enteredPlayerName)
+                                            .font(.title)
+                                            .fontWeight(.black)
+                                            .foregroundColor(.white)
+                                        
                         Button(action: {
                             showSubmitHighscore = false
                             updateHighscoreRanks()
-                            
+                            postUpdatedHighscores(playerName: enteredPlayerName) // Pass enteredPlayerName to the function
                         }) {
                             Text(Image(systemName: "arrow.forward"))
                                 .font(.title)
                                 .fontWeight(.black)
                                 .foregroundColor(.white)
-                            
                         }
-                        .disabled(name.isEmpty)
-                    }
-                    .padding()
+                        .disabled(enteredPlayerName.isEmpty)
+                                    }
+                                    .padding()
                     
                     ZStack {
                         Circle()
@@ -71,62 +69,6 @@ struct GameOverView: View {
                             .frame(width: 12, height: 12)
                             .modifier(ParticlesModifier())
                             .offset(x: 60, y : 70)
-                    }
-                    
-                    } else {
-                        ScrollView {
-                            VStack(spacing: 8) {
-                                ForEach(highscores.indices, id: \.self) { index in
-                                    let highscore = highscores[index]
-                                    HStack {
-                                        Text("\(highscore.rank).")
-                                            .font(.headline)
-                                            .fontWeight(.bold)
-                                        Text(highscore.playerName)
-                                        Spacer()
-                                        Text("\(highscore.score)")
-                                    }
-                                    .foregroundColor(.white)
-                                    .padding(.vertical, 8)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.red)
-                                }
-                            }
-                        }
-                        Text("Current high score: \(highestScore)")
-                            .font(.body)
-                            .fontWeight(.black)
-                            .foregroundColor(.white)
-                        Text("Your score: \(score)")
-                            .font(.body)
-                            .fontWeight(.black)
-                            .foregroundColor(.white)
-                        
-                        Button(action: {
-                            loadData()
-                            score = 0
-                            rounds = 10
-                            roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                            currentScene = "GetReady"
-                        }) {
-                            Text("PLAY AGAIN")
-                        }
-                        .buttonStyle(OrdinaryButtonStyle())
-                        .padding()
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            currentScene = "Start"
-                        }) {
-                            Image(systemName: "xmark")
-                                .font(.title)
-                                .fontWeight(.black)
-                                .foregroundColor(.white)
-                        }
-                        .padding()
-                        
-                        
                     }
                     
                 } else {
@@ -183,15 +125,51 @@ struct GameOverView: View {
                     .padding()
                     
                     
-                    
                 }
+                
+            } else {
+
+                Text("Current high score: \(highestScore)")
+                    .font(.body)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                Text("Your score: \(score)")
+                    .font(.body)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                
+                Button(action: {
+                    loadData()
+                    score = 0
+                    rounds = 10
+                    roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                    currentScene = "GetReady"
+                }) {
+                    Text("PLAY AGAIN")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+                
+                Spacer()
+                
+                Button(action: {
+                    currentScene = "Start"
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                }
+                .padding()
+                
+                
+                
+            }
             
         }
         .onAppear() {
             fetchTopHighscores()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 checkUserHighscore()
             }
             
@@ -207,7 +185,7 @@ struct GameOverView: View {
         }
         
     }
-
+    
     
     
     
@@ -247,6 +225,7 @@ struct GameOverView: View {
                     }
                 } catch {
                     print("Failed to parse highscores data: \(error.localizedDescription)")
+                    
                 }
             } else {
                 print("No data received from the server.")
@@ -263,7 +242,7 @@ struct GameOverView: View {
         
         if userRank < 5 {
             // User's score qualifies for the leaderboard
-            let newHighscore = Highscore(id: UUID().uuidString, score: userScore, playerName: name, rank: userRank + 1)
+            let newHighscore = Highscore(id: UUID().uuidString, score: userScore, playerName: "", rank: userRank + 1)
             
             // Insert the new highscore at the appropriate position
             highscores.insert(newHighscore, at: userRank)
@@ -272,12 +251,7 @@ struct GameOverView: View {
             if highscores.count > 5 {
                 highscores.removeLast(highscores.count - 5)
             }
-            
-            // Update the ranks of the highscores
-            updateHighscoreRanks()
-            
-            // Update the leaderboard on the server
-            postUpdatedHighscores()
+
         } else {
             // User's score does not qualify for the leaderboard
             print("Your score does not make it to the top 10.")
@@ -291,25 +265,27 @@ struct GameOverView: View {
         }
     }
     
-    
-    
-    private func postUpdatedHighscores() {
-        // Prepare the updated highscores array to send to the server
-        let updatedHighscores = UpdatedHighscores(highscores: highscores, name: name) // Pass the name
-
-        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores/d26F26cYyUpPdHmCUnyd6H") else {
+    private func postUpdatedHighscores(playerName: String) {
+        guard let userRank = highscores.firstIndex(where: { $0.playerName == "" }) else {
             return
         }
-        
+
+        highscores[userRank].playerName = playerName
+
+        // Create a request to update the highscores on the server
+        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores/tRaYptqu5Bh3ceput8cSBg") else {
+            return
+        }
+
         var request = URLRequest(url: url)
-        request.httpMethod = "PUT" // Use PUT instead of POST
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         do {
             let encoder = JSONEncoder()
-            encoder.keyEncodingStrategy = .convertToSnakeCase // Convert camelCase to snake_case
-            
-            let requestData = try encoder.encode(updatedHighscores)
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            let requestData = try encoder.encode(UpdatedHighscores(highscores: highscores))
+            print(requestData)
             request.httpBody = requestData
             
             URLSession.shared.dataTask(with: request) { data, response, error in
@@ -317,7 +293,7 @@ struct GameOverView: View {
                     print("Failed to update highscores: \(error.localizedDescription)")
                     return
                 }
-                
+
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode == 200 {
                         print("Highscores updated successfully")
@@ -331,6 +307,9 @@ struct GameOverView: View {
             print("Failed to encode highscores data: \(error.localizedDescription)")
         }
     }
+
+
+    
 }
 
 struct HighscoreResponse: Codable {
@@ -348,7 +327,7 @@ struct HighscoreItem: Codable {
 struct Highscore: Codable, Identifiable {
     let id: String
     let score: Int
-    let playerName: String
+    var playerName: String
     var rank: Int
     
     private enum CodingKeys: String, CodingKey {
@@ -357,9 +336,7 @@ struct Highscore: Codable, Identifiable {
 }
 
 
-
 struct UpdatedHighscores: Codable {
     let highscores: [Highscore]
-    let name: String
 }
 
