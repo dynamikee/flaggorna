@@ -31,7 +31,7 @@ struct GameOverView: View {
             
         switch showScreen {
         case "Loading":
-            Text("Loading...")
+            Text(" ")
                 .font(.title)
             
         case "SubmitHighscore":
@@ -53,6 +53,8 @@ struct GameOverView: View {
                     showScreen = "HighscoreSubmitted"
                     updateHighscoreRanks()
                     postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(20))) // Pass enteredPlayerName to the function
+                    UserDefaults.standard.set(enteredPlayerName, forKey: "userName")
+                    
                 }) {
                     Text(Image(systemName: "arrow.forward"))
                         .font(.title)
