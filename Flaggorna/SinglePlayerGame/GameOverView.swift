@@ -20,7 +20,7 @@ struct GameOverView: View {
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
     @State private var enteredPlayerName: String = (UserDefaults.standard.string(forKey: "userName") ?? "")
-    @State private var showSubmitHighscore = false
+    @State private var showSubmitHighscore = true
     @State private var isLoading = true
     
     var body: some View {
