@@ -19,8 +19,9 @@ struct GameOverView: View {
     
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
-    @State private var enteredPlayerName: String = ""
-    @State private var showSubmitHighscore = true
+    @State private var enteredPlayerName: String = (UserDefaults.standard.string(forKey: "userName") ?? "")
+    @State private var showSubmitHighscore = false
+    @State private var isLoading = true
     
     var body: some View {
         
@@ -46,7 +47,7 @@ struct GameOverView: View {
                         Button(action: {
                             showSubmitHighscore = false
                             updateHighscoreRanks()
-                            postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(10))) // Pass enteredPlayerName to the function
+                            postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(20))) // Pass enteredPlayerName to the function
                         }) {
                             Text(Image(systemName: "arrow.forward"))
                                 .font(.title)
@@ -73,8 +74,8 @@ struct GameOverView: View {
                     Spacer()
                     
                 } else {
-                    ScrollView {
-                        VStack(spacing: 8) {
+
+                    VStack(spacing: 8) {
                             Text("HIGHSCORES")
                                 .font(.largeTitle)
                                 .fontWeight(.black)
@@ -82,15 +83,42 @@ struct GameOverView: View {
                             ForEach(highscores.indices, id: \.self) { index in
                                 let highscore = highscores[index]
                                 HStack {
-                                    Text("\(highscore.rank).")
-                                        .font(.body)
-                                        .fontWeight(.black)
-                                        .foregroundColor(.white)
+                                    Group {
+                                        switch highscore.rank {
+                                        case 1:
+                                            Image(systemName: "trophy.fill")
+                                                .foregroundColor(.white)
+
+                                        case 2:
+                                            Image(systemName: "medal.fill")
+                                                .foregroundColor(.white)
+
+                                        case 3:
+                                            Image(systemName: "medal")
+                                                .foregroundColor(.white)
+                                            
+                                        case 4:
+                                            Image(systemName: "4.circle")
+                                                .foregroundColor(.white)
+                                        case 5:
+                                            Image(systemName: "5.circle")
+                                                .foregroundColor(.white)
+
+                                        default:
+                                            Text("\(highscore.rank).")
+                                                .foregroundColor(.white)
+
+                                        }
+                                    }
+                                    .font(.largeTitle)
+                                    
                                     Text(highscore.playerName)
                                         .font(.body)
                                         .fontWeight(.black)
                                         .foregroundColor(.white)
+                                    
                                     Spacer()
+                                    
                                     Text("\(highscore.score)")
                                         .font(.body)
                                         .fontWeight(.black)
@@ -102,7 +130,8 @@ struct GameOverView: View {
                             }
                         }
                         .padding()
-                    }
+                    
+                    Spacer()
 
                     Button(action: {
                         loadData()
@@ -133,7 +162,7 @@ struct GameOverView: View {
                 
             } else {
                 // if you didnt make it to the top 5
-                ScrollView {
+                
                     VStack(spacing: 8) {
                         Text("HIGHSCORES")
                             .font(.largeTitle)
@@ -142,15 +171,42 @@ struct GameOverView: View {
                         ForEach(highscores.indices, id: \.self) { index in
                             let highscore = highscores[index]
                             HStack {
-                                Text("\(highscore.rank).")
-                                    .font(.body)
-                                    .fontWeight(.black)
-                                    .foregroundColor(.white)
+                                Group {
+                                    switch highscore.rank {
+                                    case 1:
+                                        Image(systemName: "trophy.fill")
+                                            .foregroundColor(.white)
+
+                                    case 2:
+                                        Image(systemName: "medal.fill")
+                                            .foregroundColor(.white)
+
+                                    case 3:
+                                        Image(systemName: "medal")
+                                            .foregroundColor(.white)
+                                        
+                                    case 4:
+                                        Image(systemName: "4.circle")
+                                            .foregroundColor(.white)
+                                    case 5:
+                                        Image(systemName: "5.circle")
+                                            .foregroundColor(.white)
+
+                                    default:
+                                        Text("\(highscore.rank).")
+                                            .foregroundColor(.white)
+
+                                    }
+                                }
+                                .font(.largeTitle)
+                                
                                 Text(highscore.playerName)
                                     .font(.body)
                                     .fontWeight(.black)
                                     .foregroundColor(.white)
+                                
                                 Spacer()
+                                
                                 Text("\(highscore.score)")
                                     .font(.body)
                                     .fontWeight(.black)
@@ -162,9 +218,9 @@ struct GameOverView: View {
                         }
                     }
                     .padding()
-                }
                 
-                Text("Your score: \(score)")
+                
+                Text("Your score: \(score) (\(highestScore))")
                     .font(.body)
                     .fontWeight(.black)
                     .foregroundColor(.white)
