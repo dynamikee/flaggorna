@@ -46,7 +46,7 @@ struct GameOverView: View {
                         Button(action: {
                             showSubmitHighscore = false
                             updateHighscoreRanks()
-                            postUpdatedHighscores(playerName: enteredPlayerName) // Pass enteredPlayerName to the function
+                            postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(10))) // Pass enteredPlayerName to the function
                         }) {
                             Text(Image(systemName: "arrow.forward"))
                                 .font(.title)
@@ -70,36 +70,40 @@ struct GameOverView: View {
                             .modifier(ParticlesModifier())
                             .offset(x: 60, y : 70)
                     }
+                    Spacer()
                     
                 } else {
                     ScrollView {
                         VStack(spacing: 8) {
+                            Text("HIGHSCORES")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .foregroundColor(.white)
                             ForEach(highscores.indices, id: \.self) { index in
                                 let highscore = highscores[index]
                                 HStack {
                                     Text("\(highscore.rank).")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
+                                        .font(.body)
+                                        .fontWeight(.black)
+                                        .foregroundColor(.white)
                                     Text(highscore.playerName)
+                                        .font(.body)
+                                        .fontWeight(.black)
+                                        .foregroundColor(.white)
                                     Spacer()
                                     Text("\(highscore.score)")
+                                        .font(.body)
+                                        .fontWeight(.black)
+                                        .foregroundColor(.white)
                                 }
                                 .foregroundColor(.white)
                                 .padding(.vertical, 8)
                                 .frame(maxWidth: .infinity)
-                                .background(Color.red)
                             }
                         }
+                        .padding()
                     }
-                    Text("Current high score: \(highestScore)")
-                        .font(.body)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    Text("Your score: \(score)")
-                        .font(.body)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    
+
                     Button(action: {
                         loadData()
                         score = 0
@@ -128,15 +132,44 @@ struct GameOverView: View {
                 }
                 
             } else {
-
-                Text("Current high score: \(highestScore)")
-                    .font(.body)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
+                // if you didnt make it to the top 5
+                ScrollView {
+                    VStack(spacing: 8) {
+                        Text("HIGHSCORES")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                            .foregroundColor(.white)
+                        ForEach(highscores.indices, id: \.self) { index in
+                            let highscore = highscores[index]
+                            HStack {
+                                Text("\(highscore.rank).")
+                                    .font(.body)
+                                    .fontWeight(.black)
+                                    .foregroundColor(.white)
+                                Text(highscore.playerName)
+                                    .font(.body)
+                                    .fontWeight(.black)
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text("\(highscore.score)")
+                                    .font(.body)
+                                    .fontWeight(.black)
+                                    .foregroundColor(.white)
+                            }
+                            .foregroundColor(.white)
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .padding()
+                }
+                
                 Text("Your score: \(score)")
                     .font(.body)
                     .fontWeight(.black)
                     .foregroundColor(.white)
+                
+                Spacer()
                 
                 Button(action: {
                     loadData()
