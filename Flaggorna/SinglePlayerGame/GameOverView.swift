@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import UIKit
 
 struct GameOverView: View {
     
@@ -49,11 +50,14 @@ struct GameOverView: View {
                     .foregroundColor(.white)
                 
                 Button(action: {
-                    showScreen = "HighscoreSubmitted"
-                    updateHighscoreRanks()
-                    postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(20))) // Pass enteredPlayerName to the function
-                    UserDefaults.standard.set(enteredPlayerName, forKey: "userName")
-                    
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) // Dismiss the keyboard
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        showScreen = "HighscoreSubmitted"
+                        updateHighscoreRanks()
+                        postUpdatedHighscores(playerName: String(enteredPlayerName.prefix(20))) // Pass enteredPlayerName to the function
+                        UserDefaults.standard.set(enteredPlayerName, forKey: "userName")
+                    }
                 }) {
                     Text(Image(systemName: "arrow.forward"))
                         .font(.title)
@@ -135,10 +139,10 @@ struct GameOverView: View {
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .opacity(rankToAnimate == 0 || rankToAnimate == rowRank ? 1 : 0.3)
-                    .animation(.easeInOut(duration: 0.8).delay(Double(index) * 0.1))
+                    .animation(.easeInOut(duration: 1.0).delay(Double(index) * 0.1))
                     .onAppear {
                         if highscore.rank == rankToAnimate {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                 withAnimation {
                                     rankToAnimate = 0 // Reset rankToAnimate to prevent retriggering the animation
                                 }
@@ -148,6 +152,7 @@ struct GameOverView: View {
                 }
             }
             .padding()
+            
             
             Spacer()
             
@@ -271,6 +276,7 @@ struct GameOverView: View {
         }
         
         }
+        
         .onAppear() {
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -283,6 +289,7 @@ struct GameOverView: View {
             }
         }
     }
+    
     
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
