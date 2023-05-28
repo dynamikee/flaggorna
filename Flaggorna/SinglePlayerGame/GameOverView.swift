@@ -20,9 +20,8 @@ struct GameOverView: View {
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
     @State private var enteredPlayerName: String = (UserDefaults.standard.string(forKey: "userName") ?? "")
-    @State private var showSubmitHighscore = false
-    @State private var isLoading = true
     @State private var showScreen = "Loading"
+    @State private var rankToAnimate: Int = 0
     
     var body: some View {
         VStack (spacing: 16) {
@@ -86,8 +85,10 @@ struct GameOverView: View {
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.white)
+                    .padding(.bottom, 32)
                 ForEach(highscores.indices, id: \.self) { index in
                     let highscore = highscores[index]
+                    let rowRank = highscore.rank
                     HStack {
                         Group {
                             switch highscore.rank {
@@ -133,6 +134,17 @@ struct GameOverView: View {
                     .foregroundColor(.white)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
+                    .opacity(rankToAnimate == 0 || rankToAnimate == rowRank ? 1 : 0.3)
+                    .animation(.easeInOut(duration: 0.8).delay(Double(index) * 0.1))
+                    .onAppear {
+                        if highscore.rank == rankToAnimate {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                                withAnimation {
+                                    rankToAnimate = 0 // Reset rankToAnimate to prevent retriggering the animation
+                                }
+                            }
+                        }
+                    }
                 }
             }
             .padding()
@@ -169,6 +181,7 @@ struct GameOverView: View {
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.white)
+                    .padding(.bottom, 32)
                 ForEach(highscores.indices, id: \.self) { index in
                     let highscore = highscores[index]
                     HStack {
@@ -328,6 +341,7 @@ struct GameOverView: View {
             
             // Insert the new highscore at the appropriate position
             highscores.insert(newHighscore, at: userRank)
+            rankToAnimate = userRank + 1
             
             // Trim the highscores array to contain only the top 10 scores
             if highscores.count > 5 {
