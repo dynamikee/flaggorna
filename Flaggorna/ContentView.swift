@@ -1,6 +1,7 @@
 
 import SwiftUI
 import Starscream
+import CoreData
 
 struct ContentView: View {
     @State var currentScene = "Start"

@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import SceneKit
+import CoreData
 
 struct MainGameView: View {
     @Binding var currentScene: String
@@ -26,6 +27,7 @@ struct MainGameView: View {
     
     @State private var scene = SCNScene()
 
+    @Environment(\.managedObjectContext) private var viewContext
     
     var timer: Timer?
     
@@ -66,6 +68,7 @@ struct MainGameView: View {
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
+                                updateFlagData(isCorrect: true)
                                 
                                 
                             } else {
@@ -75,6 +78,7 @@ struct MainGameView: View {
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .incorrect
                                 self.currentScene = "Wrong"
+                                updateFlagData(isCorrect: false)
                                 
                             }
                             
@@ -128,11 +132,33 @@ struct MainGameView: View {
                         }
                         self.roundsArray[self.rounds] = .incorrect
                         self.currentScene = "Wrong"
+                        updateFlagData(isCorrect: false)
                         
                     }
                 }
                 
             }
+        }
+    }
+    private func updateFlagData(isCorrect: Bool) {
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        request.predicate = NSPredicate(format: "country_name == %@", currentCountry)
+        
+        do {
+            let results = try viewContext.fetch(request)
+            
+            if let flagData = results.first {
+                flagData.impressions += 1
+                
+                if isCorrect {
+                    flagData.right_answers += 1
+                }
+                
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating flag data: \(error)")
         }
     }
 }
