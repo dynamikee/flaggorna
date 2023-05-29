@@ -140,6 +140,7 @@ struct MainGameView: View {
             }
         }
     }
+    //This update is for user statistics on right answers only
     private func updateFlagData(isCorrect: Bool) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
         request.predicate = NSPredicate(format: "country_name == %@", currentCountry)

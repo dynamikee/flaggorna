@@ -8,6 +8,7 @@
 import SwiftUI
 import SceneKit
 import UIKit
+import CoreData
 
 struct MainGameMultiplayerView: View {
     @Binding var currentScene: String
@@ -21,6 +22,8 @@ struct MainGameMultiplayerView: View {
     @State private var answered = false
     
     @State private var scene = SCNScene()
+    
+    @Environment(\.managedObjectContext) private var viewContext
 
     var body: some View {
         VStack {
@@ -66,6 +69,7 @@ struct MainGameMultiplayerView: View {
                                 socketManager.currentScene = "RightMultiplayer"
                                 socketManager.updateUser()
                                 print("Number of remaining countries: \(socketManager.countries.count)")
+                                updateFlagData(isCorrect: true)
 
                                 
                             } else {
@@ -78,6 +82,7 @@ struct MainGameMultiplayerView: View {
                                 socketManager.currentScene = "WrongMultiplayer"
                                 socketManager.updateUser()
                                 print("Number of remaining countries: \(socketManager.countries.count)")
+                                updateFlagData(isCorrect: false)
 
                                 
                             }
@@ -109,6 +114,7 @@ struct MainGameMultiplayerView: View {
                         socketManager.currentScene = "WrongMultiplayer"
                         socketManager.updateUser()
                         print("Number of remaining countries: \(socketManager.countries.count)")
+                        updateFlagData(isCorrect: false)
 
                     }
                 }
@@ -116,6 +122,31 @@ struct MainGameMultiplayerView: View {
             }
         }
     }
+    //This is for updating user statistics on core data
+    private func updateFlagData(isCorrect: Bool) {
+        guard let question = socketManager.currentQuestion else { return }
+        
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        request.predicate = NSPredicate(format: "country_name == %@", question.correctAnswer)
+        
+        do {
+            let results = try viewContext.fetch(request)
+            
+            if let flagData = results.first {
+                flagData.impressions += 1
+                
+                if isCorrect {
+                    flagData.right_answers += 1
+                }
+                
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating flag data: \(error)")
+        }
+    }
+    
 }
 
 struct MyProgressViewStyle: ProgressViewStyle {
