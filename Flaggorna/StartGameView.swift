@@ -22,6 +22,24 @@ struct StartGameView: View {
     var body: some View {
         NavigationView {
             VStack {
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: FlagStatisticsView(flagData: fetchFlagData())) {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 32, height: 32)
+                            .foregroundColor(.white)
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .padding(.top, 64)
+                    .padding(.trailing, 16)
+                    .alignmentGuide(HorizontalAlignment.trailing) { _ in
+                        UIScreen.main.bounds.width - 24 // Adjust the offset as needed
+                    }
+                }
+                Spacer()
+                
                 Button(action: {
                     score = 0
                     rounds = numberOfRounds
@@ -46,15 +64,8 @@ struct StartGameView: View {
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
                 
-                NavigationLink(destination: FlagStatisticsView(flagData: fetchFlagData())) {
-                    Text("View Flag Statistics")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
-                .padding()
+                Spacer()
+                
             }
             
             .background(
@@ -164,29 +175,33 @@ struct FlagStatisticsView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack {
-                ForEach(sortedFlagData, id: \.self) { data in
-                    HStack {
-                        Image(data.flag ?? "")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 64)
-                            .border(Color.gray, width: 1)
-                            .padding(.trailing, 8)
-                        Text(data.country_name ?? "")
-                            .font(.body)
-                            .fontWeight(.bold)
-                        Spacer()
-                        Text("Correct: \(data.right_answers) of \(data.impressions)")
-                            .font(.footnote)
-                        CircleIndicatorView(data: data)
+        ZStack {
+            Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
+                .edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack {
+                    ForEach(sortedFlagData, id: \.self) { data in
+                        HStack {
+                            Image(data.flag ?? "")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 64)
+                                .border(Color.gray, width: 1)
+                                .padding(.trailing, 8)
+                            Text(data.country_name ?? "")
+                                .font(.body)
+                                .fontWeight(.bold)
+                            Spacer()
+                            Text("Correct: \(data.right_answers) of \(data.impressions)")
+                                .font(.footnote)
+                            CircleIndicatorView(data: data)
+                        }
+                        .padding(8)
                     }
-                    .padding(8)
                 }
             }
+            .preferredColorScheme(.dark)
         }
-        .preferredColorScheme(.dark)
     }
 }
 
