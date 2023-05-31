@@ -32,7 +32,7 @@ struct StartGameView: View {
                             .foregroundColor(.white)
                     }
                     .buttonStyle(OrdinaryButtonStyle())
-                    .padding(.top, 64)
+                    .padding(.top, 52)
                     .padding(.trailing, 16)
                     .alignmentGuide(HorizontalAlignment.trailing) { _ in
                         UIScreen.main.bounds.width - 24 // Adjust the offset as needed
@@ -90,7 +90,6 @@ struct StartGameView: View {
                 SocketManager.shared.loadData()
             }
         }
-        .navigationBarTitle("Start Game")
         .accentColor(.white)
     }
     
@@ -202,7 +201,9 @@ struct FlagStatisticsView: View {
             }
             .preferredColorScheme(.dark)
         }
+        .navigationBarTitle("Your answers")
     }
+    
 }
 
 struct CircleIndicatorView: View {
