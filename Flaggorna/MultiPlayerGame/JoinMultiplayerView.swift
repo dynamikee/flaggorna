@@ -197,11 +197,17 @@ struct JoinMultiplayerView: View {
                     .foregroundColor(.white)
                 
                 VStack {
-                    HStack{
-                        Text("Name")
-                            .font(.body)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
+                    ForEach(discoveredPeers, id: \.self) { peer in
+                        HStack {
+                            Circle()
+                                .foregroundColor(.blue) // Set your desired color
+                                .frame(width: 20, height: 20)
+                            Text(peer.displayName)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
                     }
                 }
                 
