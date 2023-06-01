@@ -25,15 +25,22 @@ struct StartGameView: View {
                 HStack {
                     Spacer()
                     NavigationLink(destination: FlagStatisticsView(flagData: fetchFlagData())) {
-                        Image(systemName: "person.circle.fill")
+                        Image(systemName: "person.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 32, height: 32)
+                            .frame(width: 24, height: 24)
                             .foregroundColor(.white)
                     }
-                    .buttonStyle(OrdinaryButtonStyle())
-                    .padding(.top, 52)
-                    .padding(.trailing, 16)
+                    .padding(15)
+                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
+                    .cornerRadius(16)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.white, lineWidth: 8)
+                    )
+                    .foregroundColor(.white)
+                    //.padding(.top, 52)
+                    .padding()
                     .alignmentGuide(HorizontalAlignment.trailing) { _ in
                         UIScreen.main.bounds.width - 24 // Adjust the offset as needed
                     }
@@ -75,6 +82,7 @@ struct StartGameView: View {
                 //.aspectRatio(contentMode: .fill)
                     .offset(x: offset.width, y: offset.height)
                     .frame(width: UIScreen.main.bounds.width)
+                    .edgesIgnoringSafeArea(.all)
                 
                     .onAppear {
                         withAnimation(
@@ -85,7 +93,7 @@ struct StartGameView: View {
                         }
                     }
             )
-            .edgesIgnoringSafeArea(.all)
+            //.edgesIgnoringSafeArea(.all)
             .onAppear {
                 SocketManager.shared.loadData()
             }
@@ -194,8 +202,9 @@ struct FlagStatisticsView: View {
                             Text("Correct: \(data.right_answers) of \(data.impressions)")
                                 .font(.footnote)
                             CircleIndicatorView(data: data)
+                                .padding(8)
                         }
-                        .padding(8)
+                        .padding(4)
                     }
                 }
             }
@@ -218,23 +227,23 @@ struct CircleIndicatorView: View {
         let color: Color
         
         if data.impressions == 0 {
-            symbolName = "seal.fill"
+            symbolName = "circle.dotted"
             color = .gray
         } else if correctRatio >= greenThreshold {
-            symbolName = "checkmark.seal.fill"
+            symbolName = "circle.fill"
             color = .green
         } else if correctRatio <= redThreshold {
-            symbolName = "xmark.seal.fill"
+            symbolName = "circle.slash"
             color = .red
         } else {
-            symbolName = "seal.fill"
+            symbolName = "circle.bottomhalf.filled"
             color = .yellow
         }
         
         return Image(systemName: symbolName)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 32, height: 32)
+            .frame(width: 24, height: 24)
             .foregroundColor(color)
     }
 }
