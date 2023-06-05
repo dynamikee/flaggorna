@@ -25,6 +25,8 @@ struct ContentView: View {
                 switch SocketManager.shared.currentScene {
                 case "JoinMultiplayer":
                     JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
+                case "JoinMultiplayerPeer":
+                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene, rounds: $rounds, numberOfRounds: $numberOfRounds)
                 case "MainMultiplayer":

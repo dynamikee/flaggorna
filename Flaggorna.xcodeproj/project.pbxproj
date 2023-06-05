@@ -23,6 +23,7 @@
 		BAD40D2329ABD7AF0054E972 /* GetReadyMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */; };
 		BAD40D2529ABD8300054E972 /* RightAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */; };
 		BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */; };
+		BAD64D1A2A2D23F100A994DA /* JoinMultiplayerPeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD64D192A2D23F100A994DA /* JoinMultiplayerPeerView.swift */; };
 		BAEFD87C2A2380250076D09E /* FlagStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */; };
 		BAF21C0429994100009035E8 /* FlaggornaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0329994100009035E8 /* FlaggornaApp.swift */; };
 		BAF21C0629994100009035E8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0529994100009035E8 /* ContentView.swift */; };
@@ -49,6 +50,7 @@
 		BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightAnswerMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongAnswerMultiplayerView.swift; sourceTree = "<group>"; };
+		BAD64D192A2D23F100A994DA /* JoinMultiplayerPeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiplayerPeerView.swift; sourceTree = "<group>"; };
 		BAD9B37829B942A200977E6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BAEFD87B2A2380250076D09E /* FlagStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlagStats.xcdatamodel; sourceTree = "<group>"; };
 		BAF21C0029994100009035E8 /* Flaggorna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flaggorna.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				BABC469029A282410048AE12 /* JoinMultiplayerView.swift */,
+				BAD64D192A2D23F100A994DA /* JoinMultiplayerPeerView.swift */,
 				BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */,
 				BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */,
 				BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */,
@@ -289,6 +292,7 @@
 				BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */,
 				BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */,
 				BABC467029A0B0D40048AE12 /* WrongAnswerView.swift in Sources */,
+				BAD64D1A2A2D23F100A994DA /* JoinMultiplayerPeerView.swift in Sources */,
 				BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */,
 				BAF21C0629994100009035E8 /* ContentView.swift in Sources */,
 				BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */,

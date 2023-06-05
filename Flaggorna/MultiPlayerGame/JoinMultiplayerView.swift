@@ -30,17 +30,6 @@ struct JoinMultiplayerView: View {
 
     private let userDefaults = UserDefaults.standard
     
-    
-    //
-    @State private var nearbyServiceBrowser: MCNearbyServiceBrowser?
-    @State var nearbyServiceAdvertiser: MCNearbyServiceAdvertiser?
-    
-    @StateObject private var multipeerDelegate = MultipeerDelegate()
-    @State private var discoveredPeers: [MCPeerID] = []
-
-    let serviceType = "flaggorna-quiz"
-    
-    
     private func loadUserData() {
         if let name = userDefaults.string(forKey: "userName") {
             self.name = name
@@ -190,37 +179,6 @@ struct JoinMultiplayerView: View {
                 } else {
                     
                 }
-                Text("List of players")
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                
-                VStack {
-                    ForEach(discoveredPeers, id: \.self) { peer in
-                        HStack {
-                            Circle()
-                                .foregroundColor(.blue) // Set your desired color
-                                .frame(width: 20, height: 20)
-                            Text(peer.displayName)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
-                    }
-                }
-                
-                Button(action: {
-                    joinOrStart = false
-                    let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
-                    gameCode = code
-                    socketManager.setGameCode(code)
-                }){
-                    Text("START GAME")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                    
 
             }
             .padding()
@@ -229,11 +187,6 @@ struct JoinMultiplayerView: View {
                 self.socketManager.socket.connect()
                 self.socketManager.startUsersTimer()
                 self.currentRound = rounds
-                
-                let peerID = MCPeerID(displayName: UIDevice.current.name)
-                startAdvertising(peerID: peerID, serviceType: serviceType)
-                startBrowsingForPeers(peerID: peerID, serviceType: serviceType)
-                multipeerDelegate.updateDiscoveredPeers = updateDiscoveredPeers
                 
             }
         } else {
@@ -361,67 +314,4 @@ struct JoinMultiplayerView: View {
         socketManager.addUser(user)
         socketManager.currentUser = user
     }
-    
-    private func startBrowsingForPeers(peerID: MCPeerID, serviceType: String) {
-        let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
-        browser.delegate = multipeerDelegate
-        browser.startBrowsingForPeers()
-        nearbyServiceBrowser = browser
-        
-    }
-    
-    private func startAdvertising(peerID: MCPeerID, serviceType: String) {
-        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
-        advertiser.delegate = multipeerDelegate
-        advertiser.startAdvertisingPeer()
-        nearbyServiceAdvertiser = advertiser
-    }
-    
-    private func updateDiscoveredPeers(_ peers: [MCPeerID]) {
-        discoveredPeers = peers
-    }
-    
-    private func startBrowsingForPeers() {
-        multipeerDelegate.updateDiscoveredPeers = updateDiscoveredPeers
-        // Start browsing for peers
-    }
-    
-    private func stopBrowsingForPeers() {
-        multipeerDelegate.updateDiscoveredPeers = nil
-        // Stop browsing for peers
-    }
-    
 }
-
-class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
-    
-    var updateDiscoveredPeers: (([MCPeerID]) -> Void)?
-    
-    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        DispatchQueue.main.async { [weak self] in
-            self?.updateDiscoveredPeers?([peerID])
-        }
-    }
-
-    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        DispatchQueue.main.async { [weak self] in
-            self?.updateDiscoveredPeers?([])
-        }
-    }
-    
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-            // Handle the invitation from the peer
-    }
-        
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
-            // Handle the error if advertising failed to start
-    }
-    
-}
-
-
-
-
-
-
-

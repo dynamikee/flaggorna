@@ -51,10 +51,22 @@ struct StartGameView: View {
                     score = 0
                     rounds = numberOfRounds
                     multiplayer = true
-                    SocketManager.shared.currentScene = "JoinMultiplayer"
+                    SocketManager.shared.currentScene = "JoinMultiplayerPeer"
                     
                 }){
                     Text("PARTY GAME")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+                
+                Button(action: {
+                    score = 0
+                    rounds = numberOfRounds
+                    multiplayer = true
+                    SocketManager.shared.currentScene = "JoinMultiplayer"
+                    
+                }){
+                    Text("REMOTE GAME")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
