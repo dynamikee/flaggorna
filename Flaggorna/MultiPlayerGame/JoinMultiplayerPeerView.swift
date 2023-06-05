@@ -30,7 +30,6 @@ struct JoinMultiplayerPeerView: View {
     @State var nearbyServiceAdvertiser: MCNearbyServiceAdvertiser?
     
     @StateObject private var multipeerDelegate = MultipeerDelegate()
-    @State private var discoveredPeers: [(MCPeerID, String?)] = []
     
     let serviceType = "flaggorna-quiz"
     
@@ -117,8 +116,6 @@ struct JoinMultiplayerPeerView: View {
                         Spacer()
                     }
                 }
-
-
             }
 
             
@@ -155,18 +152,19 @@ struct JoinMultiplayerPeerView: View {
             startBrowsingForPeers(peerID: peerID, serviceType: serviceType)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                if discoveredPeers.isEmpty {
+                if multipeerDelegate.discoveredPeers.isEmpty {
                     let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
                     gameCode = code
                     socketManager.setGameCode(code)
-                    startAdvertising(peerID: peerID, serviceType: serviceType)
+                    
+                } else {
+                    if let hostGameCode = multipeerDelegate.discoveredPeers.first?.1 {
+                        gameCode = hostGameCode
+                    }
                 }
+                startAdvertising(peerID: peerID, serviceType: serviceType)
             }
-            
-            
         }
-        
-        
     }
     
     private func join() {
@@ -186,7 +184,6 @@ struct JoinMultiplayerPeerView: View {
         browser.delegate = multipeerDelegate
         browser.startBrowsingForPeers()
         nearbyServiceBrowser = browser
-        
     }
     
     private func startAdvertising(peerID: MCPeerID, serviceType: String) {
@@ -202,6 +199,7 @@ struct JoinMultiplayerPeerView: View {
     func updateDiscoveredPeers(_ peers: [(MCPeerID, String?)]) {
         DispatchQueue.main.async {
             multipeerDelegate.discoveredPeers = peers
+            self.gameCode = multipeerDelegate.gameCode
         }
     }
     
