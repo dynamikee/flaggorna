@@ -30,10 +30,9 @@ struct JoinMultiplayerPeerView: View {
     @State var nearbyServiceAdvertiser: MCNearbyServiceAdvertiser?
     
     @StateObject private var multipeerDelegate = MultipeerDelegate()
-    @State private var discoveredPeers: [MCPeerID] = []
+    @State private var discoveredPeers: [(MCPeerID, String?)] = []
     
     let serviceType = "flaggorna-quiz"
-    
     
     private func loadUserData() {
         if let name = userDefaults.string(forKey: "userName") {
@@ -89,7 +88,12 @@ struct JoinMultiplayerPeerView: View {
         
         VStack (spacing: 10) {
             
-            Text("GAME CODE \(gameCode)")
+            Text("State GAME CODE \(gameCode)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            
+            Text("Peer GAME CODE \(multipeerDelegate.gameCode)")
                 .font(.title)
                 .fontWeight(.black)
                 .foregroundColor(.white)
@@ -101,40 +105,22 @@ struct JoinMultiplayerPeerView: View {
                 .foregroundColor(.white)
             
             VStack {
-                ForEach(discoveredPeers, id: \.self) { peer in
+                ForEach(multipeerDelegate.discoveredPeers, id: \.0.displayName) { peer in
                     HStack {
                         Circle()
-                            .foregroundColor(.blue) // Set your desired color
+                            .foregroundColor(.blue)
                             .frame(width: 20, height: 20)
-                        Text(peer.displayName)
+                        Text(peer.0.displayName)
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                         Spacer()
                     }
                 }
+
+
             }
-            Text("List of sockets")
-                .font(.body)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-            VStack(alignment: .leading, spacing: 10) {
-                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        
-                    }
-                }
-                
-            }
+
             
             Button(action: {
                 if socketManager.users.count < 2 {
@@ -176,7 +162,8 @@ struct JoinMultiplayerPeerView: View {
                     startAdvertising(peerID: peerID, serviceType: serviceType)
                 }
             }
-            multipeerDelegate.updateDiscoveredPeers = updateDiscoveredPeers
+            
+            
         }
         
         
@@ -212,13 +199,14 @@ struct JoinMultiplayerPeerView: View {
     }
 
     
-    private func updateDiscoveredPeers(_ peers: [MCPeerID]) {
-        discoveredPeers = peers
+    func updateDiscoveredPeers(_ peers: [(MCPeerID, String?)]) {
+        DispatchQueue.main.async {
+            multipeerDelegate.discoveredPeers = peers
+        }
     }
-
     
     private func stopBrowsingForPeers() {
-        multipeerDelegate.updateDiscoveredPeers = nil
+        //multipeerDelegate.updateDiscoveredPeers = nil
         // Stop browsing for peers
     }
     
@@ -226,24 +214,30 @@ struct JoinMultiplayerPeerView: View {
 }
 
 class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
+
+    //var updateDiscoveredPeers: (([(MCPeerID, String?)]) -> Void)?
     
-    var updateDiscoveredPeers: (([MCPeerID]) -> Void)?
+    @Published var discoveredPeers: [(MCPeerID, String?)] = []
+    
+    @Published var gameCode = ""
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
-        if let discoveryInfo = info, let gameCode = discoveryInfo["gameCode"] {
-            // Handle the game code received from the advertising device
-            print("Received game code:", gameCode)
-        }
+        let gameCode = info?["gameCode"]
         
         DispatchQueue.main.async { [weak self] in
-            self?.updateDiscoveredPeers?([peerID])
+            if let gameCode = gameCode {
+                self?.gameCode = gameCode // Update the gameCode directly
+                self?.discoveredPeers.append((peerID, gameCode))
+                // ...
+            } else {
+                // ...
+            }
         }
     }
-
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         DispatchQueue.main.async { [weak self] in
-            self?.updateDiscoveredPeers?([])
+            self?.discoveredPeers.removeAll(where: { $0.0 == peerID })
         }
     }
     
