@@ -87,6 +87,11 @@ struct JoinMultiplayerPeerView: View {
         
         VStack (spacing: 10) {
             
+            Text("Socket GAME CODE \(socketManager.gameCode)")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            
             Text("State GAME CODE \(gameCode)")
                 .font(.title)
                 .fontWeight(.black)
@@ -114,6 +119,26 @@ struct JoinMultiplayerPeerView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                         Spacer()
+                    }
+                }
+            }
+            Text("List of socket users")
+                .font(.body)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+            VStack {
+                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
+                    HStack {
+                        Circle()
+                            .foregroundColor(user.color)
+                            .frame(width: 20, height: 20)
+                        Text(user.name)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Spacer()
+                        
                     }
                 }
             }
@@ -156,10 +181,13 @@ struct JoinMultiplayerPeerView: View {
                     let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
                     gameCode = code
                     socketManager.setGameCode(code)
+                    join()
                     
                 } else {
                     if let hostGameCode = multipeerDelegate.discoveredPeers.first?.1 {
                         gameCode = hostGameCode
+                        socketManager.setGameCode(gameCode)
+                        join()
                     }
                 }
                 startAdvertising(peerID: peerID, serviceType: serviceType)
