@@ -69,22 +69,22 @@ struct JoinMultiplayerPeerView: View {
     var body: some View {
         
         //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
-//        ZStack {
-//            Circle()
-//                .stroke(Color.gray.opacity(1))
-//                .scaleEffect(circleScale)
-//            .opacity(isSeeking ? 0.1 : 1)
-//                .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
-//
-//                .onAppear {
-//                    withAnimation {
-//                        circleScale = 1.8 // Set the desired scale for the circle
-//
-//                    }
-//                }
-//        }
-//        .offset(y: UIScreen.main.bounds.height/2.5)
-//
+        ZStack {
+            Circle()
+                .stroke(Color.gray.opacity(1))
+                .scaleEffect(circleScale)
+            .opacity(isSeeking ? 0.1 : 1)
+                .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
+
+                .onAppear {
+                    withAnimation {
+                        circleScale = 0.8 // Set the desired scale for the circle
+
+                    }
+                }
+        }
+        //.offset(y: UIScreen.main.bounds.height/2.5)
+
         VStack {
             HStack {
                 Button(action: {

@@ -89,7 +89,7 @@ struct GameOverView: View {
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.white)
-                    .padding(.bottom, 32)
+                    .padding(.bottom, 24)
                 ForEach(highscores.indices, id: \.self) { index in
                     let highscore = highscores[index]
                     let rowRank = highscore.rank
@@ -136,7 +136,7 @@ struct GameOverView: View {
                             .foregroundColor(.white)
                     }
                     .foregroundColor(.white)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 4)
                     .frame(maxWidth: .infinity)
                     .opacity(rankToAnimate == 0 || rankToAnimate == rowRank ? 1 : 0.3)
                     .animation(.easeInOut(duration: 1.0).delay(Double(index) * 0.1))
@@ -153,9 +153,6 @@ struct GameOverView: View {
             }
             .padding()
             
-            
-            Spacer()
-            
             Button(action: {
                 loadData()
                 score = 0
@@ -167,9 +164,7 @@ struct GameOverView: View {
             }
             .buttonStyle(OrdinaryButtonStyle())
             .padding()
-            
-            Spacer()
-            
+                        
             Button(action: {
                 currentScene = "Start"
             }) {
@@ -186,7 +181,7 @@ struct GameOverView: View {
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.white)
-                    .padding(.bottom, 32)
+                    .padding(.bottom, 24)
                 ForEach(highscores.indices, id: \.self) { index in
                     let highscore = highscores[index]
                     HStack {
@@ -232,20 +227,17 @@ struct GameOverView: View {
                             .foregroundColor(.white)
                     }
                     .foregroundColor(.white)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 4)
                     .frame(maxWidth: .infinity)
                 }
             }
             .padding()
             
-            
             Text("Your score: \(score) (\(highestScore))")
                 .font(.body)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-            
-            Spacer()
-            
+                        
             Button(action: {
                 loadData()
                 score = 0
@@ -257,9 +249,7 @@ struct GameOverView: View {
             }
             .buttonStyle(OrdinaryButtonStyle())
             .padding()
-            
-            Spacer()
-            
+                        
             Button(action: {
                 currentScene = "Start"
             }) {
