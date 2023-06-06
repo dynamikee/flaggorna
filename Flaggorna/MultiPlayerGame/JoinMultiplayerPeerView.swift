@@ -31,6 +31,8 @@ struct JoinMultiplayerPeerView: View {
     
     @StateObject private var multipeerDelegate = MultipeerDelegate()
     
+    @State var isSeeking = false
+    
     let serviceType = "flaggorna-quiz"
     
     private func loadUserData() {
@@ -62,7 +64,27 @@ struct JoinMultiplayerPeerView: View {
         .gray: ".gray"
     ]
     
+    @State private var circleScale: CGFloat = 0
+    
     var body: some View {
+        
+        //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
+//        ZStack {
+//            Circle()
+//                .stroke(Color.gray.opacity(1))
+//                .scaleEffect(circleScale)
+//            .opacity(isSeeking ? 0.1 : 1)
+//                .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
+//
+//                .onAppear {
+//                    withAnimation {
+//                        circleScale = 1.8 // Set the desired scale for the circle
+//
+//                    }
+//                }
+//        }
+//        .offset(y: UIScreen.main.bounds.height/2.5)
+//
         VStack {
             HStack {
                 Button(action: {
@@ -83,116 +105,109 @@ struct JoinMultiplayerPeerView: View {
             Spacer()
         }
         .padding()
-        
-        
-        VStack (spacing: 10) {
-            
-            Text("Socket GAME CODE \(socketManager.gameCode)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            
-            Text("State GAME CODE \(gameCode)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            
-            Text("Peer GAME CODE \(multipeerDelegate.gameCode)")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-            
-            Text("List of peers")
-                .font(.body)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-            
-            VStack {
-                ForEach(multipeerDelegate.discoveredPeers, id: \.0.displayName) { peer in
-                    HStack {
-                        Circle()
-                            .foregroundColor(.blue)
-                            .frame(width: 20, height: 20)
-                        Text(peer.0.displayName)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                }
-            }
-            Text("List of socket users")
-                .font(.body)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-            VStack {
-                ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
-                    HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Spacer()
-                        
-                    }
-                }
-            }
-
-            
-            Button(action: {
-                if socketManager.users.count < 2 {
-                    // Starta single game?
-                    
-                } else {
-                    
-                    self.socketManager.stopUsersTimer()
-                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    
-                    let flagQuestion = socketManager.generateFlagQuestion()
-                    let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
-                    let jsonData = try? JSONEncoder().encode(startMessage)
-                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-                    socketManager.send(jsonString)
-                }
-            }){
-                Text("START GAME")
-            }
-            .padding()
-            .buttonStyle(OrdinaryButtonStyle())
-
-        }
-        .padding()
         .onAppear {
             loadUserData()
-            self.socketManager.socket.connect()
-            self.socketManager.startUsersTimer()
-            self.currentRound = rounds
-            
-            let peerID = MCPeerID(displayName: UIDevice.current.name)
-            startBrowsingForPeers(peerID: peerID, serviceType: serviceType)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                if multipeerDelegate.discoveredPeers.isEmpty {
-                    let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
-                    gameCode = code
-                    socketManager.setGameCode(code)
-                    join()
-                    
-                } else {
-                    if let hostGameCode = multipeerDelegate.discoveredPeers.first?.1 {
-                        gameCode = hostGameCode
-                        socketManager.setGameCode(gameCode)
-                        join()
-                    }
-                }
-                startAdvertising(peerID: peerID, serviceType: serviceType)
+            if name.isEmpty {
+                isSeeking = false
+            } else {
+                isSeeking = true
             }
         }
+        
+        Spacer()
+        
+        if isSeeking == false {
+            HStack {
+                TextField("Enter your name", text: $name)
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                Button(action: {
+                    isSeeking = true
+                }) {
+                    Text(Image(systemName: "arrow.forward"))
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                }
+                .disabled(name.isEmpty)
+            }
+            .padding()
+        } else {
+            VStack (spacing: 10) {
+                Spacer()
+                Text("Searching for players...")
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                VStack {
+                    ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
+                        HStack {
+                            Circle()
+                                .foregroundColor(user.color)
+                                .frame(width: 20, height: 20)
+                            Text(user.name)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                    }
+                }
+                Spacer()
+                Button(action: {
+                    if socketManager.users.count < 2 {
+                        // Starta single game?
+                    } else {
+                        self.socketManager.stopUsersTimer()
+                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                        
+                        let flagQuestion = socketManager.generateFlagQuestion()
+                        let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                        let jsonData = try? JSONEncoder().encode(startMessage)
+                        let jsonString = String(data: jsonData!, encoding: .utf8)!
+                        socketManager.send(jsonString)
+                        
+                        isSeeking = false
+                    }
+                }){
+                    Text("START GAME")
+                }
+                .padding()
+                .buttonStyle(OrdinaryButtonStyle())
+            }
+            .padding()
+            .onAppear {
+                loadUserData()
+                self.socketManager.socket.connect()
+                self.socketManager.startUsersTimer()
+                self.currentRound = rounds
+                
+                let peerID = MCPeerID(displayName: UIDevice.current.name)
+                startBrowsingForPeers(peerID: peerID, serviceType: serviceType)
+                
+                isSeeking = true
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    if multipeerDelegate.discoveredPeers.isEmpty {
+                        let code = String(format: "%04d", arc4random_uniform(9000) + 1000)
+                        gameCode = code
+                        socketManager.setGameCode(code)
+                        join()
+                        
+                    } else {
+                        if let hostGameCode = multipeerDelegate.discoveredPeers.first?.1 {
+                            gameCode = hostGameCode
+                            socketManager.setGameCode(gameCode)
+                            join()
+                        }
+                    }
+                    startAdvertising(peerID: peerID, serviceType: serviceType)
+                }
+            }
+        }
+        
     }
     
     private func join() {
