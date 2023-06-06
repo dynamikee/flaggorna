@@ -54,22 +54,22 @@ struct StartGameView: View {
                     SocketManager.shared.currentScene = "JoinMultiplayerPeer"
                     
                 }){
-                    Text("PARTY GAME")
+                    Text("PLAY WITH FRIENDS")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
                 
-                Button(action: {
-                    score = 0
-                    rounds = numberOfRounds
-                    multiplayer = true
-                    SocketManager.shared.currentScene = "JoinMultiplayer"
-                    
-                }){
-                    Text("REMOTE GAME")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
+//                Button(action: {
+//                    score = 0
+//                    rounds = numberOfRounds
+//                    multiplayer = true
+//                    SocketManager.shared.currentScene = "JoinMultiplayer"
+//
+//                }){
+//                    Text("REMOTE GAME")
+//                }
+//                .buttonStyle(OrdinaryButtonStyle())
+//                .padding()
                 
                 Button(action: {
                     loadData()
@@ -78,7 +78,7 @@ struct StartGameView: View {
                     self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
                     currentScene = "GetReady"
                 }){
-                    Text("SINGLE GAME")
+                    Text("SINGLE PLAYER")
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()

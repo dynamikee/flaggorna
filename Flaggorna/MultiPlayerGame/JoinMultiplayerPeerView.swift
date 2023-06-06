@@ -136,7 +136,7 @@ struct JoinMultiplayerPeerView: View {
         } else {
             VStack (spacing: 10) {
                 Spacer()
-                Text("Searching for players...")
+                Text("Searching nearby players...")
                     .font(.body)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
