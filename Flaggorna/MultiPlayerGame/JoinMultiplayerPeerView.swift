@@ -75,6 +75,7 @@ struct JoinMultiplayerPeerView: View {
     ]
     
     @State private var circleScale: CGFloat = 0
+        private let animationDuration: TimeInterval = 3.0
     
     var body: some View {
         
@@ -134,18 +135,13 @@ struct JoinMultiplayerPeerView: View {
         } else {
             //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
             ZStack {
-                    Circle()
-                        .stroke(Color.gray.opacity(1))
-                        .scaleEffect(circleScale)
-                    .opacity(isSeeking ? 0.1 : 1)
-                        .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
-                        .onAppear {
-                            withAnimation {
-                                circleScale = 0.8 // Set the desired scale for the circle
-
-                            }
-                        }
-                
+                Circle()
+                                    .stroke(Color.gray.opacity(1))
+                                    .scaleEffect(circleScale)
+                                    .opacity(Double(1 - circleScale))
+                                    .onAppear {
+                                        startAnimation()
+                                    }
                 
             }
             //.offset(y: UIScreen.main.bounds.height/2.5)
@@ -290,6 +286,12 @@ struct JoinMultiplayerPeerView: View {
         //multipeerDelegate.updateDiscoveredPeers = nil
         // Stop browsing for peers
     }
+    
+    private func startAnimation() {
+            withAnimation(Animation.easeInOut(duration: animationDuration).repeatForever(autoreverses: false)) {
+                circleScale = 1
+            }
+        }
     
     
 }
