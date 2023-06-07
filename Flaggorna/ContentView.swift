@@ -237,6 +237,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
 
                         }
+                        
                     case "resetGame":
 
                         

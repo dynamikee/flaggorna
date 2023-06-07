@@ -15,6 +15,7 @@ struct JoinMultiplayerPeerView: View {
     @Binding var rounds: Int
     @Binding var multiplayer: Bool
     
+    @State private var uuidString: String = ""
     @State private var name: String = ""
     @State private var color: Color = .white
     @State private var score: Int = 0
@@ -36,6 +37,12 @@ struct JoinMultiplayerPeerView: View {
     let serviceType = "flaggorna-quiz"
     
     private func loadUserData() {
+        if let userID = userDefaults.string(forKey: "userID") {
+            self.uuidString = userID
+        } else {
+            let userID = UUID().uuidString
+            self.uuidString = userID
+        }
         if let name = userDefaults.string(forKey: "userName") {
             self.name = name
         }
@@ -46,6 +53,7 @@ struct JoinMultiplayerPeerView: View {
             self.color = colors.randomElement()!
         }
     }
+
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -213,16 +221,23 @@ struct JoinMultiplayerPeerView: View {
     }
     
     private func join() {
-        let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
+        guard let uuid = UUID(uuidString: uuidString) else {
+            // Handle the case where the UUID string is not valid
+            return
+        }
+        
+        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound)
         
         // Save user data to UserDefaults
         let defaults = UserDefaults.standard
+        defaults.set(uuidString, forKey: "userID")
         defaults.set(name, forKey: "userName")
         defaults.set(colorToString[color], forKey: "userColor")
         
         socketManager.addUser(user)
         socketManager.currentUser = user
     }
+
     
     private func startBrowsingForPeers(peerID: MCPeerID, serviceType: String) {
         let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
