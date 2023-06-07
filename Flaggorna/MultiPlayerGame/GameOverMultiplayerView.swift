@@ -58,27 +58,28 @@ struct GameOverMultiplayerView: View {
                     .offset(x: 60, y : 70)
             }
             
-                Button(action: {
-                    
-                    score = 0
-                    
-                    resetGame()
-                    socketManager.loadData()
-                    
-                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    
-                    let flagQuestion = socketManager.generateFlagQuestion()
-                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
-                    let jsonData = try? JSONEncoder().encode(startMessage)
-                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-                    socketManager.send(jsonString)
-
-
-                }){
-                    Text("PLAY AGAIN")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
+//                Button(action: {
+//
+//                    score = 0
+//
+//                    resetGame()
+//                    socketManager.loadData()
+//
+//                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
+//
+//                    let flagQuestion = socketManager.generateFlagQuestion()
+//                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+//                    let jsonData = try? JSONEncoder().encode(startMessage)
+//                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+//                    socketManager.send(jsonString)
+//
+//                    print("What we send to reset the game: \(jsonString)")
+//
+//                }){
+//                    Text("PLAY AGAIN")
+//                }
+//                .buttonStyle(OrdinaryButtonStyle())
+//                .padding()
             
             Spacer()
 
@@ -115,6 +116,8 @@ struct GameOverMultiplayerView: View {
             user.currentRound = 10
             user.score = 0
         }
+        
+        print("Resetting game for: \(socketManager.users)")
         
         // Send a message to all users to inform them of the reset
         let resetMessage = ResetMessage(type: "resetGame", gameCode: socketManager.gameCode)

@@ -39,16 +39,11 @@ struct MainGameMultiplayerView: View {
 
                 Spacer()
                 
-                SceneViewContainer(scene: scene, randomCountry: question.flag)
+                GeometryReader { geometry in
+                                    SceneViewContainer(scene: scene, randomCountry: question.flag)
+                                        .frame(height: geometry.size.width * 0.9)
+                                }
 
-                    .padding(.horizontal, 24)
-                
-                
-//                Image(question.flag)
-//                    .resizable()
-//                    .border(.gray, width: 1)
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: UIScreen.main.bounds.width * 0.8)
 
                 Spacer()
                 VStack(spacing: 24) {

@@ -32,8 +32,7 @@ struct MainGameView: View {
     var timer: Timer?
     
     var body: some View {
-        
-        
+    
         VStack {
             ProgressView(value: Double(timeRemaining), total: 4) {
                 
@@ -42,13 +41,15 @@ struct MainGameView: View {
             .progressViewStyle(MyProgressViewStyle())
             .animation(.linear(duration: 1), value: timeRemaining) // Add an animation modifier with a linear timing curve
             
-            Spacer()
             
             if let randomCountry = randomCountry {
                 
-                SceneViewContainer(scene: scene, randomCountry: randomCountry.flag)
-                                .padding(.horizontal, 24)
-                Spacer()
+                GeometryReader { geometry in
+                    SceneViewContainer(scene: scene, randomCountry: randomCountry.flag)
+                                        .frame(height: geometry.size.width * 0.9)
+                                }
+                
+                
                 VStack(spacing: 24){
                     ForEach(randomCountryNames, id: \.self) { countryName in
                         Button(action: {

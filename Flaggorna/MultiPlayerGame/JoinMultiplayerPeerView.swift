@@ -21,6 +21,8 @@ struct JoinMultiplayerPeerView: View {
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
     @State private var gameCode: String = ""
+    @State private var showAlert = false
+
     
     @EnvironmentObject var socketManager: SocketManager
     
@@ -76,52 +78,29 @@ struct JoinMultiplayerPeerView: View {
     
     var body: some View {
         
-        //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
-        ZStack {
-                Circle()
-                    .stroke(Color.gray.opacity(1))
-                    .scaleEffect(circleScale)
-                .opacity(isSeeking ? 0.1 : 1)
-                    .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
-                    .onAppear {
-                        withAnimation {
-                            circleScale = 0.8 // Set the desired scale for the circle
 
-                        }
-                    }
-            
-            
-        }
-        //.offset(y: UIScreen.main.bounds.height/2.5)
+//        VStack {
+//            HStack {
+//                Button(action: {
+//                    self.socketManager.users = []
+//                    multiplayer = false
+//                    self.socketManager.countries = []
+//                    currentScene = "Start"
+//                    self.socketManager.socket.disconnect()
+//
+//                }) {
+//                    Text(Image(systemName: "xmark"))
+//                        .font(.title)
+//                        .fontWeight(.black)
+//                        .foregroundColor(.white)
+//                }
+//                Spacer()
+//
+//            }
+//            Spacer()
+//        }
+//        .padding()
 
-        VStack {
-            HStack {
-                Button(action: {
-                    socketManager.users = []
-                    multiplayer = false
-                    socketManager.countries = []
-                    currentScene = "Start"
-                    
-                }) {
-                    Text(Image(systemName: "xmark"))
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                }
-                Spacer()
-                
-            }
-            Spacer()
-        }
-        .padding()
-        .onAppear {
-            loadUserData()
-            if name.isEmpty {
-                isSeeking = false
-            } else {
-                isSeeking = true
-            }
-        }
         
         Spacer()
         
@@ -133,6 +112,7 @@ struct JoinMultiplayerPeerView: View {
                     .foregroundColor(.white)
                 Button(action: {
                     isSeeking = true
+                    userDefaults.set(name, forKey: "userName")
                 }) {
                     Text(Image(systemName: "arrow.forward"))
                         .font(.title)
@@ -142,7 +122,34 @@ struct JoinMultiplayerPeerView: View {
                 .disabled(name.isEmpty)
             }
             .padding()
+            .onAppear {
+                loadUserData()
+    //            if name.isEmpty {
+    //                isSeeking = false
+    //            } else {
+    //                isSeeking = true
+    //            }
+            }
+            
         } else {
+            //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
+            ZStack {
+                    Circle()
+                        .stroke(Color.gray.opacity(1))
+                        .scaleEffect(circleScale)
+                    .opacity(isSeeking ? 0.1 : 1)
+                        .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false))
+                        .onAppear {
+                            withAnimation {
+                                circleScale = 0.8 // Set the desired scale for the circle
+
+                            }
+                        }
+                
+                
+            }
+            //.offset(y: UIScreen.main.bounds.height/2.5)
+            
             VStack (spacing: 10) {
                 Spacer()
                 Text("Searching nearby players...")
@@ -166,9 +173,25 @@ struct JoinMultiplayerPeerView: View {
                     }
                 }
                 Spacer()
+                if showAlert {
+                        Text("Friends need to be nearby to play")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        
+                                    .opacity(showAlert ? 1 : 0)
+                                    .animation(.easeInOut(duration: 0.5))
+                            }
+
                 Button(action: {
                     if socketManager.users.count < 2 {
-                        // Starta single game?
+                        showAlert = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                showAlert = false
+                            }
+                        }
                     } else {
                         self.socketManager.stopUsersTimer()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
@@ -197,7 +220,7 @@ struct JoinMultiplayerPeerView: View {
                 let peerID = MCPeerID(displayName: UIDevice.current.name)
                 startBrowsingForPeers(peerID: peerID, serviceType: serviceType)
                 
-                isSeeking = true
+                //isSeeking = true
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     if multipeerDelegate.discoveredPeers.isEmpty {
