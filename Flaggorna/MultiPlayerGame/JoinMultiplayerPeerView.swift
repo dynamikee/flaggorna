@@ -80,27 +80,32 @@ struct JoinMultiplayerPeerView: View {
     var body: some View {
         
 
-//        VStack {
-//            HStack {
-//                Button(action: {
-//                    self.socketManager.users = []
-//                    multiplayer = false
-//                    self.socketManager.countries = []
-//                    currentScene = "Start"
-//                    self.socketManager.socket.disconnect()
-//
-//                }) {
-//                    Text(Image(systemName: "xmark"))
-//                        .font(.title)
-//                        .fontWeight(.black)
-//                        .foregroundColor(.white)
-//                }
-//                Spacer()
-//
-//            }
-//            Spacer()
-//        }
-//        .padding()
+        VStack {
+            HStack {
+                Button(action: {
+                    if let currentUser = self.socketManager.currentUser {
+                        self.socketManager.users.remove(currentUser)
+                        self.socketManager.sendUserRemoval(currentUser)
+                    }
+                    
+                    //self.socketManager.users = []
+                    multiplayer = false
+                    //self.socketManager.countries = []
+                    currentScene = "Start"
+                    self.socketManager.socket.disconnect()
+
+                }) {
+                    Text(Image(systemName: "xmark"))
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                }
+                Spacer()
+
+            }
+            Spacer()
+        }
+        .padding()
 
         
         Spacer()

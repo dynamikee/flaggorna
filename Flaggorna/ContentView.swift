@@ -133,6 +133,20 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             }
                         }
                         
+                    case "userRemoval":
+                        if let gameCode = json["gameCode"] as? String,
+                           let userIdString = json["userId"] as? String,
+                           let userId = UUID(uuidString: userIdString) {
+                            DispatchQueue.main.async { [weak self] in
+                                if self?.gameCode == gameCode,
+                                   let user = self?.users.first(where: { $0.id == userId }) {
+                                    self?.users.remove(user)
+                                    self?.objectWillChange.send()
+                                }
+                            }
+                        }
+
+                        
                     case "startGame":
                         guard let messageGameCode = json["gameCode"] as? String,
                               messageGameCode == self.gameCode else {
@@ -341,6 +355,22 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
             print(jsonString)
         }
     }
+    
+    func sendUserRemoval(_ user: User) {
+        let removalDict: [String: Any] = [
+            "type": "userRemoval",
+            "gameCode": self.gameCode,
+            "userId": user.id.uuidString
+        ]
+        
+        if let jsonData = try? JSONSerialization.data(withJSONObject: removalDict, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            socket.write(string: jsonString)
+            print("Sending user removal")
+            print(jsonString)
+        }
+    }
+
     
     func sendScoreAndRoundUpdate() {
         guard let currentUser = currentUser else {
