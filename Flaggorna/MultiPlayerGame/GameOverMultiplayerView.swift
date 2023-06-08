@@ -16,6 +16,8 @@ struct GameOverMultiplayerView: View {
     
     @EnvironmentObject var socketManager: SocketManager
 
+    @State var showAlert = false
+    
     var body: some View {
         VStack(spacing: 32)  {
             Spacer()
@@ -58,34 +60,56 @@ struct GameOverMultiplayerView: View {
                     .offset(x: 60, y : 70)
             }
             
-//                Button(action: {
-//
-//                    score = 0
-//
-//                    resetGame()
-//                    socketManager.loadData()
-//
-//                    SocketManager.shared.currentScene = "GetReadyMultiplayer"
-//
-//                    let flagQuestion = socketManager.generateFlagQuestion()
-//                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
-//                    let jsonData = try? JSONEncoder().encode(startMessage)
-//                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-//                    socketManager.send(jsonString)
-//
-//                    print("What we send to reset the game: \(jsonString)")
-//
-//                }){
-//                    Text("PLAY AGAIN")
-//                }
-//                .buttonStyle(OrdinaryButtonStyle())
-//                .padding()
+            if showAlert {
+                    Text("Need to be at least two players")
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    
+                                .opacity(showAlert ? 1 : 0)
+                                .animation(.easeInOut(duration: 0.5))
+                        }
+            
+                Button(action: {
+
+                    if socketManager.users.count < 2 {
+                        showAlert = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                showAlert = false
+                            }
+                        }
+                    } else {
+                        
+                        score = 0
+                        
+                        resetGame()
+                        socketManager.loadData()
+                        
+                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                        
+                        let flagQuestion = socketManager.generateFlagQuestion()
+                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+                        let jsonData = try? JSONEncoder().encode(startMessage)
+                        let jsonString = String(data: jsonData!, encoding: .utf8)!
+                        socketManager.send(jsonString)
+                        
+                    }
+                }){
+                    Text("PLAY AGAIN")
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
             
             Spacer()
 
             
             Button(action: {
-                //self.socketManager.stopUsersTimer()
+                if let currentUser = self.socketManager.currentUser {
+                    self.socketManager.users.remove(currentUser)
+                    self.socketManager.sendUserRemoval(currentUser)
+                }
                 
                 socketManager.users = []
                 multiplayer = false
