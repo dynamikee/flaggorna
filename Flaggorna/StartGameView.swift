@@ -195,7 +195,12 @@ struct FlagStatisticsView: View {
         ZStack {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                 .edgesIgnoringSafeArea(.all)
+            
+            
             ScrollView {
+                Text("Your answers")
+                    .bold()
+                    .padding(.top, 24)
                 VStack {
                     ForEach(sortedFlagData, id: \.self) { data in
                         HStack {
@@ -217,6 +222,7 @@ struct FlagStatisticsView: View {
                         .padding(4)
                     }
                 }
+                .padding()
             }
             .preferredColorScheme(.dark)
         }
