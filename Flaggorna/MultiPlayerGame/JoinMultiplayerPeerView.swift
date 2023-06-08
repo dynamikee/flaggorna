@@ -141,7 +141,7 @@ struct JoinMultiplayerPeerView: View {
             //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
             ZStack {
                 Circle()
-                                    .stroke(Color.gray.opacity(1))
+                                    .stroke(Color.white.opacity(1))
                                     .scaleEffect(circleScale)
                                     .opacity(Double(1 - circleScale))
                                     .onAppear {

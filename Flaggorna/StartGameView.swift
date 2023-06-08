@@ -18,33 +18,32 @@ struct StartGameView: View {
     @Binding var roundsArray: [RoundStatus]
     
     @State private var offset = CGSize.zero
+    @State private var isSettingsViewActive = false
     
     var body: some View {
-        NavigationView {
+        
             VStack {
                 HStack {
                     Spacer()
-                    NavigationLink(destination: FlagStatisticsView(flagData: fetchFlagData())) {
+                    Button(action: {
+                        isSettingsViewActive = true
+                        
+                    }){
                         Image(systemName: "person.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
                             .foregroundColor(.white)
+                    
                     }
-                    .padding(15)
-                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
-                    .cornerRadius(16)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white, lineWidth: 8)
-                    )
-                    .foregroundColor(.white)
-                    //.padding(.top, 52)
+                    .buttonStyle(OrdinaryButtonStyle())
                     .padding()
-                    .alignmentGuide(HorizontalAlignment.trailing) { _ in
-                        UIScreen.main.bounds.width - 24 // Adjust the offset as needed
-                    }
+                    .sheet(isPresented: $isSettingsViewActive) {
+                                    FlagStatisticsView(flagData: fetchFlagData())
+                                }
+                    
                 }
+                
                 Spacer()
                 
                 Button(action: {
@@ -109,8 +108,7 @@ struct StartGameView: View {
             .onAppear {
                 SocketManager.shared.loadData()
             }
-        }
-        .accentColor(.white)
+        
     }
     
     private func loadData() {
