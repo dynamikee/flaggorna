@@ -226,7 +226,6 @@ struct FlagStatisticsView: View {
             }
             .preferredColorScheme(.dark)
         }
-        .navigationBarTitle("Your answers")
     }
     
 }
