@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>To be able to play with friends</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,7 +15,7 @@
 	</array>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_Flaggorna._tcp</string>
+		<string>_flaggorna-quiz._tcp</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array/>
