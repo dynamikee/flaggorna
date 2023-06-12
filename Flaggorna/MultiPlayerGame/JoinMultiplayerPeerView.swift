@@ -25,6 +25,8 @@ struct JoinMultiplayerPeerView: View {
     @State private var gameCode: String = ""
     @State private var needMorePlayersAlert = false
     @State private var premiumAlert = false
+    
+    private let storeKitDelegate = StoreKitDelegate()
 
     
     @EnvironmentObject var socketManager: SocketManager
@@ -248,8 +250,25 @@ struct JoinMultiplayerPeerView: View {
                             // Set premium status to true
                             userDefaults.set("true", forKey: "premium")
                             
-                            // Continue with the game logic
-                            // ...
+                            guard SKPaymentQueue.canMakePayments() else {
+                                // Show an error message or handle the inability to make purchases
+                                return
+                            }
+                            
+                            // Create an instance of the delegate
+                            let storeKitDelegate = StoreKitDelegate()
+
+                            // Create a set containing the product identifiers
+                            let productIdentifiers: Set<String> = ["flaggorna-premium"]
+
+                            // Create the product request
+                            let productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+                            productsRequest.delegate = storeKitDelegate
+
+                            // Start the request
+                            productsRequest.start()
+                            
+                            
                         },
                         secondaryButton: .default(Text("No thanks")) {
                             // Set premium status to false
@@ -262,6 +281,7 @@ struct JoinMultiplayerPeerView: View {
                 
                 
             }
+            .preferredColorScheme(.dark)
             .padding()
             .onAppear {
                 loadUserData()
@@ -350,6 +370,34 @@ struct JoinMultiplayerPeerView: View {
                 circleScale = 1
             }
         }
+    
+    class StoreKitDelegate: NSObject, SKProductsRequestDelegate {
+
+        // Implement the delegate method to handle the received product information
+        func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+            // Process the received products
+            let products = response.products
+            // Access the necessary product information, such as price, title, description, etc.
+            for product in products {
+                let localizedTitle = product.localizedTitle
+                let localizedDescription = product.localizedDescription
+                let price = product.price
+                // You can access other properties of the product as well
+                // ...
+            }
+        }
+
+        // Implement the delegate method to handle request failure
+        func request(_ request: SKRequest, didFailWithError error: Error) {
+            // Handle the error, display an error message, or take appropriate action
+        }
+
+        // Implement the delegate method to perform any necessary cleanup or finalization
+        func requestDidFinish(_ request: SKRequest) {
+            // Perform cleanup or finalization tasks if needed
+        }
+    }
+
     
     
 }
