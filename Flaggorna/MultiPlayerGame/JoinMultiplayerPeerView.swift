@@ -21,6 +21,7 @@ struct JoinMultiplayerPeerView: View {
     @State private var color: Color = .white
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
+    @State private var premium: Bool = false
     @State private var gameCode: String = ""
     @State private var showAlert = false
 
@@ -257,7 +258,7 @@ struct JoinMultiplayerPeerView: View {
             return
         }
         
-        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound)
+        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound, premium: premium)
         
         // Save user data to UserDefaults
         let defaults = UserDefaults.standard
