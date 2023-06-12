@@ -23,7 +23,8 @@ struct JoinMultiplayerPeerView: View {
     @State private var currentRound: Int = 0
     @State private var premium: Bool = false
     @State private var gameCode: String = ""
-    @State private var showAlert = false
+    @State private var needMorePlayersAlert = false
+    @State private var premiumAlert = false
 
     
     @EnvironmentObject var socketManager: SocketManager
@@ -55,6 +56,9 @@ struct JoinMultiplayerPeerView: View {
             self.color = color
         } else {
             self.color = colors.randomElement()!
+        }
+        if let premiumString = userDefaults.string(forKey: "premium") {
+            self.premium = Bool(premiumString) ?? false
         }
     }
 
@@ -176,26 +180,29 @@ struct JoinMultiplayerPeerView: View {
                     }
                 }
                 Spacer()
-                if showAlert {
+                if needMorePlayersAlert {
                         Text("Friends need to be nearby to play")
                         .font(.body)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.white)
                         
-                                    .opacity(showAlert ? 1 : 0)
+                                    .opacity(needMorePlayersAlert ? 1 : 0)
                                     .animation(.easeInOut(duration: 0.5))
                             }
 
                 Button(action: {
                     if socketManager.users.count < 2 {
-                        showAlert = true
+                        needMorePlayersAlert = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             withAnimation {
-                                showAlert = false
+                                needMorePlayersAlert = false
                             }
                         }
-                    } else if socketManager.users.count > 4 {
+                    } else if socketManager.users.count > 2 {
+                        
+                        premiumAlert = true
+                        
                         print("You have to pay")
                         
                     } else {
@@ -218,6 +225,25 @@ struct JoinMultiplayerPeerView: View {
                 }
                 .padding()
                 .buttonStyle(OrdinaryButtonStyle())
+                .alert(isPresented: $premiumAlert) {
+                    Alert(
+                        title: Text("Choose Premium"),
+                        message: Text("Do you want to play as a premium user?"),
+                        primaryButton: .default(Text("Premium")) {
+                            // Set premium status to true
+                            userDefaults.set("true", forKey: "premium")
+                            
+                            // Continue with the game logic
+                            // ...
+                        },
+                        secondaryButton: .default(Text("No Premium")) {
+                            // Set premium status to false
+                            userDefaults.set("false", forKey: "premium")
+                            // Continue with the game logic
+                            // ...
+                        }
+                    )
+                }
             }
             .padding()
             .onAppear {
