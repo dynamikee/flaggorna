@@ -200,15 +200,27 @@ struct JoinMultiplayerPeerView: View {
                             }
                         }
                     } else if socketManager.users.count > 2 {
+                        // premium is needed
+                        if premium {
+                            self.socketManager.stopUsersTimer()
+                            SocketManager.shared.currentScene = "GetReadyMultiplayer"
+                            
+                            let flagQuestion = socketManager.generateFlagQuestion()
+                            let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                            let jsonData = try? JSONEncoder().encode(startMessage)
+                            let jsonString = String(data: jsonData!, encoding: .utf8)!
+                            socketManager.send(jsonString)
+                            
+                            isSeeking = false
+                            
+                        } else {
+                            premiumAlert = true
+                            print("You have to pay")
+                        }
                         
-                        premiumAlert = true
-                        
-                        print("You have to pay")
                         
                     } else {
-                        
-                        
-                        
+                        // premium is not needed
                         self.socketManager.stopUsersTimer()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         
@@ -219,6 +231,9 @@ struct JoinMultiplayerPeerView: View {
                         socketManager.send(jsonString)
                         
                         isSeeking = false
+                        
+                        
+
                     }
                 }){
                     Text("START GAME")
@@ -291,6 +306,7 @@ struct JoinMultiplayerPeerView: View {
         defaults.set(uuidString, forKey: "userID")
         defaults.set(name, forKey: "userName")
         defaults.set(colorToString[color], forKey: "userColor")
+        defaults.set(String(premium), forKey: "premium")
         
         socketManager.addUser(user)
         socketManager.currentUser = user
