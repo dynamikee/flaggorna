@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import MultipeerConnectivity
+import StoreKit
 
 struct JoinMultiplayerPeerView: View {
     @Binding var currentScene: String
@@ -193,7 +194,13 @@ struct JoinMultiplayerPeerView: View {
                                 showAlert = false
                             }
                         }
+                    } else if socketManager.users.count > 4 {
+                        print("You have to pay")
+                        
                     } else {
+                        
+                        
+                        
                         self.socketManager.stopUsersTimer()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         
