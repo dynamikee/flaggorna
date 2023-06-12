@@ -121,9 +121,8 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                    let userName = userDict["name"] as? String,
                                    let userColorString = userDict["color"] as? String,
                                    let userScoreString = userDict["score"] as? String,
-                                   let userCurrentRoundString = userDict["currentRound"] as? String,
-                                let userPremiumString = userDict["premium"] as? String {
-                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString), score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0, premium: Bool(userPremiumString) ?? false)
+                                   let userCurrentRoundString = userDict["currentRound"] as? String {
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString), score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0)
                                     newUsers.insert(newUser)
                                 }
                                 
@@ -347,7 +346,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         let usersDict: [String: Any] = [
             "type": "usersArray",
             "gameCode": self.gameCode,
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound), "premium": String($0.premium)] }
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
             let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -562,15 +561,13 @@ class User: ObservableObject, Hashable, Identifiable {
     @Published var color: Color
     @Published var score: Int
     @Published var currentRound: Int
-    @Published var premium: Bool
     
-    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0, wifiName: String = "", premium: Bool) {
+    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0, wifiName: String = "") {
         self.id = id
         self.name = name
         self.color = color
         self.score = score
         self.currentRound = currentRound
-        self.premium = premium
     }
 }
 

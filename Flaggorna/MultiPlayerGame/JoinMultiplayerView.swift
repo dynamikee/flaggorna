@@ -305,7 +305,7 @@ struct JoinMultiplayerView: View {
     }
     
     private func join() {
-        let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound, premium: premium)
+        let user = User(id: UUID(), name: name, color: color, score: score, currentRound: currentRound)
         
         // Save user data to UserDefaults
         let defaults = UserDefaults.standard

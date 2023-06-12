@@ -242,16 +242,16 @@ struct JoinMultiplayerPeerView: View {
                 .buttonStyle(OrdinaryButtonStyle())
                 .alert(isPresented: $premiumAlert) {
                     Alert(
-                        title: Text("Choose Premium"),
-                        message: Text("Do you want to play as a premium user?"),
-                        primaryButton: .default(Text("Premium")) {
+                        title: Text("You need premium"),
+                        message: Text("To start a game with more then four friends you need to buy premium"),
+                        primaryButton: .default(Text("Ok, continue")) {
                             // Set premium status to true
                             userDefaults.set("true", forKey: "premium")
                             
                             // Continue with the game logic
                             // ...
                         },
-                        secondaryButton: .default(Text("No Premium")) {
+                        secondaryButton: .default(Text("No thanks")) {
                             // Set premium status to false
                             userDefaults.set("false", forKey: "premium")
                             // Continue with the game logic
@@ -259,6 +259,8 @@ struct JoinMultiplayerPeerView: View {
                         }
                     )
                 }
+                
+                
             }
             .padding()
             .onAppear {
@@ -290,6 +292,7 @@ struct JoinMultiplayerPeerView: View {
                 }
             }
         }
+            
         
     }
     
@@ -299,7 +302,7 @@ struct JoinMultiplayerPeerView: View {
             return
         }
         
-        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound, premium: premium)
+        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound)
         
         // Save user data to UserDefaults
         let defaults = UserDefaults.standard

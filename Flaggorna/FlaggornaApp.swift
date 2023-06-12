@@ -12,7 +12,7 @@ import CoreData
 @main
 struct FlaggornaApp: App {
     @StateObject var socketManager = SocketManager.shared
-    let user = User(id: UUID(), name: "", color: .white, score: 0, currentRound: 0, premium: false)
+    let user = User(id: UUID(), name: "", color: .white, score: 0, currentRound: 0)
     let persistenceController = PersistenceController.shared
 
     
