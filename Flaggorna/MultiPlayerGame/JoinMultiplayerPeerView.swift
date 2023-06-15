@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 import MultipeerConnectivity
-import StoreKit
 
 struct JoinMultiplayerPeerView: View {
     @Binding var currentScene: String
@@ -26,9 +25,6 @@ struct JoinMultiplayerPeerView: View {
     @State private var needMorePlayersAlert = false
     @State private var premiumAlert = false
     
-    private let storeKitDelegate = StoreKitDelegate()
-
-    
     @EnvironmentObject var socketManager: SocketManager
     
     private let userDefaults = UserDefaults.standard
@@ -42,6 +38,8 @@ struct JoinMultiplayerPeerView: View {
     @State var isSeeking = false
     
     let serviceType = "flaggorna-quiz"
+    
+    @State private var showStoreView = false
     
     private func loadUserData() {
         if let userID = userDefaults.string(forKey: "userID") {
@@ -63,7 +61,7 @@ struct JoinMultiplayerPeerView: View {
             self.premium = Bool(premiumString) ?? false
         }
     }
-
+    
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -83,11 +81,11 @@ struct JoinMultiplayerPeerView: View {
     ]
     
     @State private var circleScale: CGFloat = 0
-        private let animationDuration: TimeInterval = 3.0
+    private let animationDuration: TimeInterval = 3.0
     
     var body: some View {
         
-
+        
         VStack {
             HStack {
                 Button(action: {
@@ -101,7 +99,7 @@ struct JoinMultiplayerPeerView: View {
                     //self.socketManager.countries = []
                     currentScene = "Start"
                     self.socketManager.socket.disconnect()
-
+                    
                 }) {
                     Text(Image(systemName: "xmark"))
                         .font(.title)
@@ -109,12 +107,12 @@ struct JoinMultiplayerPeerView: View {
                         .foregroundColor(.white)
                 }
                 Spacer()
-
+                
             }
             Spacer()
         }
         .padding()
-
+        
         
         Spacer()
         
@@ -138,23 +136,23 @@ struct JoinMultiplayerPeerView: View {
             .padding()
             .onAppear {
                 loadUserData()
-    //            if name.isEmpty {
-    //                isSeeking = false
-    //            } else {
-    //                isSeeking = true
-    //            }
+                //            if name.isEmpty {
+                //                isSeeking = false
+                //            } else {
+                //                isSeeking = true
+                //            }
             }
             
         } else {
             //Denna animationen ställer till det så att knappen flyttas på startvyn när du går tillbaka. Vet inte om det gör det på fler ställen.
             ZStack {
                 Circle()
-                                    .stroke(Color.white.opacity(1))
-                                    .scaleEffect(circleScale)
-                                    .opacity(Double(1 - circleScale))
-                                    .onAppear {
-                                        startAnimation()
-                                    }
+                    .stroke(Color.white.opacity(1))
+                    .scaleEffect(circleScale)
+                    .opacity(Double(1 - circleScale))
+                    .onAppear {
+                        startAnimation()
+                    }
                 
             }
             //.offset(y: UIScreen.main.bounds.height/2.5)
@@ -183,16 +181,16 @@ struct JoinMultiplayerPeerView: View {
                 }
                 Spacer()
                 if needMorePlayersAlert {
-                        Text("Friends need to be nearby to play")
+                    Text("Friends need to be nearby to play")
                         .font(.body)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.white)
-                        
-                                    .opacity(needMorePlayersAlert ? 1 : 0)
-                                    .animation(.easeInOut(duration: 0.5))
-                            }
-
+                    
+                        .opacity(needMorePlayersAlert ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.5))
+                }
+                
                 Button(action: {
                     if socketManager.users.count < 2 {
                         needMorePlayersAlert = true
@@ -216,7 +214,7 @@ struct JoinMultiplayerPeerView: View {
                             isSeeking = false
                             
                         } else {
-                            premiumAlert = true
+                            showStoreView = true
                             print("You have to pay")
                         }
                         
@@ -235,48 +233,15 @@ struct JoinMultiplayerPeerView: View {
                         isSeeking = false
                         
                         
-
+                        
                     }
                 }){
                     Text("START GAME")
                 }
                 .padding()
                 .buttonStyle(OrdinaryButtonStyle())
-                .alert(isPresented: $premiumAlert) {
-                    Alert(
-                        title: Text("You need premium"),
-                        message: Text("To start a game with more then four friends you need to buy premium"),
-                        primaryButton: .default(Text("Ok, continue")) {
-                            // Set premium status to true
-                            userDefaults.set("true", forKey: "premium")
-                            
-                            guard SKPaymentQueue.canMakePayments() else {
-                                // Show an error message or handle the inability to make purchases
-                                return
-                            }
-                            
-                            // Create an instance of the delegate
-                            let storeKitDelegate = StoreKitDelegate()
-
-                            // Create a set containing the product identifiers
-                            let productIdentifiers: Set<String> = ["flaggorna-premium"]
-
-                            // Create the product request
-                            let productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
-                            productsRequest.delegate = storeKitDelegate
-
-                            // Start the request
-                            productsRequest.start()
-                            
-                            
-                        },
-                        secondaryButton: .default(Text("No thanks")) {
-                            // Set premium status to false
-                            userDefaults.set("false", forKey: "premium")
-                            // Continue with the game logic
-                            // ...
-                        }
-                    )
+                .sheet(isPresented: $showStoreView) {
+                    StoreView()
                 }
                 
                 
@@ -310,9 +275,11 @@ struct JoinMultiplayerPeerView: View {
                     }
                     startAdvertising(peerID: peerID, serviceType: serviceType)
                 }
+                
             }
-        }
             
+        }
+        
         
     }
     
@@ -329,12 +296,12 @@ struct JoinMultiplayerPeerView: View {
         defaults.set(uuidString, forKey: "userID")
         defaults.set(name, forKey: "userName")
         defaults.set(colorToString[color], forKey: "userColor")
-        defaults.set(String(premium), forKey: "premium")
+        
         
         socketManager.addUser(user)
         socketManager.currentUser = user
     }
-
+    
     
     private func startBrowsingForPeers(peerID: MCPeerID, serviceType: String) {
         let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
@@ -345,13 +312,13 @@ struct JoinMultiplayerPeerView: View {
     
     private func startAdvertising(peerID: MCPeerID, serviceType: String) {
         let discoveryInfo = ["gameCode": gameCode] // Include the game code in the discovery info
-
+        
         let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: discoveryInfo, serviceType: serviceType)
         advertiser.delegate = multipeerDelegate
         advertiser.startAdvertisingPeer()
         nearbyServiceAdvertiser = advertiser
     }
-
+    
     
     func updateDiscoveredPeers(_ peers: [(MCPeerID, String?)]) {
         DispatchQueue.main.async {
@@ -366,44 +333,14 @@ struct JoinMultiplayerPeerView: View {
     }
     
     private func startAnimation() {
-            withAnimation(Animation.easeInOut(duration: animationDuration).repeatForever(autoreverses: false)) {
-                circleScale = 1
-            }
-        }
-    
-    class StoreKitDelegate: NSObject, SKProductsRequestDelegate {
-
-        // Implement the delegate method to handle the received product information
-        func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-            // Process the received products
-            let products = response.products
-            // Access the necessary product information, such as price, title, description, etc.
-            for product in products {
-                let localizedTitle = product.localizedTitle
-                let localizedDescription = product.localizedDescription
-                let price = product.price
-                // You can access other properties of the product as well
-                // ...
-            }
-        }
-
-        // Implement the delegate method to handle request failure
-        func request(_ request: SKRequest, didFailWithError error: Error) {
-            // Handle the error, display an error message, or take appropriate action
-        }
-
-        // Implement the delegate method to perform any necessary cleanup or finalization
-        func requestDidFinish(_ request: SKRequest) {
-            // Perform cleanup or finalization tasks if needed
+        withAnimation(Animation.easeInOut(duration: animationDuration).repeatForever(autoreverses: false)) {
+            circleScale = 1
         }
     }
-
-    
-    
 }
 
 class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
-
+    
     //var updateDiscoveredPeers: (([(MCPeerID, String?)]) -> Void)?
     
     @Published var discoveredPeers: [(MCPeerID, String?)] = []
@@ -439,4 +376,3 @@ class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDeleg
     }
     
 }
-

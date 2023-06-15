@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
 		BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */; };
+		BA6793102A38600300955104 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA67930F2A38600300955104 /* StoreKit.framework */; };
 		BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */; };
 		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
 		BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
+		BA82C9902A3B867400BE4E9C /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA82C98F2A3B867300BE4E9C /* StoreView.swift */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -36,9 +38,11 @@
 		8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flaggorna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flaggorna.release.xcconfig"; path = "Target Support Files/Pods-Flaggorna/Pods-Flaggorna.release.xcconfig"; sourceTree = "<group>"; };
 		BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameMultiplayerView.swift; sourceTree = "<group>"; };
+		BA67930F2A38600300955104 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNGeometry+Extensions.swift"; sourceTree = "<group>"; };
 		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
 		BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewContainer.swift; sourceTree = "<group>"; };
+		BA82C98F2A3B867300BE4E9C /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = /Users/mikaelmattsson/Documents/dev/Flaggorna/Flaggorna/StoreView.swift; sourceTree = "<absolute>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -47,6 +51,7 @@
 		BABC467129A0B0F90048AE12 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		BABC469029A282410048AE12 /* JoinMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinMultiplayerView.swift; sourceTree = "<group>"; };
 		BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverMultiplayerView.swift; sourceTree = "<group>"; };
+		BAC79C642A3A1A5400DADC91 /* Premium.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Premium.storekit; sourceTree = "<group>"; };
 		BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightAnswerMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongAnswerMultiplayerView.swift; sourceTree = "<group>"; };
@@ -68,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */,
+				BA6793102A38600300955104 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +147,9 @@
 			isa = PBXGroup;
 			children = (
 				BAD9B37829B942A200977E6F /* Info.plist */,
+				BA82C98F2A3B867300BE4E9C /* StoreView.swift */,
 				BAF21C0329994100009035E8 /* FlaggornaApp.swift */,
+				BAC79C642A3A1A5400DADC91 /* Premium.storekit */,
 				BABC466829A0AF910048AE12 /* SinglePlayerGame */,
 				BAF21C0529994100009035E8 /* ContentView.swift */,
 				BA696B0A2A098CEE00FE8348 /* 3DFlag */,
@@ -166,6 +174,7 @@
 		E6628B947791CACBE60070F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BA67930F2A38600300955104 /* StoreKit.framework */,
 				8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */,
 			);
 			name = Frameworks;
@@ -304,6 +313,7 @@
 				BABC467229A0B0F90048AE12 /* GameOverView.swift in Sources */,
 				BAEFD87C2A2380250076D09E /* FlagStats.xcdatamodeld in Sources */,
 				BAD40D2329ABD7AF0054E972 /* GetReadyMultiplayerView.swift in Sources */,
+				BA82C9902A3B867400BE4E9C /* StoreView.swift in Sources */,
 				BABC466E29A0B0950048AE12 /* RightAnswerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Flaggorna/Preview Content\"";
@@ -457,6 +468,7 @@
 				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
