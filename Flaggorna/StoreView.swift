@@ -9,10 +9,8 @@ import SwiftUI
 import StoreKit
 
 struct StoreView: View {
-    let productIds = ["flaggorna_PREMIUM"]
     
-    @State
-    private var products: [Product] = []
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     
     var body: some View {
         VStack(spacing: 20) {
@@ -27,11 +25,11 @@ struct StoreView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            ForEach(self.products) { product in
+            ForEach(purchaseManager.products) { product in
                 Button {
                     Task {
                         do {
-                            try await self.purchase(product)
+                            try await purchaseManager.purchase(product)
                         } catch {
                             print(error)
                         }
@@ -44,40 +42,13 @@ struct StoreView: View {
             }
         }.task {
             do {
-                try await self.loadProducts()
+                try await purchaseManager.loadProducts()
             } catch {
                 print(error)
             }
         }
         .padding(24)
     }
-    
-    private func loadProducts() async throws {
-        self.products = try await Product.products(for: productIds)
-    }
-    
-    private func purchase(_ product: Product) async throws {
-        let result = try await product.purchase()
-        
-        switch result {
-        case let .success(.verified(transaction)):
-            // Successful purhcase
-            UserDefaults.standard.set("true", forKey: "premium")
-            await transaction.finish()
-        case let .success(.unverified(_, error)):
-            // Successful purchase but transaction/receipt can't be verified
-            // Could be a jailbroken phone
-            break
-        case .pending:
-            // Transaction waiting on SCA (Strong Customer Authentication) or
-            // approval from Ask to Buy
-            break
-        case .userCancelled:
-            // ^^^
-            break
-        @unknown default:
-            break
-        }
-    }
+
 }
 
