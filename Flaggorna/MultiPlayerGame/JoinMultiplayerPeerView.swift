@@ -10,6 +10,9 @@ import UIKit
 import MultipeerConnectivity
 
 struct JoinMultiplayerPeerView: View {
+    
+    @EnvironmentObject private var purchaseManager: PurchaseManager
+    
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var rounds: Int
@@ -23,7 +26,6 @@ struct JoinMultiplayerPeerView: View {
     @State private var premium: Bool = false
     @State private var gameCode: String = ""
     @State private var needMorePlayersAlert = false
-    @State private var premiumAlert = false
     
     @EnvironmentObject var socketManager: SocketManager
     
@@ -201,7 +203,7 @@ struct JoinMultiplayerPeerView: View {
                         }
                     } else if socketManager.users.count > 2 {
                         // premium is needed
-                        if premium {
+                        if purchaseManager.hasUnlockedPremium {
                             self.socketManager.stopUsersTimer()
                             SocketManager.shared.currentScene = "GetReadyMultiplayer"
                             
@@ -215,7 +217,7 @@ struct JoinMultiplayerPeerView: View {
                             
                         } else {
                             showStoreView = true
-                            print("You have to pay")
+
                         }
                         
                         

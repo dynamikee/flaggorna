@@ -50,6 +50,17 @@ struct StoreView: View {
                     .padding()
                     .buttonStyle(OrdinaryButtonStyle())
                 }
+                Button {
+                    Task {
+                        do {
+                            try await AppStore.sync()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                } label: {
+                    Text("Restore Purchases")
+                }
             }
         }
         .padding(24)
