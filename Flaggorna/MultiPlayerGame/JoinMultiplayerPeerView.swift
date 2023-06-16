@@ -23,7 +23,6 @@ struct JoinMultiplayerPeerView: View {
     @State private var color: Color = .white
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
-    @State private var premium: Bool = false
     @State private var gameCode: String = ""
     @State private var needMorePlayersAlert = false
     
@@ -58,9 +57,6 @@ struct JoinMultiplayerPeerView: View {
             self.color = color
         } else {
             self.color = colors.randomElement()!
-        }
-        if let premiumString = userDefaults.string(forKey: "premium") {
-            self.premium = Bool(premiumString) ?? false
         }
     }
     
