@@ -24,6 +24,9 @@ struct FlaggornaApp: App {
                 .environmentObject(socketManager)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(purchaseManager)
+                .task {
+                    await purchaseManager.updatePurchasedProducts()
+                }
         }
     }
 }
