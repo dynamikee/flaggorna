@@ -17,10 +17,10 @@ class PurchaseManager: ObservableObject {
     private(set) var products: [Product] = []
     private var productsLoaded = false
     private(set) var purchasedProductIDs = Set<String>()
+
     
-    var hasUnlockedPremium: Bool {
-        return !self.purchasedProductIDs.isEmpty
-    }
+    @Published private(set) var hasUnlockedPremium: Bool = false
+
     
     private var updates: Task<Void, Never>? = nil
     
@@ -75,6 +75,9 @@ class PurchaseManager: ObservableObject {
                 self.purchasedProductIDs.remove(transaction.productID)
             }
         }
+        
+        self.hasUnlockedPremium = !self.purchasedProductIDs.isEmpty
+
     }
     
     private func observeTransactionUpdates() -> Task<Void, Never> {

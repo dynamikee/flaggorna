@@ -35,7 +35,14 @@ struct StoreView: View {
                         .multilineTextAlignment(.center)
                     
                     Button {
-
+                        Task {
+                            do {
+                                // try await
+                                // cancel purchase - how do we do that?
+                            } catch {
+                                print(error)
+                            }
+                        }
                         initiatePurchase = false
                         
                     } label: {
