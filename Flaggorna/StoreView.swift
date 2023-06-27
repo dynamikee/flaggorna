@@ -14,16 +14,32 @@ struct StoreView: View {
     
     @State private var initiatePurchase: Bool = false
     
+    @Binding var isPresented: Bool
+ 
+    
     var body: some View {
         
         VStack(spacing: 20) {
             
             if purchaseManager.hasUnlockedPremium {
+                Spacer()
                 Text("Thank you for purchasing premium!")
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
+                Spacer()
+                Button(action: {
+                    isPresented = false
+
+                }){
+                    Text(Image(systemName: "xmark"))
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    
+                }
+                .padding()
                 
             } else {
                 

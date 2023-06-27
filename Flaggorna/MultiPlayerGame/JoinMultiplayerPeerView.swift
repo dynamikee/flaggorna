@@ -197,7 +197,7 @@ struct JoinMultiplayerPeerView: View {
                                 needMorePlayersAlert = false
                             }
                         }
-                    } else if socketManager.users.count > 2 {
+                    } else if socketManager.users.count > 4 {
                         // premium is needed
                         if purchaseManager.hasUnlockedPremium {
                             self.socketManager.stopUsersTimer()
@@ -239,7 +239,7 @@ struct JoinMultiplayerPeerView: View {
                 .padding()
                 .buttonStyle(OrdinaryButtonStyle())
                 .sheet(isPresented: $showStoreView) {
-                    StoreView()
+                    StoreView(isPresented: $showStoreView) // Pass the isPresented binding here
                 }
                 
                 
