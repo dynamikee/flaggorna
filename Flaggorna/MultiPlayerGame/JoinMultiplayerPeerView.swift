@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import MultipeerConnectivity
+import CoreData
 
 struct JoinMultiplayerPeerView: View {
     
@@ -17,6 +18,8 @@ struct JoinMultiplayerPeerView: View {
     @Binding var countries: [Country]
     @Binding var rounds: Int
     @Binding var multiplayer: Bool
+    @Binding var numberOfRounds: Int
+    @Binding var roundsArray: [RoundStatus]
     
     @State private var uuidString: String = ""
     @State private var name: String = ""
@@ -191,12 +194,29 @@ struct JoinMultiplayerPeerView: View {
                 
                 Button(action: {
                     if socketManager.users.count < 2 {
-                        needMorePlayersAlert = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            withAnimation {
-                                needMorePlayersAlert = false
-                            }
+//                        needMorePlayersAlert = true
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                            withAnimation {
+//                                needMorePlayersAlert = false
+//                            }
+//                        }
+                        loadData()
+                        score = 0
+                        rounds = numberOfRounds
+                        self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                        
+                        if let currentUser = self.socketManager.currentUser {
+                            self.socketManager.users.remove(currentUser)
+                            self.socketManager.sendUserRemoval(currentUser)
                         }
+                        
+                        //self.socketManager.users = []
+                        multiplayer = false
+                        //self.socketManager.countries = []
+                        currentScene = "GetReady"
+                        self.socketManager.socket.disconnect()
+
+                        
                     } else if socketManager.users.count > 4 {
                         // premium is needed
                         if purchaseManager.hasUnlockedPremium {
@@ -279,6 +299,78 @@ struct JoinMultiplayerPeerView: View {
         }
         
         
+    }
+    
+    private func loadData() {
+        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
+        let decoder = JSONDecoder()
+        self.countries = try! decoder.decode([Country].self, from: data)
+        
+        // Update Core Data with flag data
+        updateFlagData()
+    }
+    
+    private func updateFlagData() {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        
+        // Fetch existing flag data
+        let fetchRequest: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        var existingFlagData: [FlagData] = []
+        
+        do {
+            existingFlagData = try managedObjectContext.fetch(fetchRequest)
+        } catch {
+            // Handle Core Data fetch error
+            print("Error fetching flag data: \(error)")
+        }
+        
+        // Create a dictionary of existing flag data by country name
+        var existingFlagDataDict: [String: FlagData] = [:]
+        for flagData in existingFlagData {
+            if let countryName = flagData.country_name {
+                existingFlagDataDict[countryName] = flagData
+            }
+        }
+        
+        // Update or create flag data for each country
+        for country in countries {
+            if let existingFlagData = existingFlagDataDict[country.name] {
+                // Update existing flag data
+                existingFlagData.flag = country.flag
+                
+            } else {
+                // Create new flag data
+                let flagData = FlagData(context: managedObjectContext)
+                flagData.country_name = country.name
+                flagData.flag = country.flag
+                flagData.impressions = 0
+                flagData.right_answers = 0
+            }
+        }
+        
+        // Save the changes to Core Data
+        do {
+            try managedObjectContext.save()
+        } catch {
+            // Handle Core Data saving error
+            print("Error saving flag entities: \(error)")
+        }
+    }
+    
+    private func fetchFlagData() -> [FlagData] {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        
+        let fetchRequest: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        
+        do {
+            let flagData = try managedObjectContext.fetch(fetchRequest)
+            return flagData
+        } catch {
+            // Handle Core Data fetch error
+            print("Error fetching flag data: \(error)")
+            return []
+        }
     }
     
     private func join() {

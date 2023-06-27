@@ -26,7 +26,7 @@ struct ContentView: View {
                 case "JoinMultiplayer":
                     JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 case "JoinMultiplayerPeer":
-                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
+                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene, rounds: $rounds, numberOfRounds: $numberOfRounds)
                 case "MainMultiplayer":
