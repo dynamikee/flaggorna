@@ -165,24 +165,5 @@ struct MainGameView: View {
     }
 }
 
-func calculateScore(timeTaken: TimeInterval) -> Int {
-    let maxScore = 10
-    let minScore = 1
-    let maxTime = 4.0
-    let minTime = 0.0
-    
-    if timeTaken <= minTime {
-        return maxScore
-    } else if timeTaken >= maxTime {
-        return minScore
-    } else {
-        let slope = Double(minScore - maxScore) / (maxTime - minTime)
-        let intercept = Double(maxScore) - slope * minTime
-        let score = Int(slope * timeTaken + intercept)
-        return max(min(score, maxScore), minScore)
-    }
-}
-
-
 
 

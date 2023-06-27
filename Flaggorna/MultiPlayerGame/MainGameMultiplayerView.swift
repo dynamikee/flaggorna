@@ -20,11 +20,12 @@ struct MainGameMultiplayerView: View {
     
     @State private var timeRemaining = 4 // 4 seconds timer
     @State private var answered = false
+    @State private var startTime: Date?
     
     @State private var scene = SCNScene()
     
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     var body: some View {
         VStack {
             ProgressView(value: Double(timeRemaining), total: 4) {
@@ -33,28 +34,31 @@ struct MainGameMultiplayerView: View {
             .frame(height: 10)
             .progressViewStyle(MyProgressViewStyle())
             .animation(.linear(duration: 1), value: timeRemaining) // Add an animation modifier with a linear timing curve
-
+            
             
             if let question = socketManager.currentQuestion {
-
+                
                 Spacer()
                 
                 GeometryReader { geometry in
-                                    SceneViewContainer(scene: scene, randomCountry: question.flag)
-                                        .frame(height: geometry.size.width * 0.9)
-                                }
-
-
+                    SceneViewContainer(scene: scene, randomCountry: question.flag)
+                        .frame(height: geometry.size.width * 0.9)
+                }
+                
+                
                 Spacer()
                 VStack(spacing: 24) {
                     
                     ForEach(question.answerOptions, id: \.self) { option in
-
-                                            Button(action: {
+                        
+                        Button(action: {
+                            let endTime = Date() // Get the end time when the user taps the button
+                            let timeTaken = endTime.timeIntervalSince(self.startTime ?? Date())
+                            
                             if option == question.correctAnswer {
                                 answered = true
                                 socketManager.countries.removeAll { $0.name == question.correctAnswer }
-                                socketManager.currentUser!.score += 1
+                                socketManager.currentUser!.score += calculateScore(timeTaken: timeTaken)
                                 
                                 if rounds > 0 {
                                     socketManager.currentUser!.currentRound -= 1
@@ -65,7 +69,7 @@ struct MainGameMultiplayerView: View {
                                 socketManager.updateUser()
                                 print("Number of remaining countries: \(socketManager.countries.count)")
                                 updateFlagData(isCorrect: true)
-
+                                
                                 
                             } else {
                                 answered = true
@@ -78,7 +82,7 @@ struct MainGameMultiplayerView: View {
                                 socketManager.updateUser()
                                 print("Number of remaining countries: \(socketManager.countries.count)")
                                 updateFlagData(isCorrect: false)
-
+                                
                                 
                             }
                         }) {
@@ -95,6 +99,9 @@ struct MainGameMultiplayerView: View {
             }
         }
         .onAppear {
+            
+            self.startTime = Date()
+            
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 if answered {
                     timer.invalidate()
@@ -110,7 +117,7 @@ struct MainGameMultiplayerView: View {
                         socketManager.updateUser()
                         print("Number of remaining countries: \(socketManager.countries.count)")
                         updateFlagData(isCorrect: false)
-
+                        
                     }
                 }
                 
@@ -162,6 +169,8 @@ struct MyProgressViewStyle: ProgressViewStyle {
         }
     }
 }
+
+
 
 
 
