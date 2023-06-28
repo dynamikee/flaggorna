@@ -53,7 +53,7 @@ struct ContentView: View {
                 case "Right":
                     RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, roundsArray: $roundsArray)
                 case "Wrong":
-                    WrongAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, currentCountry: $currentCountry, roundsArray: $roundsArray)
+                    WrongAnswerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 case "GameOver":
                     GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 default:
@@ -63,9 +63,6 @@ struct ContentView: View {
         }
     }
 }
-
-
-
 
 struct Round {
     var status: RoundStatus = .notAnswered

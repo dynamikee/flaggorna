@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import CoreData
+
 
 struct WrongAnswerView: View {
     
     @Binding var currentScene: String
+    @Binding var countries: [Country]
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var currentCountry: String
+    @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
     
     
@@ -58,6 +62,21 @@ struct WrongAnswerView: View {
                 .foregroundColor(.white)
             Spacer()
             
+            Button(action: {
+                loadData()
+                score = 0
+                rounds = 10
+                roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                currentScene = "GetReady"
+            }) {
+                Image(systemName: "gobackward")
+                    .font(.title)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+            }
+            .padding()
+            
+            Spacer()
             
         }
         .onAppear {
@@ -70,6 +89,78 @@ struct WrongAnswerView: View {
                     }
                 }
             }
+        }
+    }
+    
+    private func loadData() {
+        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
+        let decoder = JSONDecoder()
+        self.countries = try! decoder.decode([Country].self, from: data)
+        
+        // Update Core Data with flag data
+        updateFlagData()
+    }
+
+    private func updateFlagData() {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        
+        // Fetch existing flag data
+        let fetchRequest: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        var existingFlagData: [FlagData] = []
+        
+        do {
+            existingFlagData = try managedObjectContext.fetch(fetchRequest)
+        } catch {
+            // Handle Core Data fetch error
+            print("Error fetching flag data: \(error)")
+        }
+        
+        // Create a dictionary of existing flag data by country name
+        var existingFlagDataDict: [String: FlagData] = [:]
+        for flagData in existingFlagData {
+            if let countryName = flagData.country_name {
+                existingFlagDataDict[countryName] = flagData
+            }
+        }
+        
+        // Update or create flag data for each country
+        for country in countries {
+            if let existingFlagData = existingFlagDataDict[country.name] {
+                // Update existing flag data
+                existingFlagData.flag = country.flag
+                
+            } else {
+                // Create new flag data
+                let flagData = FlagData(context: managedObjectContext)
+                flagData.country_name = country.name
+                flagData.flag = country.flag
+                flagData.impressions = 0
+                flagData.right_answers = 0
+            }
+        }
+        
+        // Save the changes to Core Data
+        do {
+            try managedObjectContext.save()
+        } catch {
+            // Handle Core Data saving error
+            print("Error saving flag entities: \(error)")
+        }
+    }
+    
+    private func fetchFlagData() -> [FlagData] {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        
+        let fetchRequest: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        
+        do {
+            let flagData = try managedObjectContext.fetch(fetchRequest)
+            return flagData
+        } catch {
+            // Handle Core Data fetch error
+            print("Error fetching flag data: \(error)")
+            return []
         }
     }
     
