@@ -71,7 +71,6 @@ struct WrongAnswerView: View {
             }) {
                 Image(systemName: "gobackward")
                     .font(.title)
-                    .fontWeight(.black)
                     .foregroundColor(.white)
             }
             .padding()

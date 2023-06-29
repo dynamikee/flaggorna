@@ -25,6 +25,7 @@
 		BABC78E229B66E8D006E3129 /* GameOverMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */; };
 		BAC726CA2A4B7D610077A2B0 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726C92A4B7D610077A2B0 /* Design.swift */; };
 		BAC726CC2A4B7DE50077A2B0 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726CB2A4B7DE50077A2B0 /* SocketManager.swift */; };
+		BAC726CE2A4CDD5A0077A2B0 /* FlagDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726CD2A4CDD5A0077A2B0 /* FlagDataManager.swift */; };
 		BAD40D2329ABD7AF0054E972 /* GetReadyMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */; };
 		BAD40D2529ABD8300054E972 /* RightAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */; };
 		BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */; };
@@ -57,6 +58,7 @@
 		BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverMultiplayerView.swift; sourceTree = "<group>"; };
 		BAC726C92A4B7D610077A2B0 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		BAC726CB2A4B7DE50077A2B0 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
+		BAC726CD2A4CDD5A0077A2B0 /* FlagDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagDataManager.swift; sourceTree = "<group>"; };
 		BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightAnswerMultiplayerView.swift; sourceTree = "<group>"; };
 		BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongAnswerMultiplayerView.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				BABC466829A0AF910048AE12 /* SinglePlayerGame */,
 				BAF21C0529994100009035E8 /* ContentView.swift */,
 				BAC726C92A4B7D610077A2B0 /* Design.swift */,
+				BAC726CD2A4CDD5A0077A2B0 /* FlagDataManager.swift */,
 				BAC726CB2A4B7DE50077A2B0 /* SocketManager.swift */,
 				BA696B0A2A098CEE00FE8348 /* 3DFlag */,
 				BABC467329A0B6D20048AE12 /* MultiPlayerGame */,
@@ -317,6 +320,7 @@
 				BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */,
 				BA696B0C2A098D2100FE8348 /* SCNGeometry+Extensions.swift in Sources */,
 				BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */,
+				BAC726CE2A4CDD5A0077A2B0 /* FlagDataManager.swift in Sources */,
 				BABC467029A0B0D40048AE12 /* WrongAnswerView.swift in Sources */,
 				BAD64D1A2A2D23F100A994DA /* JoinMultiplayerPeerView.swift in Sources */,
 				BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */,

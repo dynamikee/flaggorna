@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import UIKit
 
 struct StartGameView: View {
     @Binding var currentScene: String
@@ -221,10 +222,59 @@ struct FlagStatisticsView: View {
                         }
                         .padding(4)
                     }
+                    
+                    VStack {
+                                    Button(action: {
+                                        // Open Terms of Use (EULA)
+                                        openTermsOfUse()
+                                    }) {
+                                        Text("Terms of Use")
+                                            .foregroundColor(.blue)
+                                            .underline()
+                                    }.padding(24)
+                                    
+                                    Button(action: {
+                                        // Open Privacy Policy
+                                        openPrivacyPolicy()
+                                    }) {
+                                        Text("Privacy Policy")
+                                            .foregroundColor(.blue)
+                                            .underline()
+                                    }.padding(24)
+                                }
+                                .padding(24)
+                        
                 }
                 .padding()
             }
             .preferredColorScheme(.dark)
+        }
+    }
+    private func openTermsOfUse() {
+        guard let termsOfUseURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") else {
+            return // Invalid URL, handle the error gracefully
+        }
+
+        let options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
+
+        UIApplication.shared.open(termsOfUseURL, options: options) { success in
+            if !success {
+                // Failed to open the Terms of Use document, handle the error gracefully
+            }
+        }
+    }
+    
+    private func openPrivacyPolicy() {
+        guard let termsOfUseURL = URL(string: "https://bangahantverk.com/pages/flag-party-quiz-privacy-policy") else {
+            return // Invalid URL, handle the error gracefully
+        }
+
+        let options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
+
+        UIApplication.shared.open(termsOfUseURL, options: options) { success in
+            if !success {
+                // Failed to open the Terms of Use document, handle the error gracefully
+            }
         }
     }
     
