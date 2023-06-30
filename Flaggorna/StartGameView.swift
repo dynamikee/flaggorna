@@ -21,6 +21,8 @@ struct StartGameView: View {
     @State private var offset = CGSize.zero
     @State private var isSettingsViewActive = false
     
+    @State private var playButtonScale: CGFloat = 1.0
+    
     var body: some View {
         
             VStack {
@@ -46,31 +48,37 @@ struct StartGameView: View {
                 }
                 
                 Spacer()
-                
-                Button(action: {
-                    score = 0
-                    rounds = numberOfRounds
-                    multiplayer = true
-                    SocketManager.shared.currentScene = "JoinMultiplayerPeer"
-                    
-                }){
-                    Text("PLAY WITH FRIENDS")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-                
-//                Button(action: {
-//                    score = 0
-//                    rounds = numberOfRounds
-//                    multiplayer = true
-//                    SocketManager.shared.currentScene = "JoinMultiplayer"
-//
-//                }){
-//                    Text("REMOTE GAME")
-//                }
-//                .buttonStyle(OrdinaryButtonStyle())
-//                .padding()
-                
+                Spacer()
+
+                    Button(action: {
+                        score = 0
+                        rounds = numberOfRounds
+                        multiplayer = true
+                        SocketManager.shared.currentScene = "JoinMultiplayerPeer"
+                        
+                    }){
+                        VStack {
+                            Image("party_quiz_logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 300)
+                                .foregroundColor(.white)
+                            
+                            Image("play_button")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 140)
+                                .scaleEffect(playButtonScale)
+                                .animation(.spring())
+                                .padding(8)
+                        }
+                        
+  
+                    }
+
+                Spacer()
+                Spacer()
+       
                 Button(action: {
                     loadData()
                     score = 0
@@ -108,9 +116,28 @@ struct StartGameView: View {
             //.edgesIgnoringSafeArea(.all)
             .onAppear {
                 SocketManager.shared.loadData()
+                animatePlayButton()
             }
-        
+            
     }
+    
+    private func animatePlayButton() {
+        withAnimation(.interpolatingSpring(mass: 1.0, stiffness: 100, damping: 10, initialVelocity: 0)) {
+            playButtonScale = 1.2
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            withAnimation(.interpolatingSpring(mass: 1.0, stiffness: 100, damping: 10, initialVelocity: 0)) {
+                playButtonScale = 1.0
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                animatePlayButton() // Recursively call the function to create a loop
+            }
+        }
+    }
+
+
     
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
