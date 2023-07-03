@@ -153,6 +153,8 @@ struct GameOverView: View {
             }
             .padding()
             
+            Spacer()
+            
             Button(action: {
                 loadData()
                 score = 0
@@ -233,11 +235,13 @@ struct GameOverView: View {
             }
             .padding()
             
-            Text("Your score: \(score) (\(highestScore))")
+            Text("Your score: \(score)")
                 .font(.body)
                 .fontWeight(.black)
                 .foregroundColor(.white)
                         
+            Spacer()
+            
             Button(action: {
                 loadData()
                 score = 0
