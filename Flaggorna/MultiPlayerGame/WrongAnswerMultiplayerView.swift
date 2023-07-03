@@ -76,6 +76,15 @@ struct WrongAnswerMultiplayerView: View {
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
 
+            } else {
+                //TODO - remove this workaround to make the layout not move when the next question button appears.
+                Button(action: {}) {
+                    Text("NEXT QUESTION")
+                        .opacity(0)
+                }
+                .buttonStyle(OrdinaryButtonStyle())
+                .padding()
+                .opacity(0)
             }
         }
         .onAppear {

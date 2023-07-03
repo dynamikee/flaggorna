@@ -59,6 +59,7 @@ struct GameOverMultiplayerView: View {
                     .modifier(ParticlesModifier())
                     .offset(x: 60, y : 70)
             }
+            Spacer()
             
             if showAlert {
                     Text("Need to be at least two players")
@@ -101,9 +102,6 @@ struct GameOverMultiplayerView: View {
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
-            
-            Spacer()
-
             
             Button(action: {
                 if let currentUser = self.socketManager.currentUser {
