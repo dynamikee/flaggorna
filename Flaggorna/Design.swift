@@ -9,39 +9,39 @@ import SwiftUI
 
 struct CountryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
-            configuration.label
+        configuration.label
             .frame(width: UIScreen.main.bounds.width * 0.8, alignment: .leading)
-                .padding(15)
-                .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
-                .cornerRadius(16)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white, lineWidth: 8)
-                )
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-                
-        }
+            .padding(15)
+            .background(configuration.isPressed ? Color(UIColor(red: 0.15, green: 0.15, blue: 0.18, alpha: 0.2)) : Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(configuration.isPressed ? Color.white.opacity(0.2) : Color.white, lineWidth: 8)
+            )
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(configuration.isPressed ? Color.white.opacity(0.2) : Color.white)
+    }
 }
+
+
 
 struct OrdinaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-            
-                .padding(15)
-                .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
-                .cornerRadius(16)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white, lineWidth: 8)
-                )
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.white)
-                
-        }
+        configuration.label
+            .padding(15)
+            .background(configuration.isPressed ? Color(UIColor(red: 0.15, green: 0.15, blue: 0.18, alpha: 0.2)) : Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(configuration.isPressed ? Color.white.opacity(0.2) : Color.white, lineWidth: 8)
+            )
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(configuration.isPressed ? Color.white.opacity(0.2) : Color.white)
+    }
 }
+
 
 struct FireworkParticlesGeometryEffect : GeometryEffect {
     var time : Double

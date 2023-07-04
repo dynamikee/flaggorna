@@ -165,7 +165,6 @@ struct GameOverView: View {
                 Text("PLAY AGAIN")
             }
             .buttonStyle(OrdinaryButtonStyle())
-            .padding()
                         
             Button(action: {
                 currentScene = "Start"
@@ -175,7 +174,7 @@ struct GameOverView: View {
                     .fontWeight(.black)
                     .foregroundColor(.white)
             }
-            .padding()
+            .padding(24)
             
         case "NoHighscore":
             VStack(spacing: 8) {
@@ -252,7 +251,6 @@ struct GameOverView: View {
                 Text("PLAY AGAIN")
             }
             .buttonStyle(OrdinaryButtonStyle())
-            .padding()
                         
             Button(action: {
                 currentScene = "Start"
@@ -262,7 +260,7 @@ struct GameOverView: View {
                     .fontWeight(.black)
                     .foregroundColor(.white)
             }
-            .padding()
+            .padding(24)
 
         default:
             Text("Something went wroing")

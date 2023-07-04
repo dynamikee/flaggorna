@@ -73,9 +73,9 @@ struct WrongAnswerView: View {
                     .font(.title)
                     .foregroundColor(.white)
             }
-            .padding()
+            .padding(24)
             
-            Spacer()
+
             
         }
         .onAppear {
