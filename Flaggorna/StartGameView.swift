@@ -256,18 +256,18 @@ struct FlagStatisticsView: View {
                                         openTermsOfUse()
                                     }) {
                                         Text("Terms of Use")
-                                            .foregroundColor(.blue)
-                                            .underline()
-                                    }.padding(24)
+                                    }
+                                    .buttonStyle(LowKeyButtonStyle())
+                                    .padding(24)
                                     
                                     Button(action: {
                                         // Open Privacy Policy
                                         openPrivacyPolicy()
                                     }) {
                                         Text("Privacy Policy")
-                                            .foregroundColor(.blue)
-                                            .underline()
-                                    }.padding(24)
+                                    }
+                                    .buttonStyle(LowKeyButtonStyle())
+                                    .padding(24)
                                 }
                                 .padding(24)
                         

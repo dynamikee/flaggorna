@@ -64,6 +64,7 @@ struct StoreView: View {
                     } label: {
                         Text("Cancel")
                     }
+                    .buttonStyle(LowKeyButtonStyle())
                 } else {
                     Text("Play with more than four friends")
                         .font(.largeTitle)
@@ -104,6 +105,7 @@ struct StoreView: View {
                     } label: {
                         Text("Restore Purchases")
                     }
+                    .buttonStyle(LowKeyButtonStyle())
                 }
             }
         }

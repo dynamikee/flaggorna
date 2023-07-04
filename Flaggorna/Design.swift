@@ -42,6 +42,17 @@ struct OrdinaryButtonStyle: ButtonStyle {
     }
 }
 
+struct LowKeyButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(16)
+            .background(configuration.isPressed ? Color.gray.opacity(0.2) : Color.gray.opacity(0.4))
+            .cornerRadius(8)
+            .font(.body)
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+    }
+}
 
 struct FireworkParticlesGeometryEffect : GeometryEffect {
     var time : Double
