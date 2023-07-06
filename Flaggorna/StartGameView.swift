@@ -25,96 +25,101 @@ struct StartGameView: View {
     
     var body: some View {
         
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isSettingsViewActive = true
-                        
-                    }){
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.white)
-                    
-                    }
-                    .buttonStyle(OrdinaryButtonStyle())
-                    .padding()
-                    .sheet(isPresented: $isSettingsViewActive) {
-                                    FlagStatisticsView(flagData: fetchFlagData())
-                                }
-                    
-                }
-                
+        VStack {
+            HStack {
                 Spacer()
-                Spacer()
-
-                    Button(action: {
-                        score = 0
-                        rounds = numberOfRounds
-                        multiplayer = true
-                        SocketManager.shared.currentScene = "JoinMultiplayerPeer"
-                        
-                    }){
-                        VStack {
-                            Image("party_quiz_logo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: 300)
-                                .foregroundColor(.white)
-                            
-                            Image("play_button")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: 140)
-                                .scaleEffect(playButtonScale)
-                                .animation(.spring())
-                                .padding(8)
-                        }
-                        
-  
-                    }
-
-                Spacer()
-                Spacer()
-       
                 Button(action: {
-                    loadData()
-                    score = 0
-                    rounds = numberOfRounds
-                    self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                    currentScene = "GetReady"
+                    isSettingsViewActive = true
+                    
                 }){
-                    Text("SINGLE PLAYER")
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.white)
+                    
                 }
                 .buttonStyle(OrdinaryButtonStyle())
                 .padding()
-                
-                Spacer()
+                .sheet(isPresented: $isSettingsViewActive) {
+                    FlagStatisticsView(flagData: fetchFlagData())
+                }
                 
             }
             
-            .background(
-                FlagBackgroundView()
-                    .offset(x: offset.width, y: offset.height)
-                    .frame(width: UIScreen.main.bounds.width)
-                    .edgesIgnoringSafeArea(.all)
-                    .onAppear {
-                        withAnimation(
-                            Animation.linear(duration: 10)
-                                .repeatForever(autoreverses: true)
-                        ) {
-                            self.offset.height = -200
-                        }
+            Spacer()
+            Spacer()
+            
+            Button(action: {
+                score = 0
+                rounds = numberOfRounds
+                multiplayer = true
+                SocketManager.shared.currentScene = "JoinMultiplayerPeer"
+                
+            }){
+                VStack {
+                    Image("party_quiz_logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 300)
+                        .foregroundColor(.white)
+                    
+                    Image("play_button")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 140)
+                        .scaleEffect(playButtonScale)
+                        .animation(.spring())
+                        .padding(8)
+                }
+                
+                
+            }
+            
+            Spacer()
+            Spacer()
+            
+            Button(action: {
+                loadData()
+                score = 0
+                rounds = numberOfRounds
+                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                currentScene = "GetReady"
+            }){
+                Text("SINGLE PLAYER")
+            }
+            .buttonStyle(OrdinaryButtonStyle())
+            .padding()
+            
+            Spacer()
+            
+        }
+        
+        .background(
+            FlagBackgroundView()
+                .frame(
+                    width: UIScreen.main.bounds.width + 2 * abs(offset.width),
+                    height: UIScreen.main.bounds.height + 2 * abs(offset.height)
+                )
+                .offset(x: offset.width, y: offset.height)
+                .edgesIgnoringSafeArea(.all)
+                .onAppear {
+                    withAnimation(
+                        Animation.linear(duration: 10)
+                            .repeatForever(autoreverses: true)
+                    ) {
+                        self.offset.height = -200
+                        self.offset.width = UIScreen.main.bounds.width / 2
                     }
-            )
-            //.edgesIgnoringSafeArea(.all)
-            .onAppear {
-                SocketManager.shared.loadData()
-                animatePlayButton()
-            }
-            
+                }
+        )
+        
+        //.edgesIgnoringSafeArea(.all)
+        .onAppear {
+            SocketManager.shared.loadData()
+            animatePlayButton()
+        }
+        
     }
     
     private func animatePlayButton() {
@@ -132,8 +137,8 @@ struct StartGameView: View {
             }
         }
     }
-
-
+    
+    
     
     private func loadData() {
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
@@ -144,7 +149,7 @@ struct StartGameView: View {
         // Update Core Data with flag data
         updateFlagData()
     }
-
+    
     private func updateFlagData() {
         let managedObjectContext = PersistenceController.shared.container.viewContext
         
@@ -247,26 +252,26 @@ struct FlagStatisticsView: View {
                     }
                     
                     VStack {
-                                    Button(action: {
-                                        // Open Terms of Use (EULA)
-                                        openTermsOfUse()
-                                    }) {
-                                        Text("Terms of Use")
-                                    }
-                                    .buttonStyle(LowKeyButtonStyle())
-                                    .padding(24)
-                                    
-                                    Button(action: {
-                                        // Open Privacy Policy
-                                        openPrivacyPolicy()
-                                    }) {
-                                        Text("Privacy Policy")
-                                    }
-                                    .buttonStyle(LowKeyButtonStyle())
-                                    .padding(24)
-                                }
-                                .padding(24)
+                        Button(action: {
+                            // Open Terms of Use (EULA)
+                            openTermsOfUse()
+                        }) {
+                            Text("Terms of Use")
+                        }
+                        .buttonStyle(LowKeyButtonStyle())
+                        .padding(24)
                         
+                        Button(action: {
+                            // Open Privacy Policy
+                            openPrivacyPolicy()
+                        }) {
+                            Text("Privacy Policy")
+                        }
+                        .buttonStyle(LowKeyButtonStyle())
+                        .padding(24)
+                    }
+                    .padding(24)
+                    
                 }
                 .padding()
             }
@@ -277,9 +282,9 @@ struct FlagStatisticsView: View {
         guard let termsOfUseURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") else {
             return // Invalid URL, handle the error gracefully
         }
-
+        
         let options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
-
+        
         UIApplication.shared.open(termsOfUseURL, options: options) { success in
             if !success {
                 // Failed to open the Terms of Use document, handle the error gracefully
@@ -291,9 +296,9 @@ struct FlagStatisticsView: View {
         guard let termsOfUseURL = URL(string: "https://bangahantverk.com/pages/flag-party-quiz-privacy-policy") else {
             return // Invalid URL, handle the error gracefully
         }
-
+        
         let options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
-
+        
         UIApplication.shared.open(termsOfUseURL, options: options) { success in
             if !success {
                 // Failed to open the Terms of Use document, handle the error gracefully
@@ -336,8 +341,9 @@ struct CircleIndicatorView: View {
     }
 }
 
+
 struct FlagBackgroundView: View {
-    let columns = 3
+    let columns = 6
     let rows = 20
     let flagImageNames = [
         "afghanistan",
@@ -409,35 +415,209 @@ struct FlagBackgroundView: View {
         "egypt",
         "el_salvador",
         "england",
-        "equatorial_guinea"
+        "equatorial_guinea",
+        "eritrea",
+        "estonia",
+        "eswatini",
+        "ethiopia",
+        "european_union",
+        "falkland_islands",
+        "faroe_islands",
+        "fiji",
+        "finland",
+        "france",
+        "french_guiana",
+        "gabon",
+        "gambia",
+        "georgia",
+        "germany",
+        "ghana",
+        "gibraltar",
+        "great_britain",
+        "greece",
+        "greenland",
+        "grenada",
+        "guadeloupe",
+        "guam",
+        "guatemala",
+        "guernsey",
+        "guinea_bissau",
+        "guinea",
+        "guyana",
+        "haiti",
+        "honduras",
+        "hong_kong",
+        "hungary",
+        "iceland",
+        "india",
+        "indonesia",
+        "iran",
+        "iraq",
+        "ireland",
+        "isle_of_man",
+        "israel",
+        "italy",
+        "ivoire_coast",
+        "jamaica",
+        "japan",
+        "jersey",
+        "jordan",
+        "kashmir",
+        "kazakhstan",
+        "kenya",
+        "kiribati",
+        "kosovo",
+        "kurdistan",
+        "kuwait",
+        "kyrgyz_republic",
+        "laos",
+        "latvia",
+        "lebanon",
+        "lesotho",
+        "liberia",
+        "libya",
+        "liechtenstein",
+        "lithuania",
+        "luxembourg",
+        "macao",
+        "macedonia",
+        "madagascar",
+        "malawi",
+        "malaysia",
+        "maldives",
+        "mali",
+        "malta",
+        "marshall_islands",
+        "martinique",
+        "mauritania",
+        "mauritius",
+        "mexico",
+        "micronesia",
+        "moldova",
+        "monaco",
+        "mongolia",
+        "montenegro",
+        "montserrat",
+        "morocco",
+        "mozambique",
+        "myanmar",
+        "namibia",
+        "nauru",
+        "nepal",
+        "netherlands",
+        "new_caledonia",
+        "new_zealand",
+        "nicaragua",
+        "niger",
+        "nigeria",
+        "niue",
+        "north_korea",
+        "northern_ireland",
+        "northern_mariana_islands",
+        "norway",
+        "oman",
+        "pakistan",
+        "palau",
+        "palestine",
+        "panama",
+        "papua_new_guinea",
+        "paraguay",
+        "peru",
+        "philippines",
+        "pitcairn",
+        "poland",
+        "portugal",
+        "puerto_rico",
+        "qatar",
+        "reunion",
+        "romania",
+        "rwanda",
+        "saarc",
+        "saint_helena",
+        "saint_lucia",
+        "saint_martin",
+        "samoa",
+        "san_marino",
+        "sao_tome_principe",
+        "saudi_arabia",
+        "scotland",
+        "senegal",
+        "serbia",
+        "seychelles",
+        "sierra_leone",
+        "singapore",
+        "slovakia",
+        "slovenia",
+        "solomon_islands",
+        "somalia",
+        "south_africa",
+        "south_korea",
+        "south_sudan",
+        "spain",
+        "sri_lanka",
+        "st_kitts_and_nevis",
+        "st_vincent_grenadines",
+        "sudan",
+        "suriname",
+        "sweden",
+        "switzerland",
+        "syria",
+        "tahiti",
+        "taiwan",
+        "tajikistan",
+        "tamil_eelam",
+        "tanzania",
+        "thailand",
+        "togo",
+        "tonga",
+        "treaty_antarctica",
+        "trinidad_tobago",
+        "tunisia",
+        "turkey",
+        "turkmenistan",
+        "uae",
+        "uganda",
+        "ukraine",
+        "uruguay",
+        "usa",
+        "uzbekistan",
+        "vanuatu",
+        "vatican_city",
+        "venezuela",
+        "vietnam",
+        "virgin_islands_us",
+        "wales",
+        "western_sahara",
+        "yemen",
+        "zambia",
+        "zanzibar",
+        "zimbabwe"
     ]
-
-
+    
+    
     @State private var randomFlagIndices: [Int] = []
-
-        var body: some View {
-            VStack {
-                LazyVGrid(columns: createGridItems(), spacing: 0) {
-                    ForEach(randomFlagIndices, id: \.self) { index in
-                        Image(flagImageNames[index])
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 100) // Adjust the height as needed
-                    }
-
-
+    
+    var body: some View {
+        VStack {
+            LazyVGrid(columns: createGridItems(), spacing: 10) {
+                ForEach(randomFlagIndices, id: \.self) { index in
+                    Image(flagImageNames[index])
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 100) // Adjust the height as needed
                 }
             }
-            .frame(width: UIScreen.main.bounds.width)
-            .edgesIgnoringSafeArea(.all)
-            .onAppear {
-                randomFlagIndices = (0..<flagImageNames.count).shuffled()
-            }
-
+        }
+        .frame(width: UIScreen.main.bounds.width*2)
+        .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            randomFlagIndices = (0..<flagImageNames.count).shuffled()
         }
         
-        private func createGridItems() -> [GridItem] {
-            Array(repeating: GridItem(.flexible(), spacing: 0), count: columns)
-        }
     }
+    
+    private func createGridItems() -> [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: 10), count: columns)
+    }
+}
 
