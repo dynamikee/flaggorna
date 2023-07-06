@@ -96,14 +96,10 @@ struct StartGameView: View {
             }
             
             .background(
-                Image("background")
-                    .resizable()
-                    .scaledToFill()
-                //.aspectRatio(contentMode: .fill)
+                FlagBackgroundView()
                     .offset(x: offset.width, y: offset.height)
                     .frame(width: UIScreen.main.bounds.width)
                     .edgesIgnoringSafeArea(.all)
-                
                     .onAppear {
                         withAnimation(
                             Animation.linear(duration: 5)
@@ -340,3 +336,105 @@ struct CircleIndicatorView: View {
     }
 }
 
+struct FlagBackgroundView: View {
+    let columns = 3
+    let rows = 40
+    let flagImageNames = [
+        "afghanistan",
+        "aland",
+        "albania",
+        "algeria",
+        "american_samoa",
+        "andorra",
+        "angola",
+        "anguilla",
+        "antarctica",
+        "antilles",
+        "argentina",
+        "armenia",
+        "aruba",
+        "australia",
+        "austria",
+        "azerbaijan",
+        "bahamas",
+        "bahrain",
+        "bangladesh",
+        "barbados",
+        "barbuda_antigua",
+        "belgium",
+        "belize",
+        "benin",
+        "bermuda",
+        "bhutan",
+        "bolivia",
+        "bonaire",
+        "bosnia_herzegovina",
+        "botswana",
+        "brazil",
+        "british_indian_ocean",
+        "british_virgin_islands",
+        "brunei",
+        "bulgaria",
+        "burkina_faso",
+        "burundi",
+        "cabo_verde",
+        "cambodia",
+        "cameroon",
+        "canada",
+        "catalonia",
+        "cayman_islands",
+        "central_africa",
+        "chad",
+        "chile",
+        "china",
+        "christmas_islands",
+        "colombia",
+        "comoros",
+        "congo",
+        "cook_islands",
+        "costa_rica",
+        "croatia",
+        "cuba",
+        "curacao",
+        "cyprus",
+        "czech_republic",
+        "democratic_congo",
+        "denmark",
+        "djibouti",
+        "dominica",
+        "dominican_republic",
+        "dubai",
+        "east_timor",
+        "ecuador",
+        "egypt",
+        "el_salvador",
+        "england",
+        "equatorial_guinea"
+    ]
+
+
+    @State private var randomFlagIndices: [Int] = []
+
+        var body: some View {
+            VStack {
+                LazyVGrid(columns: createGridItems(), spacing: 0) {
+                    ForEach(0..<flagImageNames.count, id: \.self) { index in
+                        Image(flagImageNames[index])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 100) // Adjust the height as needed
+                    }
+                }
+            }
+            .frame(width: UIScreen.main.bounds.width)
+            .edgesIgnoringSafeArea(.all)
+            .onAppear {
+                randomFlagIndices = Array(repeating: 0, count: flagImageNames.count)
+                    .map { _ in Int.random(in: 0..<flagImageNames.count) }
+            }
+        }
+        
+        private func createGridItems() -> [GridItem] {
+            Array(repeating: GridItem(.flexible(), spacing: 0), count: columns)
+        }
+    }
