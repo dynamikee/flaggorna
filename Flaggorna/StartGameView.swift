@@ -102,10 +102,10 @@ struct StartGameView: View {
                     .edgesIgnoringSafeArea(.all)
                     .onAppear {
                         withAnimation(
-                            Animation.linear(duration: 5)
+                            Animation.linear(duration: 10)
                                 .repeatForever(autoreverses: true)
                         ) {
-                            self.offset.height = -100
+                            self.offset.height = -200
                         }
                     }
             )
@@ -338,7 +338,7 @@ struct CircleIndicatorView: View {
 
 struct FlagBackgroundView: View {
     let columns = 3
-    let rows = 40
+    let rows = 20
     let flagImageNames = [
         "afghanistan",
         "aland",
@@ -418,23 +418,26 @@ struct FlagBackgroundView: View {
         var body: some View {
             VStack {
                 LazyVGrid(columns: createGridItems(), spacing: 0) {
-                    ForEach(0..<flagImageNames.count, id: \.self) { index in
+                    ForEach(randomFlagIndices, id: \.self) { index in
                         Image(flagImageNames[index])
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxHeight: 100) // Adjust the height as needed
                     }
+
+
                 }
             }
             .frame(width: UIScreen.main.bounds.width)
             .edgesIgnoringSafeArea(.all)
             .onAppear {
-                randomFlagIndices = Array(repeating: 0, count: flagImageNames.count)
-                    .map { _ in Int.random(in: 0..<flagImageNames.count) }
+                randomFlagIndices = (0..<flagImageNames.count).shuffled()
             }
+
         }
         
         private func createGridItems() -> [GridItem] {
             Array(repeating: GridItem(.flexible(), spacing: 0), count: columns)
         }
     }
+
