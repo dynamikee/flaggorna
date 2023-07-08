@@ -79,17 +79,17 @@ struct StartGameView: View {
             Spacer()
             Spacer()
             
-            Button(action: {
-                loadData()
-                score = 0
-                rounds = numberOfRounds
-                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                currentScene = "GetReady"
-            }){
-                Text("SINGLE PLAYER")
-            }
-            .buttonStyle(OrdinaryButtonStyle())
-            .padding()
+//            Button(action: {
+//                loadData()
+//                score = 0
+//                rounds = numberOfRounds
+//                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+//                currentScene = "GetReady"
+//            }){
+//                Text("SINGLE PLAYER")
+//            }
+//            .buttonStyle(OrdinaryButtonStyle())
+//            .padding()
             
             Spacer()
             

@@ -27,7 +27,7 @@ struct JoinMultiplayerPeerView: View {
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
     @State private var gameCode: String = ""
-    @State private var needMorePlayersAlert = false
+    @State var singlePlayer: Bool = true
     
     @EnvironmentObject var socketManager: SocketManager
     
@@ -181,25 +181,9 @@ struct JoinMultiplayerPeerView: View {
                     }
                 }
                 Spacer()
-                if needMorePlayersAlert {
-                    Text("Friends need to be nearby to play")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                    
-                        .opacity(needMorePlayersAlert ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.5))
-                }
-                
-                Button(action: {
-                    if socketManager.users.count < 2 {
-//                        needMorePlayersAlert = true
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                            withAnimation {
-//                                needMorePlayersAlert = false
-//                            }
-//                        }
+
+                if socketManager.users.count < 2 {
+                    Button {
                         loadData()
                         score = 0
                         rounds = numberOfRounds
@@ -215,9 +199,14 @@ struct JoinMultiplayerPeerView: View {
                         //self.socketManager.countries = []
                         currentScene = "GetReady"
                         self.socketManager.socket.disconnect()
-
-                        
-                    } else if socketManager.users.count > 4 {
+                    } label: {
+                        Text("SINGLE PLAYER")
+                    }
+                    .padding()
+                    .buttonStyle(OrdinaryButtonStyle())
+  
+                } else if socketManager.users.count > 4 {
+                    Button {
                         // premium is needed
                         if purchaseManager.hasUnlockedPremium {
                             self.socketManager.stopUsersTimer()
@@ -235,9 +224,17 @@ struct JoinMultiplayerPeerView: View {
                             showStoreView = true
 
                         }
-                        
-                        
-                    } else {
+                    } label: {
+                        Text("START GAME")
+                    }
+                    .padding()
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .sheet(isPresented: $showStoreView) {
+                        StoreView(isPresented: $showStoreView) // Pass the isPresented binding here
+                    }
+
+                } else {
+                    Button {
                         // premium is not needed
                         self.socketManager.stopUsersTimer()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
@@ -249,19 +246,13 @@ struct JoinMultiplayerPeerView: View {
                         socketManager.send(jsonString)
                         
                         isSeeking = false
-                        
-                        
-                        
+                    } label: {
+                        Text("START GAME")
                     }
-                }){
-                    Text("START GAME")
+                    .padding()
+                    .buttonStyle(OrdinaryButtonStyle())
+
                 }
-                .padding()
-                .buttonStyle(OrdinaryButtonStyle())
-                .sheet(isPresented: $showStoreView) {
-                    StoreView(isPresented: $showStoreView) // Pass the isPresented binding here
-                }
-                
                 
             }
             .preferredColorScheme(.dark)
@@ -444,7 +435,7 @@ class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDeleg
             if let gameCode = gameCode {
                 self?.gameCode = gameCode // Update the gameCode directly
                 self?.discoveredPeers.append((peerID, gameCode))
-                // ...
+
             } else {
                 // ...
             }
