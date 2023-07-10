@@ -24,102 +24,122 @@ struct StartGameView: View {
     @State private var playButtonScale: CGFloat = 1.0
     
     var body: some View {
-        
-        VStack {
-            HStack {
+        ZStack {
+            Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
+                .edgesIgnoringSafeArea(.all)
+
+            VStack {
+                HStack {
+                    Button(action: {
+                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
+                            let appName = "Flag Party Quiz App - Flaggorna"
+                            let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
+                            
+                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Download the \(appName) if you havent already", appURL], applicationActivities: nil)
+                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                        }) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.white)
+                                
+                            }
+                            .buttonStyle(OrdinaryButtonStyle())
+                            .padding()
+                    Spacer()
+                    Button(action: {
+                        isSettingsViewActive = true
+                        
+                    }){
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.white)
+                        
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .padding()
+                    .sheet(isPresented: $isSettingsViewActive) {
+                        FlagStatisticsView(flagData: fetchFlagData())
+                    }
+                    
+                }
+                
                 Spacer()
+                Spacer()
+                
                 Button(action: {
-                    isSettingsViewActive = true
+                    score = 0
+                    rounds = numberOfRounds
+                    multiplayer = true
+                    SocketManager.shared.currentScene = "JoinMultiplayerPeer"
                     
                 }){
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.white)
-                    
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-                .sheet(isPresented: $isSettingsViewActive) {
-                    FlagStatisticsView(flagData: fetchFlagData())
-                }
-                
-            }
-            
-            Spacer()
-            Spacer()
-            
-            Button(action: {
-                score = 0
-                rounds = numberOfRounds
-                multiplayer = true
-                SocketManager.shared.currentScene = "JoinMultiplayerPeer"
-                
-            }){
-                VStack {
-                    Image("party_quiz_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 300)
-                        .foregroundColor(.white)
-                    
-                    Image("play_button")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 140)
-                        .scaleEffect(playButtonScale)
-                        .animation(.spring())
-                        .padding(8)
-                }
-                
-                
-            }
-            
-            Spacer()
-            Spacer()
-            
-//            Button(action: {
-//                loadData()
-//                score = 0
-//                rounds = numberOfRounds
-//                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-//                currentScene = "GetReady"
-//            }){
-//                Text("SINGLE PLAYER")
-//            }
-//            .buttonStyle(OrdinaryButtonStyle())
-//            .padding()
-            
-            Spacer()
-            
-        }
-        
-        .background(
-            FlagBackgroundView()
-                .frame(
-                    width: UIScreen.main.bounds.width + 2 * abs(offset.width),
-                    height: UIScreen.main.bounds.height + 2 * abs(offset.height)
-                )
-                .offset(x: offset.width, y: offset.height)
-                .edgesIgnoringSafeArea(.all)
-                .onAppear {
-                    withAnimation(
-                        Animation.linear(duration: 10)
-                            .repeatForever(autoreverses: true)
-                    ) {
-                        self.offset.height = -200
-                        self.offset.width = UIScreen.main.bounds.width / 2
+                    VStack {
+                        Image("party_quiz_logo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 300)
+                            .foregroundColor(.white)
+                        
+                        Image("play_button")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 140)
+                            .scaleEffect(playButtonScale)
+                            .animation(.spring())
+                            .padding(8)
                     }
+                    
+                    
                 }
-        )
-        
-        //.edgesIgnoringSafeArea(.all)
-        .onAppear {
-            SocketManager.shared.loadData()
-            animatePlayButton()
+                
+                Spacer()
+                Spacer()
+                
+                //            Button(action: {
+                //                loadData()
+                //                score = 0
+                //                rounds = numberOfRounds
+                //                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+                //                currentScene = "GetReady"
+                //            }){
+                //                Text("SINGLE PLAYER")
+                //            }
+                //            .buttonStyle(OrdinaryButtonStyle())
+                //            .padding()
+                
+                Spacer()
+                
+            }
+            
+            .background(
+                FlagBackgroundView()
+                    .frame(
+                        width: UIScreen.main.bounds.width + 2 * abs(offset.width),
+                        height: UIScreen.main.bounds.height + 2 * abs(offset.height)
+                    )
+                    .offset(x: offset.width, y: offset.height)
+                    .edgesIgnoringSafeArea(.all)
+                    .onAppear {
+                        withAnimation(
+                            Animation.linear(duration: 10)
+                                .repeatForever(autoreverses: true)
+                        ) {
+                            self.offset.height = -200
+                            self.offset.width = UIScreen.main.bounds.width / 2
+                        }
+                    }
+            )
+            
+            //.edgesIgnoringSafeArea(.all)
+            .onAppear {
+                SocketManager.shared.loadData()
+                animatePlayButton()
+            }
         }
-        
     }
     
     private func animatePlayButton() {
@@ -225,7 +245,6 @@ struct FlagStatisticsView: View {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                 .edgesIgnoringSafeArea(.all)
             
-            
             ScrollView {
                 Text("Your answers")
                     .bold()
@@ -278,6 +297,7 @@ struct FlagStatisticsView: View {
             .preferredColorScheme(.dark)
         }
     }
+    
     private func openTermsOfUse() {
         guard let termsOfUseURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") else {
             return // Invalid URL, handle the error gracefully
