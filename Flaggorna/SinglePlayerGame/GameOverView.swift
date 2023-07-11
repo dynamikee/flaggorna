@@ -85,6 +85,10 @@ struct GameOverView: View {
             
         case "HighscoreSubmitted":
             VStack(spacing: 8) {
+                Text("THIS WEEKS")
+                    .font(.body)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
                 Text("HIGHSCORES")
                     .font(.largeTitle)
                     .fontWeight(.black)
@@ -178,6 +182,10 @@ struct GameOverView: View {
             
         case "NoHighscore":
             VStack(spacing: 8) {
+                Text("THIS WEEKS")
+                    .font(.body)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
                 Text("HIGHSCORES")
                     .font(.largeTitle)
                     .fontWeight(.black)
