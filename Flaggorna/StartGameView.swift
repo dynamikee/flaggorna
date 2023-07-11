@@ -35,7 +35,7 @@ struct StartGameView: View {
                             let appName = "Flag Party Quiz App - Flaggorna"
                             let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
                             
-                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Download the \(appName) if you havent already", appURL], applicationActivities: nil)
+                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Download the app to get started", appURL], applicationActivities: nil)
                             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
                         }) {
                                 Image(systemName: "square.and.arrow.up")
