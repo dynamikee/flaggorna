@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "RBE.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

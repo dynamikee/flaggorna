@@ -161,7 +161,12 @@ struct StartGameView: View {
     
     
     private func loadData() {
+        #if FLAGGORNA
         let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        #elseif TEAM_LOGO_QUIZ
+        let file = Bundle.main.path(forResource: "teams", ofType: "json")!
+        #endif
+        
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()
         self.countries = try! decoder.decode([Country].self, from: data)
@@ -365,58 +370,15 @@ struct CircleIndicatorView: View {
 struct FlagBackgroundView: View {
     let columns = 6
     let rows = 20
+    #if FLAGGORNA
     let flagImageNames = [
-        "afghanistan",
-        "aland",
-        "albania",
-        "algeria",
-        "american_samoa",
-        "andorra",
-        "angola",
-        "anguilla",
-        "antarctica",
-        "antilles",
-        "argentina",
-        "armenia",
-        "aruba",
-        "australia",
-        "austria",
-        "azerbaijan",
-        "bahamas",
-        "bahrain",
-        "bangladesh",
-        "barbados",
-        "barbuda_antigua",
-        "belgium",
-        "belize",
-        "benin",
-        "bermuda",
-        "bhutan",
-        "bolivia",
-        "bonaire",
-        "bosnia_herzegovina",
-        "botswana",
-        "brazil",
-        "british_indian_ocean",
-        "british_virgin_islands",
-        "brunei",
-        "bulgaria",
-        "burkina_faso",
-        "burundi",
-        "cabo_verde",
-        "cambodia",
-        "cameroon",
-        "canada",
-        "catalonia",
-        "cayman_islands",
-        "central_africa",
-        "chad",
-        "chile",
-        "china",
-        "christmas_islands",
-        "colombia",
-        "comoros",
-        "congo",
+        "afghanistan", "aland", "albania", "algeria", "american_samoa", "andorra", "angola", "anguilla",
+        "antarctica", "antilles", "argentina", "armenia", "aruba", "australia", "austria", "azerbaijan",
+        "bahamas", "bahrain", "bangladesh", "barbados", "barbuda_antigua", "belgium", "belize", "benin",
+        "bermuda", "bhutan", "bolivia", "bonaire", "bosnia_herzegovina", "botswana", "brazil", "british_indian_ocean",
+        "british_virgin_islands", "brunei", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia",
+        "cameroon", "canada", "catalonia", "cayman_islands", "central_africa", "chad", "chile", "china",
+        "christmas_islands", "colombia", "comoros", "congo",
         "cook_islands",
         "costa_rica",
         "croatia",
@@ -613,7 +575,25 @@ struct FlagBackgroundView: View {
         "zanzibar",
         "zimbabwe"
     ]
-    
+    #elseif TEAM_LOGO_QUIZ
+    let flagImageNames = [
+        "ACM", "AJA", "ALA", "ALM", "ALT", "ALV", "AMA", "ANO", "ANT", "APO", "ARM", "ARS",
+        "ATA", "AUG", "AUW", "AVL", "AZA", "BAL", "BAS", "BAY", "BEE", "BEN", "BES", "BHA",
+        "BIL", "BLE", "BOC", "BOD", "BOU", "BRA", "BRE", "BRO", "BRU", "BSH", "BUR", "CAD",
+        "CEL", "CEV", "CHE", "CLU", "CRY", "DAR", "DJU", "DKI", "DNI", "DOR", "ELC", "ESP",
+        "EVE", "FCB", "FCK", "FCS", "FEN", "FER", "FEY", "FIO", "FLO", "FRA", "FRE", "FUL",
+        "GAL", "GEN", "GET", "GIR", "GRA", "GRE", "HEA", "HEI", "HER", "HJK", "HOF", "INT",
+        "JAB", "JUV", "KAI", "KGE", "KOL", "LAP", "LAR", "LAS", "LAZ", "LEC", "LEE", "LEG",
+        "LEI", "LEV", "LIL", "LIV", "LOK", "LRI", "LUD", "LUT", "LYO", "MAI", "MAL", "MAR",
+        "MCI", "MCO", "MFF", "MHA", "MID", "MOL", "MON", "MTA", "MUN", "MUR", "NAN", "NAP",
+        "NEW", "NIC", "NOF", "NOR", "OLY", "OMO", "OSA", "PAO", "PAR", "PLZ", "POR", "PSG",
+        "PSV", "PYU", "QAR", "RAN", "RAP", "RAY", "RBE", "RBL", "RBS", "REN", "RFC", "RFS",
+        "RMA", "ROM", "RSB", "RSO", "RVA", "SBR", "SCH", "SEV", "SHA", "SHE", "SHR", "SHU",
+        "SIL", "SIV", "SLP", "SLV", "SMO", "SOF", "SOU", "SPO", "SPR", "STG", "STU", "TOT",
+        "TRZ", "UNI", "USG", "VAL", "VAZ", "VIL", "VIT", "WAT", "WBU", "WER", "WHU", "WOL",
+        "YOU", "ZAG", "ZAL", "ZEN", "ZOR", "ZUR"
+      ]
+    #endif
     
     @State private var randomFlagIndices: [Int] = []
     
@@ -621,10 +601,10 @@ struct FlagBackgroundView: View {
         VStack {
             LazyVGrid(columns: createGridItems(), spacing: 10) {
                 ForEach(randomFlagIndices, id: \.self) { index in
-                    Image(flagImageNames[index])
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 100) // Adjust the height as needed
+                        Image(flagImageNames[index])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 100) // Adjust the height as needed
                 }
             }
         }

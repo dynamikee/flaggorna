@@ -95,9 +95,7 @@ struct MainGameView: View {
                     }
                 }
                 .padding(8)
-                
-                
-                
+
             }
             
         }

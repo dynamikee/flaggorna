@@ -4,14 +4,31 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Flaggorna copy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>Flaggorna.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
+		</dict>
+		<key>Team logo quiz.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>BA9C456D2A60085600439C00</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>BAF21BFF29994100009035E8</key>
 		<dict>
 			<key>primary</key>

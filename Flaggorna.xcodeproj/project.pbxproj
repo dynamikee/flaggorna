@@ -15,6 +15,37 @@
 		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
 		BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
 		BA82C9902A3B867400BE4E9C /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA82C98F2A3B867300BE4E9C /* StoreView.swift */; };
+		BA9C45542A5FF32900439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45532A5FF32900439C00 /* teams.json */; };
+		BA9C45702A60085600439C00 /* RightAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */; };
+		BA9C45712A60085600439C00 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */; };
+		BA9C45722A60085600439C00 /* GameOverMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */; };
+		BA9C45732A60085600439C00 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726C92A4B7D610077A2B0 /* Design.swift */; };
+		BA9C45742A60085600439C00 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
+		BA9C45752A60085600439C00 /* SCNGeometry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0B2A098D2100FE8348 /* SCNGeometry+Extensions.swift */; };
+		BA9C45762A60085600439C00 /* MainGameMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */; };
+		BA9C45772A60085600439C00 /* FlagDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726CD2A4CDD5A0077A2B0 /* FlagDataManager.swift */; };
+		BA9C45782A60085600439C00 /* WrongAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466F29A0B0D40048AE12 /* WrongAnswerView.swift */; };
+		BA9C45792A60085600439C00 /* JoinMultiplayerPeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD64D192A2D23F100A994DA /* JoinMultiplayerPeerView.swift */; };
+		BA9C457A2A60085600439C00 /* WrongAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2629ABD86F0054E972 /* WrongAnswerMultiplayerView.swift */; };
+		BA9C457B2A60085600439C00 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC726CB2A4B7DE50077A2B0 /* SocketManager.swift */; };
+		BA9C457C2A60085600439C00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0529994100009035E8 /* ContentView.swift */; };
+		BA9C457D2A60085600439C00 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
+		BA9C457E2A60085600439C00 /* FlaggornaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF21C0329994100009035E8 /* FlaggornaApp.swift */; };
+		BA9C457F2A60085600439C00 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
+		BA9C45802A60085600439C00 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
+		BA9C45812A60085600439C00 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
+		BA9C45822A60085600439C00 /* JoinMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC469029A282410048AE12 /* JoinMultiplayerView.swift */; };
+		BA9C45832A60085600439C00 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC467129A0B0F90048AE12 /* GameOverView.swift */; };
+		BA9C45842A60085600439C00 /* FlagStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */; };
+		BA9C45852A60085600439C00 /* GetReadyMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2229ABD7AF0054E972 /* GetReadyMultiplayerView.swift */; };
+		BA9C45862A60085600439C00 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA82C98F2A3B867300BE4E9C /* StoreView.swift */; };
+		BA9C45872A60085600439C00 /* RightAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466D29A0B0950048AE12 /* RightAnswerView.swift */; };
+		BA9C45892A60085600439C00 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
+		BA9C458A2A60085600439C00 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA67930F2A38600300955104 /* StoreKit.framework */; };
+		BA9C458C2A60085600439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45532A5FF32900439C00 /* teams.json */; };
+		BA9C458D2A60085600439C00 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C112999477F009035E8 /* countries.json */; };
+		BA9C458E2A60085600439C00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0A29994103009035E8 /* Preview Assets.xcassets */; };
+		BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0729994103009035E8 /* Assets.xcassets */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -48,6 +79,9 @@
 		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
 		BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewContainer.swift; sourceTree = "<group>"; };
 		BA82C98F2A3B867300BE4E9C /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = /Users/mikaelmattsson/Documents/dev/Flaggorna/Flaggorna/StoreView.swift; sourceTree = "<absolute>"; };
+		BA9C45532A5FF32900439C00 /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = teams.json; path = "../../../Flaggorna stuff/teams.json"; sourceTree = "<group>"; };
+		BA9C45942A60085600439C00 /* Team logo quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team logo quiz.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Flaggorna copy-Info.plist"; path = "/Users/mikaelmattsson/Documents/dev/flaggorna/Flaggorna copy-Info.plist"; sourceTree = "<absolute>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -75,6 +109,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BA9C45882A60085600439C00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA9C45892A60085600439C00 /* Pods_Flaggorna.framework in Frameworks */,
+				BA9C458A2A60085600439C00 /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAF21BFD29994100009035E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -148,6 +191,7 @@
 				BAF21C0129994100009035E8 /* Products */,
 				148043B631B009D18B572535 /* Pods */,
 				E6628B947791CACBE60070F9 /* Frameworks */,
+				BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				BAF21C0029994100009035E8 /* Flaggorna.app */,
+				BA9C45942A60085600439C00 /* Team logo quiz.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,6 +220,7 @@
 				BABC466B29A0B0320048AE12 /* StartGameView.swift */,
 				BAF21C0729994103009035E8 /* Assets.xcassets */,
 				BAF21C112999477F009035E8 /* countries.json */,
+				BA9C45532A5FF32900439C00 /* teams.json */,
 				BAF21C0929994103009035E8 /* Preview Content */,
 				BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */,
 			);
@@ -201,6 +247,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BA9C456D2A60085600439C00 /* Team logo quiz */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA9C45912A60085600439C00 /* Build configuration list for PBXNativeTarget "Team logo quiz" */;
+			buildPhases = (
+				BA9C456E2A60085600439C00 /* [CP] Check Pods Manifest.lock */,
+				BA9C456F2A60085600439C00 /* Sources */,
+				BA9C45882A60085600439C00 /* Frameworks */,
+				BA9C458B2A60085600439C00 /* Resources */,
+				BA9C45902A60085600439C00 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Team logo quiz";
+			productName = Flaggorna;
+			productReference = BA9C45942A60085600439C00 /* Team logo quiz.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BAF21BFF29994100009035E8 /* Flaggorna */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BAF21C0E29994103009035E8 /* Build configuration list for PBXNativeTarget "Flaggorna" */;
@@ -227,7 +292,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					BAF21BFF29994100009035E8 = {
@@ -249,15 +314,28 @@
 			projectRoot = "";
 			targets = (
 				BAF21BFF29994100009035E8 /* Flaggorna */,
+				BA9C456D2A60085600439C00 /* Team logo quiz */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BA9C458B2A60085600439C00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA9C458C2A60085600439C00 /* teams.json in Resources */,
+				BA9C458D2A60085600439C00 /* countries.json in Resources */,
+				BA9C458E2A60085600439C00 /* Preview Assets.xcassets in Resources */,
+				BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAF21BFE29994100009035E8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA9C45542A5FF32900439C00 /* teams.json in Resources */,
 				BAF21C1229994780009035E8 /* countries.json in Resources */,
 				BAF21C0B29994103009035E8 /* Preview Assets.xcassets in Resources */,
 				BAF21C0829994103009035E8 /* Assets.xcassets in Resources */,
@@ -289,6 +367,45 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BA9C456E2A60085600439C00 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Flaggorna-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA9C45902A60085600439C00 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Flaggorna/Pods-Flaggorna-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ECC36CC1F96C52EFC1792B44 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -309,6 +426,37 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BA9C456F2A60085600439C00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA9C45702A60085600439C00 /* RightAnswerMultiplayerView.swift in Sources */,
+				BA9C45712A60085600439C00 /* PurchaseManager.swift in Sources */,
+				BA9C45722A60085600439C00 /* GameOverMultiplayerView.swift in Sources */,
+				BA9C45732A60085600439C00 /* Design.swift in Sources */,
+				BA9C45742A60085600439C00 /* SceneViewContainer.swift in Sources */,
+				BA9C45752A60085600439C00 /* SCNGeometry+Extensions.swift in Sources */,
+				BA9C45762A60085600439C00 /* MainGameMultiplayerView.swift in Sources */,
+				BA9C45772A60085600439C00 /* FlagDataManager.swift in Sources */,
+				BA9C45782A60085600439C00 /* WrongAnswerView.swift in Sources */,
+				BA9C45792A60085600439C00 /* JoinMultiplayerPeerView.swift in Sources */,
+				BA9C457A2A60085600439C00 /* WrongAnswerMultiplayerView.swift in Sources */,
+				BA9C457B2A60085600439C00 /* SocketManager.swift in Sources */,
+				BA9C457C2A60085600439C00 /* ContentView.swift in Sources */,
+				BA9C457D2A60085600439C00 /* GetReadyView.swift in Sources */,
+				BA9C457E2A60085600439C00 /* FlaggornaApp.swift in Sources */,
+				BA9C457F2A60085600439C00 /* FlagNode.swift in Sources */,
+				BA9C45802A60085600439C00 /* StartGameView.swift in Sources */,
+				BA9C45812A60085600439C00 /* MainGameView.swift in Sources */,
+				BA9C45822A60085600439C00 /* JoinMultiplayerView.swift in Sources */,
+				BA9C45832A60085600439C00 /* GameOverView.swift in Sources */,
+				BA9C45842A60085600439C00 /* FlagStats.xcdatamodeld in Sources */,
+				BA9C45852A60085600439C00 /* GetReadyMultiplayerView.swift in Sources */,
+				BA9C45862A60085600439C00 /* StoreView.swift in Sources */,
+				BA9C45872A60085600439C00 /* RightAnswerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAF21BFC29994100009035E8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,6 +491,88 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		BA9C45922A60085600439C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD606BE073B6EFD734F9123D /* Pods-Flaggorna.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon 2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Flaggorna/Preview Content\"";
+				DEVELOPMENT_TEAM = 37XKX4B4V6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Flaggorna copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Team logo quiz";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To be able to play with friends on the same network";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D TEAM_LOGO_QUIZ";
+				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BA9C45932A60085600439C00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon 2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Flaggorna/Preview Content\"";
+				DEVELOPMENT_TEAM = 37XKX4B4V6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Flaggorna copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Team logo quiz";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To be able to play with friends on the same network";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D TEAM_LOGO_QUIZ";
+				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		BAF21C0C29994103009035E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -487,7 +717,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.2.3;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D FLAGGORNA";
 				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -527,7 +758,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.2.3;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D FLAGGORNA";
 				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -542,6 +774,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BA9C45912A60085600439C00 /* Build configuration list for PBXNativeTarget "Team logo quiz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA9C45922A60085600439C00 /* Debug */,
+				BA9C45932A60085600439C00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BAF21BFB29994100009035E8 /* Build configuration list for PBXProject "Flaggorna" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

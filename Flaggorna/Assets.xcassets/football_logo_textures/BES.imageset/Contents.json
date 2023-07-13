@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "BES.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

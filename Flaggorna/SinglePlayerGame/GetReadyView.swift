@@ -19,6 +19,11 @@ struct GetReadyView: View {
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .foregroundColor(.white)
+                .padding()
+            Text("Answer as quickly as possible")
+                .font(.body)
+                .fontWeight(.black)
+                .foregroundColor(.white)
 
         }
         .onAppear {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
+		</dict>
+	</array>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_flaggorna-quiz._tcp</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array/>
+	<key>model/gltf+json</key>
+	<string>GL Transmission Format (gltf)</string>
+</dict>
+</plist>
