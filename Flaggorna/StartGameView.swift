@@ -31,12 +31,23 @@ struct StartGameView: View {
             VStack {
                 HStack {
                     Button(action: {
+                        #if FLAGGORNA
                         let appURL = URL(string: "https://apple.co/3LfGM7G")!
                             let appName = "Flag Party Quiz App - Flaggorna"
                             let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
                             
                             let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Download the app to get started", appURL], applicationActivities: nil)
                             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                        #elseif TEAM_LOGO_QUIZ
+                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
+                            let appName = "Soccer Team Logo Quiz App"
+                            let appIcon = UIImage(named: "AppIcon 2")! // Replace "AppIcon" with the name of your app icon image asset
+                            
+                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a soccer team-logo quiz! Download the app to get started", appURL], applicationActivities: nil)
+                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                        
+                        #endif
+                        
                         }) {
                                 Image(systemName: "square.and.arrow.up")
                                     .resizable()
@@ -64,6 +75,7 @@ struct StartGameView: View {
                     .sheet(isPresented: $isSettingsViewActive) {
                         FlagStatisticsView(flagData: fetchFlagData())
                     }
+                    
                     
                 }
                 
@@ -239,6 +251,7 @@ struct StartGameView: View {
 }
 
 struct FlagStatisticsView: View {
+    
     let flagData: [FlagData]
     
     var sortedFlagData: [FlagData] {

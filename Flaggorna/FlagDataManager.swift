@@ -15,7 +15,11 @@ struct FlagDataManager {
     
     
     func loadData() {
-        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+#if FLAGGORNA
+let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+#elseif TEAM_LOGO_QUIZ
+let file = Bundle.main.path(forResource: "teams", ofType: "json")!
+#endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()
         self.countries = try! decoder.decode([Country].self, from: data)

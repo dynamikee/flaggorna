@@ -46,6 +46,7 @@
 		BA9C458D2A60085600439C00 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C112999477F009035E8 /* countries.json */; };
 		BA9C458E2A60085600439C00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0A29994103009035E8 /* Preview Assets.xcassets */; };
 		BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0729994103009035E8 /* Assets.xcassets */; };
+		BA9C45982A6483AA00439C00 /* TeamStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -82,6 +83,7 @@
 		BA9C45532A5FF32900439C00 /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = teams.json; path = "../../../Flaggorna stuff/teams.json"; sourceTree = "<group>"; };
 		BA9C45942A60085600439C00 /* Team logo quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team logo quiz.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Flaggorna copy-Info.plist"; path = "/Users/mikaelmattsson/Documents/dev/flaggorna/Flaggorna copy-Info.plist"; sourceTree = "<absolute>"; };
+		BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TeamStats.xcdatamodel; sourceTree = "<group>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				BA9C45532A5FF32900439C00 /* teams.json */,
 				BAF21C0929994103009035E8 /* Preview Content */,
 				BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */,
+				BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */,
 			);
 			path = Flaggorna;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA9C45982A6483AA00439C00 /* TeamStats.xcdatamodeld in Sources */,
 				BAD40D2529ABD8300054E972 /* RightAnswerMultiplayerView.swift in Sources */,
 				BA3482AC2A3CC8B900EE876F /* PurchaseManager.swift in Sources */,
 				BABC78E229B66E8D006E3129 /* GameOverMultiplayerView.swift in Sources */,
@@ -804,6 +808,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */,
+			);
+			currentVersion = BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */;
+			path = TeamStats.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

@@ -292,16 +292,28 @@ struct GameOverView: View {
     
     
     private func loadData() {
-        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+#if FLAGGORNA
+let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+#elseif TEAM_LOGO_QUIZ
+let file = Bundle.main.path(forResource: "teams", ofType: "json")!
+#endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()
         self.countries = try! decoder.decode([Country].self, from: data)
     }
     
     private func fetchTopHighscores() {
+        #if FLAGGORNA
         guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores") else {
             return
         }
+        #elseif TEAM_LOGO_QUIZ
+        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/teams-highscores") else {
+            return
+        }
+        #endif
+        
+        
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Failed to fetch highscores: \(error.localizedDescription)")
@@ -378,10 +390,17 @@ struct GameOverView: View {
         
         highscores[userRank].playerName = playerName
         
+        #if FLAGGORNA
         // Create a request to update the highscores on the server
         guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores/tRaYptqu5Bh3ceput8cSBg") else {
             return
         }
+        #elseif TEAM_LOGO_QUIZ
+        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/teams-highscores/iPsiJLsMnF8BKTEQx76yvq") else {
+            return
+        }
+        #endif
+        
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"

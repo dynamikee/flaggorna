@@ -82,6 +82,7 @@ struct MainGameView: View {
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
                                 updateFlagData(isCorrect: true)
+
                                 
                                 
                             } else {
@@ -92,7 +93,7 @@ struct MainGameView: View {
                                 self.roundsArray[self.rounds] = .incorrect
                                 self.currentScene = "Wrong"
                                 updateFlagData(isCorrect: false)
-                                
+
                             }
                             
                             self.answered = true // set answered to true to invalidate the timer
@@ -173,6 +174,7 @@ struct MainGameView: View {
             print("Error updating flag data: \(error)")
         }
     }
+
 }
 
 

@@ -181,7 +181,7 @@ struct JoinMultiplayerPeerView: View {
                     }
                 }
                 Spacer()
-
+                
                 if socketManager.users.count < 2 {
                     Button {
                         loadData()
@@ -204,7 +204,7 @@ struct JoinMultiplayerPeerView: View {
                     }
                     .padding()
                     .buttonStyle(OrdinaryButtonStyle())
-  
+                    
                 } else if socketManager.users.count > 4 {
                     Button {
                         // premium is needed
@@ -222,7 +222,7 @@ struct JoinMultiplayerPeerView: View {
                             
                         } else {
                             showStoreView = true
-
+                            
                         }
                     } label: {
                         Text("START GAME")
@@ -232,7 +232,7 @@ struct JoinMultiplayerPeerView: View {
                     .sheet(isPresented: $showStoreView) {
                         StoreView(isPresented: $showStoreView) // Pass the isPresented binding here
                     }
-
+                    
                 } else {
                     Button {
                         // premium is not needed
@@ -251,7 +251,7 @@ struct JoinMultiplayerPeerView: View {
                     }
                     .padding()
                     .buttonStyle(OrdinaryButtonStyle())
-
+                    
                 }
                 
             }
@@ -293,11 +293,11 @@ struct JoinMultiplayerPeerView: View {
     }
     
     private func loadData() {
-#if FLAGGORNA
-let file = Bundle.main.path(forResource: "countries", ofType: "json")!
-#elseif TEAM_LOGO_QUIZ
-let file = Bundle.main.path(forResource: "teams", ofType: "json")!
-#endif
+        #if FLAGGORNA
+        let file = Bundle.main.path(forResource: "countries", ofType: "json")!
+        #elseif TEAM_LOGO_QUIZ
+        let file = Bundle.main.path(forResource: "teams", ofType: "json")!
+        #endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()
         self.countries = try! decoder.decode([Country].self, from: data)
@@ -439,7 +439,7 @@ class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDeleg
             if let gameCode = gameCode {
                 self?.gameCode = gameCode // Update the gameCode directly
                 self?.discoveredPeers.append((peerID, gameCode))
-
+                
             } else {
                 // ...
             }
