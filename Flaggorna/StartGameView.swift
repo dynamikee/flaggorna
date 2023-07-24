@@ -30,34 +30,37 @@ struct StartGameView: View {
 
             VStack {
                 HStack {
-                    Button(action: {
+                    
                         #if FLAGGORNA
+                    Button(action: {
                         let appURL = URL(string: "https://apple.co/3LfGM7G")!
                             let appName = "Flag Party Quiz App - Flaggorna"
                             let appIcon = UIImage(named: "AppIcon")! // Replace "AppIcon" with the name of your app icon image asset
                             
                             let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a flag quiz! Download the app to get started", appURL], applicationActivities: nil)
                             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
-                        #elseif TEAM_LOGO_QUIZ
-                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
-                            let appName = "Soccer Team Logo Quiz App"
-                            let appIcon = UIImage(named: "AppIcon 2")! // Replace "AppIcon" with the name of your app icon image asset
+                        
+                    }) {
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.white)
                             
-                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a soccer team-logo quiz! Download the app to get started", appURL], applicationActivities: nil)
-                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                        }
+                        .buttonStyle(OrdinaryButtonStyle())
+                        .padding()
+                        #elseif TEAM_LOGO_QUIZ
+//                        let appURL = URL(string: "https://apple.co/3LfGM7G")!
+//                            let appName = "Soccer Team Logo Quiz App"
+//                            let appIcon = UIImage(named: "AppIcon 2")! // Replace "AppIcon" with the name of your app icon image asset
+//
+//                            let activityViewController = UIActivityViewController(activityItems: [appIcon, "I challenge you on a soccer team-logo quiz! Download the app to get started", appURL], applicationActivities: nil)
+//                            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
                         
                         #endif
                         
-                        }) {
-                                Image(systemName: "square.and.arrow.up")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(.white)
-                                
-                            }
-                            .buttonStyle(OrdinaryButtonStyle())
-                            .padding()
+
                     Spacer()
                     Button(action: {
                         isSettingsViewActive = true
@@ -274,7 +277,11 @@ struct FlagStatisticsView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 64)
+                            #if FLAGGORNA
                                 .border(Color.gray, width: 1)
+                            #elseif TEAM_LOGO_QUIZ
+                            //
+                            #endif
                                 .padding(.trailing, 8)
                             Text(data.country_name ?? "")
                                 .font(.body)
@@ -590,21 +597,21 @@ struct FlagBackgroundView: View {
     ]
     #elseif TEAM_LOGO_QUIZ
     let flagImageNames = [
-        "ACM", "AJA", "ALA", "ALM", "ALT", "ALV", "AMA", "ANO", "ANT", "APO", "ARM", "ARS",
-        "ATA", "AUG", "AUW", "AVL", "AZA", "BAL", "BAS", "BAY", "BEE", "BEN", "BES", "BHA",
-        "BIL", "BLE", "BOC", "BOD", "BOU", "BRA", "BRE", "BRO", "BRU", "BSH", "BUR", "CAD",
-        "CEL", "CEV", "CHE", "CLU", "CRY", "DAR", "DJU", "DKI", "DNI", "DOR", "ELC", "ESP",
-        "EVE", "FCB", "FCK", "FCS", "FEN", "FER", "FEY", "FIO", "FLO", "FRA", "FRE", "FUL",
-        "GAL", "GEN", "GET", "GIR", "GRA", "GRE", "HEA", "HEI", "HER", "HJK", "HOF", "INT",
-        "JAB", "JUV", "KAI", "KGE", "KOL", "LAP", "LAR", "LAS", "LAZ", "LEC", "LEE", "LEG",
-        "LEI", "LEV", "LIL", "LIV", "LOK", "LRI", "LUD", "LUT", "LYO", "MAI", "MAL", "MAR",
-        "MCI", "MCO", "MFF", "MHA", "MID", "MOL", "MON", "MTA", "MUN", "MUR", "NAN", "NAP",
-        "NEW", "NIC", "NOF", "NOR", "OLY", "OMO", "OSA", "PAO", "PAR", "PLZ", "POR", "PSG",
-        "PSV", "PYU", "QAR", "RAN", "RAP", "RAY", "RBE", "RBL", "RBS", "REN", "RFC", "RFS",
-        "RMA", "ROM", "RSB", "RSO", "RVA", "SBR", "SCH", "SEV", "SHA", "SHE", "SHR", "SHU",
-        "SIL", "SIV", "SLP", "SLV", "SMO", "SOF", "SOU", "SPO", "SPR", "STG", "STU", "TOT",
-        "TRZ", "UNI", "USG", "VAL", "VAZ", "VIL", "VIT", "WAT", "WBU", "WER", "WHU", "WOL",
-        "YOU", "ZAG", "ZAL", "ZEN", "ZOR", "ZUR"
+        "ACM", "AJA", "AJACCIO", "ALM", "ALV", "AMA", "ANGERS", "ARM", "ARS",
+        "ATA", "AUG", "AUXERRE", "AVL", "BAY", "BEN", "BES", "BHA",
+        "BIL", "BOC", "BOLOGNA", "BOU", "BRE", "BRESTOIS", "BRU", "BUR", "CAD",
+        "CEL", "CEV", "CHE", "CAGLIARI", "CRY", "DAR", "CLERMONT", "DKI", "DROIT", "DOR", "ELC", "ESP", "EMPOLI", "ESTAC",
+        "EVE", "FCB", "FCK", "FLORENTINA", "FROSINONE", "FRE", "FUL",
+        "GENOA", "GET", "GIR", "GRA", "GRE", "HELLAS_VERONA", "HEI", "HER", "HOF", "INT",
+        "JUV", "KOL", "LAP", "LAZIO", "LECCE", "LEE",
+        "LEI", "LENS", "LEV", "LIL", "LIV", "LORIENT", "LUT", "LYO", "MAI", "MAL", "MAR",
+        "MCI", "MFF", "MHA", "MONACO", "MONTPELLIER", "MON", "MONZA", "MUN", "NANTES", "NAP",
+        "NEW", "NIC", "NOF", "NOR", "OSA", "PLZ", "POR", "PSG",
+        "RAN", "RAY", "RBE", "RBL", "RBS", "REIMS", "REN",
+        "RMA", "ROM", "RSO", "RVA", "SALERNITANA", "SAMPDORIA", "SASSUOLO", "SCH", "SEV", "SHA", "SHE", "SHU",
+        "SOU", "SPO", "STRASBOURG", "STU", "TORINO", "TOT", "TOULOUSE", "UDINESE",
+        "UNI", "VAL", "VENEZIA", "VIL", "WAT", "WBU", "WER", "WHU", "WOL",
+        "YOU", "ZAG", "ZEN"
       ]
     #endif
     

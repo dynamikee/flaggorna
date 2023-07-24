@@ -15,7 +15,6 @@
 		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
 		BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
 		BA82C9902A3B867400BE4E9C /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA82C98F2A3B867300BE4E9C /* StoreView.swift */; };
-		BA9C45542A5FF32900439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45532A5FF32900439C00 /* teams.json */; };
 		BA9C45702A60085600439C00 /* RightAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */; };
 		BA9C45712A60085600439C00 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */; };
 		BA9C45722A60085600439C00 /* GameOverMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */; };
@@ -42,11 +41,11 @@
 		BA9C45872A60085600439C00 /* RightAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466D29A0B0950048AE12 /* RightAnswerView.swift */; };
 		BA9C45892A60085600439C00 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
 		BA9C458A2A60085600439C00 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA67930F2A38600300955104 /* StoreKit.framework */; };
-		BA9C458C2A60085600439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45532A5FF32900439C00 /* teams.json */; };
 		BA9C458D2A60085600439C00 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C112999477F009035E8 /* countries.json */; };
 		BA9C458E2A60085600439C00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0A29994103009035E8 /* Preview Assets.xcassets */; };
 		BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0729994103009035E8 /* Assets.xcassets */; };
 		BA9C45982A6483AA00439C00 /* TeamStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */; };
+		BA9C45A62A6B12C400439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45A52A6B12C400439C00 /* teams.json */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -80,10 +79,10 @@
 		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
 		BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewContainer.swift; sourceTree = "<group>"; };
 		BA82C98F2A3B867300BE4E9C /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = /Users/mikaelmattsson/Documents/dev/Flaggorna/Flaggorna/StoreView.swift; sourceTree = "<absolute>"; };
-		BA9C45532A5FF32900439C00 /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = teams.json; path = "../../../Flaggorna stuff/teams.json"; sourceTree = "<group>"; };
 		BA9C45942A60085600439C00 /* Team logo quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team logo quiz.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Flaggorna copy-Info.plist"; path = "/Users/mikaelmattsson/Documents/dev/flaggorna/Flaggorna copy-Info.plist"; sourceTree = "<absolute>"; };
 		BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TeamStats.xcdatamodel; sourceTree = "<group>"; };
+		BA9C45A52A6B12C400439C00 /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = teams.json; path = "../../../Flaggorna stuff/teams.json"; sourceTree = "<group>"; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -221,8 +220,8 @@
 				BABC467329A0B6D20048AE12 /* MultiPlayerGame */,
 				BABC466B29A0B0320048AE12 /* StartGameView.swift */,
 				BAF21C0729994103009035E8 /* Assets.xcassets */,
+				BA9C45A52A6B12C400439C00 /* teams.json */,
 				BAF21C112999477F009035E8 /* countries.json */,
-				BA9C45532A5FF32900439C00 /* teams.json */,
 				BAF21C0929994103009035E8 /* Preview Content */,
 				BAEFD87A2A2380250076D09E /* FlagStats.xcdatamodeld */,
 				BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */,
@@ -327,7 +326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA9C458C2A60085600439C00 /* teams.json in Resources */,
+				BA9C45A62A6B12C400439C00 /* teams.json in Resources */,
 				BA9C458D2A60085600439C00 /* countries.json in Resources */,
 				BA9C458E2A60085600439C00 /* Preview Assets.xcassets in Resources */,
 				BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */,
@@ -338,7 +337,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA9C45542A5FF32900439C00 /* teams.json in Resources */,
 				BAF21C1229994780009035E8 /* countries.json in Resources */,
 				BAF21C0B29994103009035E8 /* Preview Assets.xcassets in Resources */,
 				BAF21C0829994103009035E8 /* Assets.xcassets in Resources */,
@@ -525,7 +523,7 @@
 				);
 				MARKETING_VERSION = 1.0.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D TEAM_LOGO_QUIZ";
-				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
+				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Team_logo_quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -566,7 +564,7 @@
 				);
 				MARKETING_VERSION = 1.0.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D TEAM_LOGO_QUIZ";
-				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
+				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Team_logo_quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

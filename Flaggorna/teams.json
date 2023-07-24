@@ -1,0 +1,933 @@
+[
+  {
+    "id": 1,
+    "name": "A.C. Milan",
+    "flag": "ACM",
+    "level": "Easy",
+    "country": "Italy"
+  },
+  {
+    "id": 2,
+    "name": "AJAX",
+    "flag": "AJA",
+    "level": " ",
+    "country": "Netherland"
+  },
+  {
+    "id": 3,
+    "name": "Ajaccio",
+    "flag": "AJACCIO",
+    "level": " ",
+    "country": "France"
+  }
+  {
+    "id": 4,
+    "name": "UD Almería",
+    "flag": "ALM",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 6,
+    "name": "Deportivo Alavés",
+    "flag": "ALV",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 7,
+    "name": "Atlético Madrid",
+    "flag": "AMA",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 8,
+    "name": "Angers",
+    "flag": "ANGERS",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 11,
+    "name": "Arminia Bielefeld",
+    "flag": "ARM",
+    "level": " ",
+    "country": "Deutchland"
+  },
+  {
+    "id": 12,
+    "name": "Arsenal F.C.",
+    "flag": "ARS",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 13,
+    "name": "Atalanta BC",
+    "flag": "ATA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 14,
+    "name": "FC Augsburg",
+    "flag": "AUG",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 15,
+    "name": "Auxerre",
+    "flag": "AUXERRE",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 16,
+    "name": "Aston Villa FC",
+    "flag": "AVL",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 20,
+    "name": "FC Bayern München",
+    "flag": "BAY",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 22,
+    "name": "S.L. Benfica",
+    "flag": "BEN",
+    "level": " ",
+    "country": "Portugal"
+  },
+  {
+    "id": 23,
+    "name": "Beşiktaş J.K.",
+    "flag": "BES",
+    "level": " ",
+    "country": "Turkey"
+  },
+  {
+    "id": 24,
+    "name": "Brighton & Hove Albion",
+    "flag": "BHA",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 25,
+    "name": "Athletic Bilbao",
+    "flag": "BIL",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 26,
+    "name": "Bayer 04 Leverkusen",
+    "flag": "BLE",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 27,
+    "name": "VfL Bochum",
+    "flag": "BOC",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 28,
+    "name": "Bologna",
+    "flag": "BOLOGNA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 29,
+    "name": "AFC Bournemouth",
+    "flag": "BOU",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 31,
+    "name": "Brentford F.C.",
+    "flag": "BRE",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 32,
+    "name": "Brestois",
+    "flag": "BRESTOIS",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 33,
+    "name": "Club Brugge KV",
+    "flag": "BRU",
+    "level": " ",
+    "country": "Belgium"
+  },
+  {
+    "id": 35,
+    "name": "Burnley F.C.",
+    "flag": "BUR",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 36,
+    "name": "Cádiz CF",
+    "flag": "CAD",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 34,
+    "name": "Cagliari",
+    "flag": "CAGLIARI",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 37,
+    "name": "Celtic",
+    "flag": "CEL",
+    "level": " "
+    "country": "Scotland"
+  }
+  {
+    "id": 38,
+    "name": "RC Celta de Vigo",
+    "flag": "CEV",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 39,
+    "name": "Chelsea F.C.",
+    "flag": "CHE",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 40,
+    "name": "Clermont",
+    "flag": "CLERMONT",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 41,
+    "name": "Crystal Palace F.C.",
+    "flag": "CRY",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 42,
+    "name": "SV Darmstadt 98",
+    "flag": "DAR",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 43,
+    "name": "FC Dynamo Kyiv",
+    "flag": "DKI",
+    "level": " ",
+    "country": "Ukraine"
+  },
+  {
+    "id": 46,
+    "name": "Borussia Dortmund",
+    "flag": "DOR",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 44,
+    "name": "Marseille",
+    "flag": "DROIT",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 47,
+    "name": "Elche CF",
+    "flag": "ELC",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 45,
+    "name": "Empoli",
+    "flag": "EMPOLI",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 48,
+    "name": "RCD Espanyol Cantera",
+    "flag": "ESP",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 46,
+    "name": "Troyes",
+    "flag": "ESTAC",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 49,
+    "name": "Everton F.C.",
+    "flag": "EVE",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 50,
+    "name": "FC Barcelona",
+    "flag": "FCB",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 51,
+    "name": "F.C. Copenhagen",
+    "flag": "FCK",
+    "level": " ",
+    "country": "Denmark"
+  },
+  {
+    "id": 56,
+    "name": "Fiorentina",
+    "flag": "FLORENTINA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 58,
+    "name": "Eintracht Frankfurt",
+    "flag": "FRA",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 59,
+    "name": "SC Freiburg",
+    "flag": "FRE",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 57,
+    "name": "Frosinone",
+    "flag": "FROSINONE",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 60,
+    "name": "Fulham F.C.",
+    "flag": "FUL",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 61,
+    "name": "Genoa",
+    "flag": "GENOA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 63,
+    "name": "Getafe CF",
+    "flag": "GET",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 64,
+    "name": "Girona FC",
+    "flag": "GIR",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 65,
+    "name": "Granada CF",
+    "flag": "GRA",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 66,
+    "name": "SpVgg Greuther Fürth",
+    "flag": "GRE",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 68,
+    "name": "1. FC Heidenheim",
+    "flag": "HEI",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+  "id": 67,
+  "name": "Hellas Verona",
+  "flag": "HELLAS_VERONA",
+  "level": " ",
+  "country": "Italy"
+  },
+  {
+    "id": 69,
+    "name": "Hertha BSC",
+    "flag": "HER",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 71,
+    "name": "TSG 1899 Hoffenheim",
+    "flag": "HOF",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 72,
+    "name": "Inter Milan",
+    "flag": "INT",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 74,
+    "name": "Juventus",
+    "flag": "JUV",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 77,
+    "name": "FC Köln",
+    "flag": "KOL",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 78,
+    "name": "UD Las Palmas",
+    "flag": "LAP",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 81,
+    "name": "SS Lazio",
+    "flag": "LAZIO",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 82,
+    "name": "Lecce",
+    "flag": "LECCE",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 83,
+    "name": "Leeds United F.C.",
+    "flag": "LEE",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 85,
+    "name": "Leicester City F.C.",
+    "flag": "LEI",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 84,
+    "name": "Lens",
+    "flag": "LENS",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 86,
+    "name": "Bayer Leverkusen",
+    "flag": "LEV",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 87,
+    "name": "Lille OSC",
+    "flag": "LIL",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 88,
+    "name": "Liverpool F.C.",
+    "flag": "LIV",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 89,
+    "name": "Lorient",
+    "flag": "LORIENT",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 92,
+    "name": "Luton Town F.C.",
+    "flag": "LUT",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 93,
+    "name": "Olympique Lyonnais",
+    "flag": "LYO",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 94,
+    "name": "FSV Mainz 05",
+    "flag": "MAI",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 95,
+    "name": "RCD Mallorca",
+    "flag": "MAL",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 96,
+    "name": "Olympique de Marseille",
+    "flag": "MAR",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 97,
+    "name": "Manchester City F.C.",
+    "flag": "MCI",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 102,
+    "name": "Malmö IF",
+    "flag": "MFF",
+    "level": " ",
+    "country": "Sweden"
+  },
+  {
+    "id": 98,
+    "name": "Maccabi Haifa",
+    "flag": "MHA",
+    "level": " ",
+    "country": "Israel"
+  },
+  {
+    "id": 103,
+    "name": "Borussia Mönchengladbach",
+    "flag": "MON",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 99,
+    "name": "Monaco",
+    "flag": "MONACO",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 100,
+    "name": "Montpellier",
+    "flag": "MONTPELLIER",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 101,
+    "name": "AC Monza",
+    "flag": "MONZA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 105,
+    "name": "Manchester United F.C.",
+    "flag": "MUN",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 107,
+    "name": "Nantes",
+    "flag": "NANTES",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 108,
+    "name": "Napoli",
+    "flag": "NAP",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 109,
+    "name": "Newcastle United F.C.",
+    "flag": "NEW",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 110,
+    "name": "OGC Nice",
+    "flag": "NIC",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 111,
+    "name": "Nottingham Forest F.C.",
+    "flag": "NOF",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 112,
+    "name": "Norwich City F.C.",
+    "flag": "NOR",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 115,
+    "name": "CA Osasuna",
+    "flag": "OSA",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 118,
+    "name": "FC Viktoria Plzeň",
+    "flag": "PLZ",
+    "level": " ",
+    "country": "Czech Republic"
+  },
+  {
+    "id": 119,
+    "name": "FC Porto",
+    "flag": "POR",
+    "level": " ",
+    "country": "Portugal"
+  },
+  {
+    "id": 120,
+    "name": "Paris Saint-Germain",
+    "flag": "PSG",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 124,
+    "name": "Rangers F.C.",
+    "flag": "RAN",
+    "level": " ",
+    "country": "Scotland"
+  },
+  {
+    "id": 126,
+    "name": "Rayo Vallecano",
+    "flag": "RAY",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 127,
+    "name": "Real Betis",
+    "flag": "RBE",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 128,
+    "name": "RB Leipzig",
+    "flag": "RBL",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 129,
+    "name": "Red Bull Salzburg",
+    "flag": "RBS",
+    "level": " ",
+    "country": "Austria"
+  },
+  {
+    "id": 131,
+    "name": "Stade de Reims",
+    "flag": "REIMS",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 130,
+    "name": "Stade Rennais F.C.",
+    "flag": "REN",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 133,
+    "name": "Real Madrid CF",
+    "flag": "RMA",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 134,
+    "name": "A.S. Roma",
+    "flag": "ROM",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 136,
+    "name": "Real Sociedad",
+    "flag": "RSO",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 137,
+    "name": "Real Valladolid",
+    "flag": "RVA",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 131,
+    "name": "Salernitana",
+    "flag": "SALERNITANA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 132,
+    "name": "Sampdoria",
+    "flag": "SAMPDORIA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 135,
+    "name": "Sassuolo",
+    "flag": "SASSUOLO",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 139,
+    "name": "FC Schalke 04",
+    "flag": "SCH",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 140,
+    "name": "Sevilla Atlético",
+    "flag": "SEV",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 141,
+    "name": "FC Shakhtar Donetsk",
+    "flag": "SHA",
+    "level": " ",
+    "country": "Ukraine"
+  },
+  {
+    "id": 142,
+    "name": "FC Sheriff Tiraspol",
+    "flag": "SHE",
+    "level": " ",
+    "country": "Moldova"
+  },
+  {
+    "id": 144,
+    "name": "Sheffield United F.C.",
+    "flag": "SHU",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 151,
+    "name": "Southampton Football Club",
+    "flag": "SOU",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 152,
+    "name": "Sporting CP",
+    "flag": "SPO",
+    "level": " ",
+    "country": "Portugal"
+  },
+  {
+    "id": 153,
+    "name": "Strasbourg",
+    "flag": "STRASBOURG",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 155,
+    "name": "VfB Stuttgart",
+    "flag": "STU",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 154,
+    "name": "Torino",
+    "flag": "TORINO", 
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 156,
+    "name": "Tottenham Hotspur",
+    "flag": "TOT",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 157,
+    "name": "Toulouse FC",
+    "flag": "TOULOUSE",
+    "level": " ",
+    "country": "France"
+  },
+  {
+    "id": 150,
+    "name": "Udinese",
+    "flag": "UDINESE",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 158,
+    "name": "Union Berlin",
+    "flag": "UNI",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 160,
+    "name": "Valencia CF",
+    "flag": "VAL",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 161,
+    "name": "Venezia",
+    "flag": "VENEZIA",
+    "level": " ",
+    "country": "Italy"
+  },
+  {
+    "id": 162,
+    "name": "Villarreal CF",
+    "flag": "VIL",
+    "level": " ",
+    "country": "Spain"
+  },
+  {
+    "id": 164,
+    "name": "Watford F.C.",
+    "flag": "WAT",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 165,
+    "name": "VfL Wolfsburg",
+    "flag": "WBU",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 166,
+    "name": "SV Werder Bremen",
+    "flag": "WER",
+    "level": " ",
+    "country": "Germany"
+  },
+  {
+    "id": 167,
+    "name": "West Ham United F.C.",
+    "flag": "WHU",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 168,
+    "name": "Wolverhampton Wanderers F.C.",
+    "flag": "WOL",
+    "level": " ",
+    "country": "England"
+  },
+  {
+    "id": 169,
+    "name": "BSC Young Boys",
+    "flag": "YOU",
+    "level": " ",
+    "country": "Switzerland"
+  },
+  {
+    "id": 170,
+    "name": "GNK Dinamo Zagreb",
+    "flag": "ZAG",
+    "level": " ",
+    "country": "Croatia"
+  },
+  {
+    "id": 172,
+    "name": "FC Zenit",
+    "flag": "ZEN",
+    "level": " ",
+    "country": "Russia"
+  }
+]
