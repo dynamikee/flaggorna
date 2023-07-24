@@ -11,7 +11,11 @@ import StoreKit
 @MainActor
 class PurchaseManager: ObservableObject {
     
+    #if FLAGGORNA
     let productIds = ["flaggorna_PREMIUM"]
+    #elseif TEAM_LOGO_QUIZ
+    let productIds = ["teams_PREMIUM"]
+    #endif
     
     @Published
     private(set) var products: [Product] = []
