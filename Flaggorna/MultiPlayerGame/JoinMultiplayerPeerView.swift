@@ -124,7 +124,9 @@ struct JoinMultiplayerPeerView: View {
                     .fontWeight(.black)
                     .foregroundColor(.white)
                 Button(action: {
-                    isSeeking = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    isSeeking = true
+                    }
                     userDefaults.set(name, forKey: "userName")
                 }) {
                     Text(Image(systemName: "arrow.forward"))
@@ -137,11 +139,7 @@ struct JoinMultiplayerPeerView: View {
             .padding()
             .onAppear {
                 loadUserData()
-                //            if name.isEmpty {
-                //                isSeeking = false
-                //            } else {
-                //                isSeeking = true
-                //            }
+
             }
             
         } else {
@@ -182,6 +180,7 @@ struct JoinMultiplayerPeerView: View {
                 }
                 Spacer()
                 
+                
                 if socketManager.users.count < 2 {
                     Button {
                         loadData()
@@ -200,7 +199,7 @@ struct JoinMultiplayerPeerView: View {
                         currentScene = "GetReady"
                         self.socketManager.socket.disconnect()
                     } label: {
-                        Text("SINGLE PLAYER")
+                        Text("START GAME")
                     }
                     .padding()
                     .buttonStyle(OrdinaryButtonStyle())

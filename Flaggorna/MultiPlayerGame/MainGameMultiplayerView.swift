@@ -40,10 +40,21 @@ struct MainGameMultiplayerView: View {
                 
                 Spacer()
                 
+                    #if FLAGGORNA
                 GeometryReader { geometry in
                     SceneViewContainer(scene: scene, randomCountry: question.flag)
                         .frame(height: geometry.size.width * 0.9)
                 }
+                    #elseif TEAM_LOGO_QUIZ
+                Spacer()
+                    Image(question.flag)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 300)
+                
+                Spacer()
+                    #endif
+                                
                 
                 
                 Spacer()
