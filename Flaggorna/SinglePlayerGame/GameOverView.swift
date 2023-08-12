@@ -304,7 +304,7 @@ let file = Bundle.main.path(forResource: "teams", ofType: "json")!
     
     private func fetchTopHighscores() {
         #if FLAGGORNA
-        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores") else {
+        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscore2s") else {
             return
         }
         #elseif TEAM_LOGO_QUIZ
@@ -392,7 +392,7 @@ let file = Bundle.main.path(forResource: "teams", ofType: "json")!
         
         #if FLAGGORNA
         // Create a request to update the highscores on the server
-        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscores/tRaYptqu5Bh3ceput8cSBg") else {
+        guard let url = URL(string: "https://eu-1.lolo.co/uGPiCKZAeeaKs83jaRaJiV/highscore2s/jx4EHc1pTLPaGFqHnLV3aC") else {
             return
         }
         #elseif TEAM_LOGO_QUIZ
