@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import UIKit
+import CoreData
 
 struct GameOverView: View {
     
@@ -24,7 +25,17 @@ struct GameOverView: View {
     @State private var showScreen = "Loading"
     @State private var rankToAnimate: Int = 0
     
+    @Environment(\.managedObjectContext) private var viewContext
+
+    
     var body: some View {
+        
+        // Calculate overall accuracy (right answers / total questions)
+        let correctAnswerCount = roundsArray.filter { $0 == .correct }.count
+        let totalAnsweredCount = roundsArray.count
+        let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount) * 100.0
+
+        
         VStack (spacing: 16) {
             Spacer()
             
@@ -145,6 +156,7 @@ struct GameOverView: View {
                     .opacity(rankToAnimate == 0 || rankToAnimate == rowRank ? 1 : 0.3)
                     .animation(.easeInOut(duration: 1.0).delay(Double(index) * 0.1))
                     .onAppear {
+
                         if highscore.rank == rankToAnimate {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                 withAnimation {
@@ -246,7 +258,12 @@ struct GameOverView: View {
                 .font(.body)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-                        
+                 
+            Text("Accuracy: \(String(format: "%.1f", overallAccuracy))%")
+                .font(.body)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+
             Spacer()
             
             Button(action: {
@@ -278,6 +295,8 @@ struct GameOverView: View {
         }
         
         .onAppear() {
+            updateUserAccuracy(accuracy: overallAccuracy)
+
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 checkUserHighscore()
@@ -289,6 +308,31 @@ struct GameOverView: View {
             }
         }
     }
+    
+    private func updateUserAccuracy(accuracy: Double) {
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+
+        do {
+            let results = try viewContext.fetch(request)
+
+            if let flagData = results.first {
+                // Increment the total games played
+                flagData.user_games_played += 1
+                
+                // Update the total cumulative accuracy
+                let totalAccuracy = flagData.user_accuracy * Double(flagData.user_games_played - 1) // Get the total accuracy for all previous games
+                flagData.user_accuracy = (totalAccuracy + accuracy) / Double(flagData.user_games_played) // Update with the new accuracy and recalculate average
+
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating user accuracy: \(error)")
+        }
+    }
+
+
+
     
     
     private func loadData() {

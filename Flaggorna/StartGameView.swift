@@ -261,15 +261,37 @@ struct FlagStatisticsView: View {
         flagData.sorted { $0.country_name ?? "" < $1.country_name ?? "" }
     }
     
+    let userName = UserDefaults.standard.string(forKey: "userName") ?? "Not played yet"
+
+    
     var body: some View {
         ZStack {
             Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
                 .edgesIgnoringSafeArea(.all)
             
             ScrollView {
-                Text("Your answers")
+                
+                Text("Name: \(userName)")
+                                        .font(.headline)
+                                        .padding(.top, 24)
+                
+                if let userAccuracy = flagData.first?.user_accuracy {
+                    HStack{
+                        Text("Accuracy: \(userAccuracy, specifier: "%.2f")")
+                            .font(.headline)
+                            .padding(.top, 24)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                                    
+                    ProgressBar(value: Int(userAccuracy), color: .green)
+                                    .frame(height: 20)
+                                    .padding()
+                                }
+                Text("Flag statistics")
                     .bold()
                     .padding(.top, 24)
+                
                 VStack {
                     ForEach(sortedFlagData, id: \.self) { data in
                         HStack {
@@ -351,6 +373,28 @@ struct FlagStatisticsView: View {
         }
     }
     
+}
+
+
+struct ProgressBar: View {
+    var value: Int
+    var color: Color
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .opacity(0.3)
+                    .foregroundColor(Color.gray)
+
+                Rectangle()
+                    .frame(width: min(CGFloat(self.value) / 100 * geometry.size.width, geometry.size.width), height: geometry.size.height)
+                    .foregroundColor(self.color)
+                    .animation(.linear)
+            }
+        }
+    }
 }
 
 struct CircleIndicatorView: View {
