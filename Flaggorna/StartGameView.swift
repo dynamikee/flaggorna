@@ -273,17 +273,16 @@ struct FlagStatisticsView: View {
                 
                 Text("Name: \(userName)")
                                         .font(.headline)
-                                        .padding(.top, 24)
+                                        .padding()
                 
                 if let userAccuracy = flagData.first?.user_accuracy {
-                    let invertedAccuracy = 100 - Int(userAccuracy)
                     HStack {
                         Text("Accuracy: \(userAccuracy, specifier: "%.2f")")
                             .font(.headline)
                         Spacer()
                     }
                     .padding(.horizontal)
-                    ProgressBar(value: invertedAccuracy, color: .green)
+                    ProgressBar(value: Int(userAccuracy), color: .green)
                         .frame(height: 20)
                         .padding()
                 }
