@@ -30,10 +30,10 @@ struct GameOverView: View {
     
     var body: some View {
         
-        // Calculate overall accuracy (right answers / total questions)
-        let correctAnswerCount = roundsArray.filter { $0 == .correct }.count
-        let totalAnsweredCount = roundsArray.count
-        let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount) * 100.0
+            // Calculate overall accuracy (right answers / total questions)
+            let correctAnswerCount = roundsArray.filter { $0 == .correct }.count
+            let totalAnsweredCount = roundsArray.count
+            let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount) * 100.0
 
         
         VStack (spacing: 16) {
@@ -295,7 +295,7 @@ struct GameOverView: View {
         }
         
         .onAppear() {
-            updateUserAccuracy(accuracy: overallAccuracy)
+            updateUserAccuracy(newRoundAccuracy: overallAccuracy)
 
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -309,7 +309,7 @@ struct GameOverView: View {
         }
     }
     
-    private func updateUserAccuracy(accuracy: Double) {
+    private func updateUserAccuracy(newRoundAccuracy: Double) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
 
         do {
@@ -317,11 +317,31 @@ struct GameOverView: View {
 
             if let flagData = results.first {
                 // Increment the total games played
+                
+                //0.5*100 = 50
+                //0.8*10 = 8
+                //58/110 = 0.53
+                
                 flagData.user_games_played += 1
                 
-                // Update the total cumulative accuracy
-                let totalAccuracy = flagData.user_accuracy * Double(flagData.user_games_played - 1) // Get the total accuracy for all previous games
-                flagData.user_accuracy = (totalAccuracy + accuracy) / Double(flagData.user_games_played) // Update with the new accuracy and recalculate average
+                if flagData.user_accuracy > 0 {
+                    
+                    let numberOfCorrectAnswersSaved = flagData.user_accuracy * Double(flagData.user_games_played)
+                    
+                    let numberOfCorrectAnswersIncludingLastRound = numberOfCorrectAnswersSaved + (newRoundAccuracy*Double(numberOfRounds))
+                    let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played + Int32(numberOfRounds)
+                    
+                    var newAverageAccuracy = numberOfCorrectAnswersIncludingLastRound / Double(numberOfRoundsPlayedIncludingLastRound)
+                    
+                    flagData.user_accuracy = newAverageAccuracy
+                    
+                } else {
+                    // If there's no existing accuracy data, use the current accuracy directly
+                    flagData.user_accuracy = newRoundAccuracy
+                }
+                
+                
+ 
 
                 try viewContext.save()
             }
@@ -330,6 +350,11 @@ struct GameOverView: View {
             print("Error updating user accuracy: \(error)")
         }
     }
+
+
+
+
+
 
 
 

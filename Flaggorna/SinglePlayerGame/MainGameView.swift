@@ -78,6 +78,8 @@ struct MainGameView: View {
                                 print(timeTaken)
                                 print(self.score)
                                 
+                                updateUserSpeed(speed: timeTaken)
+
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
                                 self.currentScene = "Right"
@@ -174,6 +176,32 @@ struct MainGameView: View {
             print("Error updating flag data: \(error)")
         }
     }
+    
+    private func updateUserSpeed(speed: Double) {
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+
+        do {
+            let results = try viewContext.fetch(request)
+
+            if let flagData = results.first {
+                // Increment the total games played
+                flagData.user_games_played += 1
+                
+                // Update the total cumulative speed
+                let totalSpeed = flagData.user_speed * Double(flagData.user_games_played - 1) // Get the total speed for all previous games
+                flagData.user_speed = (totalSpeed + speed) / Double(flagData.user_games_played) // Update with the new speed and recalculate average
+
+                print("Speed")
+                print(flagData.user_speed)
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating user speed: \(error)")
+        }
+    }
+
+
 
 }
 

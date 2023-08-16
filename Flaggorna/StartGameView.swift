@@ -276,18 +276,33 @@ struct FlagStatisticsView: View {
                                         .padding(.top, 24)
                 
                 if let userAccuracy = flagData.first?.user_accuracy {
-                    HStack{
+                    let invertedAccuracy = 100 - Int(userAccuracy)
+                    HStack {
                         Text("Accuracy: \(userAccuracy, specifier: "%.2f")")
                             .font(.headline)
-                            .padding(.top, 24)
                         Spacer()
                     }
                     .padding(.horizontal)
-                                    
-                    ProgressBar(value: Int(userAccuracy), color: .green)
-                                    .frame(height: 20)
-                                    .padding()
-                                }
+                    ProgressBar(value: invertedAccuracy, color: .green)
+                        .frame(height: 20)
+                        .padding()
+                }
+
+                if let userSpeed = flagData.first?.user_speed {
+                    let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
+                    
+                    HStack {
+                        Text("Speed: \(userSpeed, specifier: "%.2f") seconds")
+                            .font(.headline)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    
+                    ProgressBar(value: invertedSpeed, color: .blue)
+                        .frame(height: 20)
+                        .padding()
+                }
+                
                 Text("Flag statistics")
                     .bold()
                     .padding(.top, 24)
