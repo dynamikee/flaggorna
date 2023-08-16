@@ -316,12 +316,7 @@ struct GameOverView: View {
             let results = try viewContext.fetch(request)
 
             if let flagData = results.first {
-                // Increment the total games played
-                
-                //0.5*100 = 50
-                //0.8*10 = 8
-                //58/110 = 0.53
-                
+
                 flagData.user_games_played += 1
                 
                 if flagData.user_accuracy > 0 {
@@ -339,9 +334,6 @@ struct GameOverView: View {
                     // If there's no existing accuracy data, use the current accuracy directly
                     flagData.user_accuracy = newRoundAccuracy
                 }
-                
-                
- 
 
                 try viewContext.save()
             }

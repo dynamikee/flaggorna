@@ -78,7 +78,7 @@ struct MainGameView: View {
                                 print(timeTaken)
                                 print(self.score)
                                 
-                                updateUserSpeed(speed: timeTaken)
+                                updateUserSpeed(newRoundSpeed: timeTaken)
 
                                 self.countries.removeAll { $0.name == currentCountry }
                                 self.roundsArray[self.rounds] = .correct
@@ -177,22 +177,40 @@ struct MainGameView: View {
         }
     }
     
-    private func updateUserSpeed(speed: Double) {
+    private func updateUserSpeed(newRoundSpeed: Double) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        
+        print("New round speed: \(newRoundSpeed)")
 
         do {
             let results = try viewContext.fetch(request)
 
             if let flagData = results.first {
-                // Increment the total games played
-                flagData.user_games_played += 1
                 
-                // Update the total cumulative speed
-                let totalSpeed = flagData.user_speed * Double(flagData.user_games_played - 1) // Get the total speed for all previous games
-                flagData.user_speed = (totalSpeed + speed) / Double(flagData.user_games_played) // Update with the new speed and recalculate average
+                if flagData.user_speed > 0 {
+                    // Calculate the total cumulative speed achieved so far
+                    let totalSpeedAchievedSoFar = flagData.user_speed * Double(flagData.user_questions_answered)
+                    
+                    print("user speed saved \(flagData.user_speed)")
+                    print("Flag data user questions answered so far \(flagData.user_questions_answered)")
+                    print("Total speed achieved so far: \(totalSpeedAchievedSoFar)")
+                    
+                    flagData.user_questions_answered += 1
+                    
+                    // Calculate the new total cumulative speed by adding the speed of the current round
+                    let newTotalSpeed = totalSpeedAchievedSoFar + newRoundSpeed
+                    
+                    // Calculate the new average speed
+                    let newAverageSpeed = newTotalSpeed / Double(flagData.user_questions_answered)
+                    
+                    flagData.user_speed = newAverageSpeed
+                } else {
+                    // If there's no existing speed data, use the current speed directly
+                    flagData.user_speed = newRoundSpeed
+                    print("user speed saved first time: \(flagData.user_speed)")
+                    flagData.user_questions_answered += 1
+                }
 
-                print("Speed")
-                print(flagData.user_speed)
                 try viewContext.save()
             }
         } catch {
@@ -200,6 +218,7 @@ struct MainGameView: View {
             print("Error updating user speed: \(error)")
         }
     }
+
 
 
 

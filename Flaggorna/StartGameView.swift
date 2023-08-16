@@ -291,13 +291,13 @@ struct FlagStatisticsView: View {
                     let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
                     
                     HStack {
-                        Text("Speed: \(userSpeed, specifier: "%.2f") seconds")
+                        Text("Reaction: \(userSpeed, specifier: "%.2f") seconds")
                             .font(.headline)
                         Spacer()
                     }
                     .padding(.horizontal)
                     
-                    ProgressBar(value: invertedSpeed, color: .blue)
+                    ProgressBar(value: Int(invertedSpeed), color: .blue)
                         .frame(height: 20)
                         .padding()
                 }
