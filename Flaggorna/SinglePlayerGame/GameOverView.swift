@@ -35,6 +35,7 @@ struct GameOverView: View {
             let totalAnsweredCount = roundsArray.count
             let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount) * 100.0
 
+
         
         VStack (spacing: 16) {
             Spacer()
@@ -308,7 +309,7 @@ struct GameOverView: View {
             }
         }
     }
-    
+
     private func updateUserAccuracy(newRoundAccuracy: Double) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
 
@@ -317,22 +318,46 @@ struct GameOverView: View {
 
             if let flagData = results.first {
 
-                flagData.user_games_played += 1
-                
                 if flagData.user_accuracy > 0 {
                     
                     let numberOfCorrectAnswersSaved = flagData.user_accuracy * Double(flagData.user_games_played)
+                    var numberOfAllCorrectGamesSaved = flagData.user_consistency * Double(flagData.user_games_played)
+                    
+                    flagData.user_games_played += 1
                     
                     let numberOfCorrectAnswersIncludingLastRound = numberOfCorrectAnswersSaved + (newRoundAccuracy*Double(numberOfRounds))
+                    
+                    var numberOfAllCorrectGamesIncludingLastRound = numberOfAllCorrectGamesSaved
+                    if newRoundAccuracy >= 100 {
+                        numberOfAllCorrectGamesIncludingLastRound += 1
+                    }
+                    
                     let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played + Int32(numberOfRounds)
                     
                     var newAverageAccuracy = numberOfCorrectAnswersIncludingLastRound / Double(numberOfRoundsPlayedIncludingLastRound)
                     
+                    var newAverageConsistency = numberOfAllCorrectGamesIncludingLastRound / Double(flagData.user_games_played)
+                    
                     flagData.user_accuracy = newAverageAccuracy
+                    flagData.user_consistency = newAverageConsistency
+                    
+                    print("numberOfAllCorrectGamesSaved: \(numberOfAllCorrectGamesSaved)")
+                    print("newRoundAccuracy: \(newRoundAccuracy)")
+                    print("numberOfAllCorrectGamesIncludingLastRound: \(numberOfAllCorrectGamesIncludingLastRound)")
+                    print("numberOfRoundsPlayedIncludingLastRound: \(numberOfRoundsPlayedIncludingLastRound)")
+
                     
                 } else {
                     // If there's no existing accuracy data, use the current accuracy directly
                     flagData.user_accuracy = newRoundAccuracy
+                    if newRoundAccuracy >= 100 {
+                        flagData.user_consistency = 100.0
+
+                    } else {
+                        flagData.user_consistency = 0.0
+                    }
+                    
+                    flagData.user_games_played += 1
                 }
 
                 try viewContext.save()
@@ -342,7 +367,6 @@ struct GameOverView: View {
             print("Error updating user accuracy: \(error)")
         }
     }
-
 
 
 

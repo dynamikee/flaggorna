@@ -219,9 +219,6 @@ struct MainGameView: View {
         }
     }
 
-
-
-
 }
 
 

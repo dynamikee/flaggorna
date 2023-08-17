@@ -302,6 +302,18 @@ struct FlagStatisticsView: View {
                         .padding()
                 }
                 
+                if let userConsistency = flagData.first?.user_consistency {
+                    HStack {
+                        Text("Consistency: \(userConsistency, specifier: "%.2f")")
+                            .font(.headline)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    ProgressBar(value: Int(userConsistency), color: .red)
+                        .frame(height: 20)
+                        .padding()
+                }
+                
                 Text("Flag statistics")
                     .bold()
                     .padding(.top, 24)
