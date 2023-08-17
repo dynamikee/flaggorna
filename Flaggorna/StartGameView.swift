@@ -271,8 +271,15 @@ struct FlagStatisticsView: View {
             
             ScrollView {
                 
-                Text("Name: \(userName)")
+                Text(userName)
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                                        .padding()
+                                        .padding(.top, 32)
+                
+                Text("FLAG NERD SCORE")
                                         .font(.headline)
+                                        .fontWeight(.black)
                                         .padding()
                 
                 if let userAccuracy = flagData.first?.user_accuracy {
@@ -303,19 +310,21 @@ struct FlagStatisticsView: View {
                 }
                 
                 if let userConsistency = flagData.first?.user_consistency {
+                    let procentConsistency = userConsistency * 100
                     HStack {
-                        Text("Consistency: \(userConsistency, specifier: "%.2f")")
+                        Text("Consistency: \(procentConsistency, specifier: "%.2f")")
                             .font(.headline)
                         Spacer()
                     }
                     .padding(.horizontal)
-                    ProgressBar(value: Int(userConsistency), color: .red)
+                    ProgressBar(value: Int(procentConsistency), color: .red)
                         .frame(height: 20)
                         .padding()
                 }
                 
-                Text("Flag statistics")
-                    .bold()
+                Text("FLAG STATISTICS")
+                    .font(.headline)
+                    .fontWeight(.black)
                     .padding(.top, 24)
                 
                 VStack {
