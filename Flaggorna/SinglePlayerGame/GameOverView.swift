@@ -291,7 +291,7 @@ struct GameOverView: View {
         }
         
         .onAppear() {
-            //updateUserAccuracy(newRoundAccuracy: overallAccuracy)
+            updateUserConsistency(newRoundAccuracy: overallAccuracy)
 
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -305,7 +305,7 @@ struct GameOverView: View {
         }
     }
 
-    private func updateUserAccuracy(newRoundAccuracy: Double) {
+    private func updateUserConsistency(newRoundAccuracy: Double) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
 
         do {
@@ -313,40 +313,33 @@ struct GameOverView: View {
 
             if let flagData = results.first {
 
-                if flagData.user_accuracy > 0 {
+                if flagData.user_consistency > 0 {
                     
-                    let numberOfCorrectAnswersSaved = (flagData.user_accuracy) * Double(flagData.user_games_played*Int32(numberOfRounds))
                     var numberOfAllCorrectGamesSaved = flagData.user_consistency * Double(flagData.user_games_played)
                     
                     flagData.user_games_played += 1
-                    
-                    let numberOfCorrectAnswersIncludingLastRound = numberOfCorrectAnswersSaved + (newRoundAccuracy*Double(numberOfRounds))
-                    
+                                        
                     var numberOfAllCorrectGamesIncludingLastRound = numberOfAllCorrectGamesSaved
-                    if newRoundAccuracy >= 100 {
+                    
+                    if newRoundAccuracy >= 1.0 {
                         numberOfAllCorrectGamesIncludingLastRound += 1
                     }
                     
                     let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played * Int32(numberOfRounds)
-                    
-                    var newAverageAccuracy = numberOfCorrectAnswersIncludingLastRound / Double(numberOfRoundsPlayedIncludingLastRound)
-                    
+                                        
                     var newAverageConsistency = numberOfAllCorrectGamesIncludingLastRound / Double(flagData.user_games_played)
                     
-                    flagData.user_accuracy = newAverageAccuracy
                     flagData.user_consistency = newAverageConsistency
                     
 
                 } else {
-                    // If there's no existing accuracy data, use the current accuracy directly
-                    flagData.user_accuracy = newRoundAccuracy
+
                     if newRoundAccuracy >= 1.0 {
                         flagData.user_consistency = 1.0
 
                     } else {
                         flagData.user_consistency = 0.0
                     }
-                    
                     flagData.user_games_played += 1
                 }
 
