@@ -33,7 +33,7 @@ struct GameOverView: View {
             // Calculate overall accuracy (right answers / total questions)
             let correctAnswerCount = roundsArray.filter { $0 == .correct }.count
             let totalAnsweredCount = roundsArray.count
-            let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount) * 100.0
+            let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount)
 
 
         
@@ -320,9 +320,13 @@ struct GameOverView: View {
 
                 if flagData.user_accuracy > 0 {
                     
-                    let numberOfCorrectAnswersSaved = flagData.user_accuracy * Double(flagData.user_games_played)
+                    let numberOfCorrectAnswersSaved = (flagData.user_accuracy) * Double(flagData.user_games_played*Int32(numberOfRounds))
                     var numberOfAllCorrectGamesSaved = flagData.user_consistency * Double(flagData.user_games_played)
                     
+                    print("saved average: \(flagData.user_accuracy)")
+                    print("number of correct answers this round \(newRoundAccuracy)")
+                    print("number of guestions answered in total \(flagData.user_questions_answered)")
+                    print("number of correct answers saved: \(numberOfCorrectAnswersSaved)")
                     flagData.user_games_played += 1
                     
                     let numberOfCorrectAnswersIncludingLastRound = numberOfCorrectAnswersSaved + (newRoundAccuracy*Double(numberOfRounds))
@@ -332,26 +336,25 @@ struct GameOverView: View {
                         numberOfAllCorrectGamesIncludingLastRound += 1
                     }
                     
-                    let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played + Int32(numberOfRounds)
+                    let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played * Int32(numberOfRounds)
                     
                     var newAverageAccuracy = numberOfCorrectAnswersIncludingLastRound / Double(numberOfRoundsPlayedIncludingLastRound)
                     
                     var newAverageConsistency = numberOfAllCorrectGamesIncludingLastRound / Double(flagData.user_games_played)
                     
+                    print("Correct number of answers in total including last round \(numberOfCorrectAnswersIncludingLastRound)")
+                    print("Updated number of games played \(flagData.user_games_played)")
+                    print("New average \(newAverageAccuracy)")
+                    
                     flagData.user_accuracy = newAverageAccuracy
                     flagData.user_consistency = newAverageConsistency
                     
-                    print("numberOfAllCorrectGamesSaved: \(numberOfAllCorrectGamesSaved)")
-                    print("newRoundAccuracy: \(newRoundAccuracy)")
-                    print("numberOfAllCorrectGamesIncludingLastRound: \(numberOfAllCorrectGamesIncludingLastRound)")
-                    print("numberOfRoundsPlayedIncludingLastRound: \(numberOfRoundsPlayedIncludingLastRound)")
 
-                    
                 } else {
                     // If there's no existing accuracy data, use the current accuracy directly
                     flagData.user_accuracy = newRoundAccuracy
-                    if newRoundAccuracy >= 100 {
-                        flagData.user_consistency = 100.0
+                    if newRoundAccuracy >= 1.0 {
+                        flagData.user_consistency = 1.0
 
                     } else {
                         flagData.user_consistency = 0.0

@@ -283,13 +283,14 @@ struct FlagStatisticsView: View {
                                         .padding()
                 
                 if let userAccuracy = flagData.first?.user_accuracy {
+                    let userAccuracyRightScale = userAccuracy * 100
                     HStack {
-                        Text("Accuracy: \(userAccuracy, specifier: "%.2f")")
+                        Text("Accuracy: \(userAccuracyRightScale, specifier: "%.2f")")
                             .font(.headline)
                         Spacer()
                     }
                     .padding(.horizontal)
-                    ProgressBar(value: Int(userAccuracy), color: .green)
+                    ProgressBar(value: Int(userAccuracyRightScale), color: .green)
                         .frame(height: 20)
                         .padding()
                 }
@@ -310,14 +311,14 @@ struct FlagStatisticsView: View {
                 }
                 
                 if let userConsistency = flagData.first?.user_consistency {
-                    let procentConsistency = userConsistency * 100
+                    let userConsistencyRightScale = userConsistency * 100
                     HStack {
-                        Text("Consistency: \(procentConsistency, specifier: "%.2f")")
+                        Text("Consistency: \(userConsistencyRightScale, specifier: "%.2f")")
                             .font(.headline)
                         Spacer()
                     }
                     .padding(.horizontal)
-                    ProgressBar(value: Int(procentConsistency), color: .red)
+                    ProgressBar(value: Int(userConsistencyRightScale), color: .red)
                         .frame(height: 20)
                         .padding()
                 }

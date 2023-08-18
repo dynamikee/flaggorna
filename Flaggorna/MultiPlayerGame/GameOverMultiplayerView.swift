@@ -19,6 +19,7 @@ struct GameOverMultiplayerView: View {
     @State var showAlert = false
     
     var body: some View {
+        
         VStack(spacing: 32)  {
             Spacer()
             Text("GAME OVER!")

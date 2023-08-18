@@ -160,6 +160,41 @@ struct MainGameMultiplayerView: View {
         }
     }
     
+    private func updateUserSpeed(newRoundSpeed: Double) {
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+        
+        do {
+            let results = try viewContext.fetch(request)
+
+            if let flagData = results.first {
+                
+                if flagData.user_speed > 0 {
+                    // Calculate the total cumulative speed achieved so far
+                    let totalSpeedAchievedSoFar = flagData.user_speed * Double(flagData.user_questions_answered)
+                    
+                    flagData.user_questions_answered += 1
+                    
+                    // Calculate the new total cumulative speed by adding the speed of the current round
+                    let newTotalSpeed = totalSpeedAchievedSoFar + newRoundSpeed
+                    
+                    // Calculate the new average speed
+                    let newAverageSpeed = newTotalSpeed / Double(flagData.user_questions_answered)
+                    
+                    flagData.user_speed = newAverageSpeed
+                } else {
+                    // If there's no existing speed data, use the current speed directly
+                    flagData.user_speed = newRoundSpeed
+                    flagData.user_questions_answered += 1
+                }
+
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating user speed: \(error)")
+        }
+    }
+    
 }
 
 struct MyProgressViewStyle: ProgressViewStyle {

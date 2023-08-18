@@ -88,6 +88,7 @@ struct MainGameView: View {
                                 
                                 
                             } else {
+                                
                                 if self.rounds > 0 {
                                     self.rounds -= 1
                                 }
@@ -180,8 +181,6 @@ struct MainGameView: View {
     private func updateUserSpeed(newRoundSpeed: Double) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
         
-        print("New round speed: \(newRoundSpeed)")
-
         do {
             let results = try viewContext.fetch(request)
 
@@ -190,10 +189,6 @@ struct MainGameView: View {
                 if flagData.user_speed > 0 {
                     // Calculate the total cumulative speed achieved so far
                     let totalSpeedAchievedSoFar = flagData.user_speed * Double(flagData.user_questions_answered)
-                    
-                    print("user speed saved \(flagData.user_speed)")
-                    print("Flag data user questions answered so far \(flagData.user_questions_answered)")
-                    print("Total speed achieved so far: \(totalSpeedAchievedSoFar)")
                     
                     flagData.user_questions_answered += 1
                     
@@ -207,7 +202,6 @@ struct MainGameView: View {
                 } else {
                     // If there's no existing speed data, use the current speed directly
                     flagData.user_speed = newRoundSpeed
-                    print("user speed saved first time: \(flagData.user_speed)")
                     flagData.user_questions_answered += 1
                 }
 
