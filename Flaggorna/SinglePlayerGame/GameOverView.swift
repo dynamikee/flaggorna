@@ -29,14 +29,7 @@ struct GameOverView: View {
 
     
     var body: some View {
-        
-            // Calculate overall accuracy (right answers / total questions)
-            let correctAnswerCount = roundsArray.filter { $0 == .correct }.count
-            let totalAnsweredCount = roundsArray.count
-            let overallAccuracy = Double(correctAnswerCount) / Double(totalAnsweredCount)
-
-
-        
+                
         VStack (spacing: 16) {
             Spacer()
             
@@ -291,7 +284,7 @@ struct GameOverView: View {
         }
         
         .onAppear() {
-            updateUserConsistency(newRoundAccuracy: overallAccuracy)
+            updateUserConsistency(score: score)
 
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -305,7 +298,7 @@ struct GameOverView: View {
         }
     }
 
-    private func updateUserConsistency(newRoundAccuracy: Double) {
+    private func updateUserConsistency(score: Int) {
         let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
 
         do {
@@ -315,26 +308,24 @@ struct GameOverView: View {
 
                 if flagData.user_consistency > 0 {
                     
-                    var numberOfAllCorrectGamesSaved = flagData.user_consistency * Double(flagData.user_games_played)
+                    var numberOfGamesOver50Saved = flagData.user_consistency * Double(flagData.user_games_played)
                     
                     flagData.user_games_played += 1
                                         
-                    var numberOfAllCorrectGamesIncludingLastRound = numberOfAllCorrectGamesSaved
+                    var numberOfGamesOver50IncludingLastRound = numberOfGamesOver50Saved
                     
-                    if newRoundAccuracy >= 1.0 {
-                        numberOfAllCorrectGamesIncludingLastRound += 1
+                    if score >= 50 {
+                        numberOfGamesOver50IncludingLastRound += 1
                     }
-                    
-                    let numberOfRoundsPlayedIncludingLastRound = flagData.user_games_played * Int32(numberOfRounds)
-                                        
-                    var newAverageConsistency = numberOfAllCorrectGamesIncludingLastRound / Double(flagData.user_games_played)
+                         
+                    var newAverageConsistency = numberOfGamesOver50IncludingLastRound / Double(flagData.user_games_played)
                     
                     flagData.user_consistency = newAverageConsistency
                     
 
                 } else {
 
-                    if newRoundAccuracy >= 1.0 {
+                    if score >= 50 {
                         flagData.user_consistency = 1.0
 
                     } else {
@@ -350,7 +341,6 @@ struct GameOverView: View {
             print("Error updating user accuracy: \(error)")
         }
     }
-
 
 
 

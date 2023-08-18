@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import CoreData
+
 
 struct GameOverMultiplayerView: View {
     @Binding var currentScene: String
@@ -14,6 +16,8 @@ struct GameOverMultiplayerView: View {
     @Binding var multiplayer: Bool
     //@Binding var gameCode: String
     
+    @Environment(\.managedObjectContext) private var viewContext
+
     @EnvironmentObject var socketManager: SocketManager
 
     @State var showAlert = false
@@ -130,6 +134,7 @@ struct GameOverMultiplayerView: View {
         }
         .onAppear() {
             rounds = 10
+            updateUserConsistency(score: score)
 
         }
     }
@@ -148,6 +153,51 @@ struct GameOverMultiplayerView: View {
         let jsonString = String(data: jsonData!, encoding: .utf8)!
         socketManager.send(jsonString)
     }
+    
+    private func updateUserConsistency(score: Int) {
+        let request: NSFetchRequest<FlagData> = FlagData.fetchRequest()
+
+        do {
+            let results = try viewContext.fetch(request)
+
+            if let flagData = results.first {
+
+                if flagData.user_consistency > 0 {
+                    
+                    var numberOfGamesOver50Saved = flagData.user_consistency * Double(flagData.user_games_played)
+                    
+                    flagData.user_games_played += 1
+                                        
+                    var numberOfGamesOver50IncludingLastRound = numberOfGamesOver50Saved
+                    
+                    if score >= 50 {
+                        numberOfGamesOver50IncludingLastRound += 1
+                    }
+                         
+                    var newAverageConsistency = numberOfGamesOver50IncludingLastRound / Double(flagData.user_games_played)
+                    
+                    flagData.user_consistency = newAverageConsistency
+                    
+
+                } else {
+
+                    if score >= 50 {
+                        flagData.user_consistency = 1.0
+
+                    } else {
+                        flagData.user_consistency = 0.0
+                    }
+                    flagData.user_games_played += 1
+                }
+
+                try viewContext.save()
+            }
+        } catch {
+            // Handle error
+            print("Error updating user accuracy: \(error)")
+        }
+    }
+    
 }
 
 
