@@ -259,11 +259,6 @@ struct GameOverView: View {
                 .font(.body)
                 .fontWeight(.black)
                 .foregroundColor(.white)
-                 
-            Text("Accuracy: \(String(format: "%.1f", overallAccuracy))%")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
 
             Spacer()
             
@@ -296,7 +291,7 @@ struct GameOverView: View {
         }
         
         .onAppear() {
-            updateUserAccuracy(newRoundAccuracy: overallAccuracy)
+            //updateUserAccuracy(newRoundAccuracy: overallAccuracy)
 
             fetchTopHighscores()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -323,10 +318,6 @@ struct GameOverView: View {
                     let numberOfCorrectAnswersSaved = (flagData.user_accuracy) * Double(flagData.user_games_played*Int32(numberOfRounds))
                     var numberOfAllCorrectGamesSaved = flagData.user_consistency * Double(flagData.user_games_played)
                     
-                    print("saved average: \(flagData.user_accuracy)")
-                    print("number of correct answers this round \(newRoundAccuracy)")
-                    print("number of guestions answered in total \(flagData.user_questions_answered)")
-                    print("number of correct answers saved: \(numberOfCorrectAnswersSaved)")
                     flagData.user_games_played += 1
                     
                     let numberOfCorrectAnswersIncludingLastRound = numberOfCorrectAnswersSaved + (newRoundAccuracy*Double(numberOfRounds))
@@ -341,10 +332,6 @@ struct GameOverView: View {
                     var newAverageAccuracy = numberOfCorrectAnswersIncludingLastRound / Double(numberOfRoundsPlayedIncludingLastRound)
                     
                     var newAverageConsistency = numberOfAllCorrectGamesIncludingLastRound / Double(flagData.user_games_played)
-                    
-                    print("Correct number of answers in total including last round \(numberOfCorrectAnswersIncludingLastRound)")
-                    print("Updated number of games played \(flagData.user_games_played)")
-                    print("New average \(newAverageAccuracy)")
                     
                     flagData.user_accuracy = newAverageAccuracy
                     flagData.user_consistency = newAverageConsistency
