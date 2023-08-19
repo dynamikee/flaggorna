@@ -719,7 +719,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.5;
+				MARKETING_VERSION = 1.2.6;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D FLAGGORNA";
 				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -760,7 +760,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.5;
+				MARKETING_VERSION = 1.2.6;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D FLAGGORNA";
 				PRODUCT_BUNDLE_IDENTIFIER = dynamike.Flaggorna;
 				PRODUCT_NAME = "$(TARGET_NAME)";
