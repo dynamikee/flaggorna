@@ -149,6 +149,7 @@ struct MainGameView: View {
                         }
                         self.roundsArray[self.rounds] = .incorrect
                         self.currentScene = "Wrong"
+                        updateUserFlagNerdScore(newRoundSpeed: 5, isCorrect: false)
                         updateFlagData(isCorrect: false)
                         
                     }

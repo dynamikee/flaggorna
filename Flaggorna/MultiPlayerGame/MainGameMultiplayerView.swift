@@ -129,6 +129,7 @@ struct MainGameMultiplayerView: View {
                         socketManager.currentScene = "WrongMultiplayer"
                         socketManager.updateUser()
                         print("Number of remaining countries: \(socketManager.countries.count)")
+                        updateUserFlagNerdScore(newRoundSpeed: 5, isCorrect: false)
                         updateFlagData(isCorrect: false)
                         
                     }

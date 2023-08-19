@@ -277,51 +277,70 @@ struct FlagStatisticsView: View {
                                         .padding()
                                         .padding(.top, 32)
                 
-                Text("FLAG NERD SCORE")
-                                        .font(.headline)
-                                        .fontWeight(.black)
-                                        .padding()
-                
-                if let userAccuracy = flagData.first?.user_accuracy {
-                    let userAccuracyRightScale = userAccuracy * 100
-                    HStack {
-                        Text("Accuracy: \(userAccuracyRightScale, specifier: "%.2f")")
-                            .font(.headline)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    ProgressBar(value: Int(userAccuracyRightScale), color: .green)
-                        .frame(height: 20)
-                        .padding()
+                let showHighscore = UserDefaults.standard.string(forKey: "highScore") ?? "No score yet"
+                HStack{
+                    Image(systemName: "trophy.fill")
+                        .foregroundColor(.white)
+                    Text("HIGHEST SCORE: \(showHighscore)")
+                                            .font(.headline)
+                                            .fontWeight(.black)
+                    Image(systemName: "trophy.fill")
+                        .foregroundColor(.white)
+                                            
                 }
+                .padding()
+                
+                VStack(spacing: 32) {
+                    VStack {
+                        if let userAccuracy = flagData.first?.user_accuracy {
+                            let userAccuracyRightScale = userAccuracy * 100
+                            HStack {
+                                Text("Accuracy: \(userAccuracyRightScale, specifier: "%.2f")")
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            ProgressBar(value: Int(userAccuracyRightScale), color: .green)
+                                .frame(height: 20)
+                                .padding(.horizontal)
+                        }
+                    }
+                    VStack {
+                        if let userSpeed = flagData.first?.user_speed {
+                            let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
+                            
+                            HStack {
+                                Text("Reaction: \(userSpeed, specifier: "%.2f") seconds")
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                                ProgressBar(value: Int(invertedSpeed), color: .red)
+                                    .frame(height: 20)
+                                    .padding(.horizontal)
+                        }
+                    }
+                    VStack {
+                        if let userConsistency = flagData.first?.user_consistency {
+                            let userConsistencyRightScale = userConsistency * 100
+                            HStack {
+                                Text("Performance: \(userConsistencyRightScale, specifier: "%.2f")")
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            ProgressBar(value: Int(userConsistencyRightScale), color: .blue)
+                                .frame(height: 20)
+                                .padding(.horizontal)
+                        }
+                    }
+                    
+                    
+                    
+                }
+                
 
-                if let userSpeed = flagData.first?.user_speed {
-                    let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
-                    
-                    HStack {
-                        Text("Reaction: \(userSpeed, specifier: "%.2f") seconds")
-                            .font(.headline)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    
-                    ProgressBar(value: Int(invertedSpeed), color: .blue)
-                        .frame(height: 20)
-                        .padding()
-                }
-                
-                if let userConsistency = flagData.first?.user_consistency {
-                    let userConsistencyRightScale = userConsistency * 100
-                    HStack {
-                        Text("Consistency: \(userConsistencyRightScale, specifier: "%.2f")")
-                            .font(.headline)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    ProgressBar(value: Int(userConsistencyRightScale), color: .red)
-                        .frame(height: 20)
-                        .padding()
-                }
+
                 
                 Text("FLAG STATISTICS")
                     .font(.headline)

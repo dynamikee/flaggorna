@@ -134,8 +134,18 @@ struct GameOverMultiplayerView: View {
         }
         .onAppear() {
             rounds = 10
-            updateUserConsistency(score: score)
+            let currentUserScore = self.socketManager.currentUser?.score
+            print("Here is the score when updating nerd score: \(currentUserScore ?? 0)")
+            updateUserConsistency(score: currentUserScore ?? 0)
+            
+            let currentHighscore = UserDefaults.standard.integer(forKey: "highScore")
 
+            print("Here is the current higscore: \(currentHighscore)")
+            
+            if currentUserScore! > currentHighscore {
+                UserDefaults.standard.set(currentUserScore, forKey: "highScore")
+                UserDefaults.standard.synchronize()
+            }
         }
     }
     func resetGame() {
