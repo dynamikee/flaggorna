@@ -705,7 +705,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flaggorna/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Flaggorna;
+				INFOPLIST_KEY_CFBundleDisplayName = "Flag Party";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To be able to play with friends on the same network";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -746,7 +746,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flaggorna/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Flaggorna;
+				INFOPLIST_KEY_CFBundleDisplayName = "Flag Party";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To be able to play with friends on the same network";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
