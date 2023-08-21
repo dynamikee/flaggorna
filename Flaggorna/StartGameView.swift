@@ -278,30 +278,42 @@ struct FlagStatisticsView: View {
                                         .padding(.top, 32)
                 
                 let showHighscore = UserDefaults.standard.string(forKey: "highScore") ?? "No score yet"
-                HStack{
-                    Image(systemName: "trophy.fill")
-                        .foregroundColor(.white)
-                    Text("HIGHEST SCORE: \(showHighscore)")
-                                            .font(.headline)
-                                            .fontWeight(.black)
-                    Image(systemName: "trophy.fill")
-                        .foregroundColor(.white)
-                                            
+                
+                VStack (spacing: 10) {
+                    Text("BEST SCORE")
+                        .font(.headline)
+                        .fontWeight(.black)
+                    HStack{
+                        Image(systemName: "medal.fill")
+                            .foregroundColor(.yellow)
+                            .font(.largeTitle)
+                        Text(showHighscore)
+                                                .font(.largeTitle)
+                                                .fontWeight(.black)
+                        Image(systemName: "medal.fill")
+                            .foregroundColor(.yellow)
+                            .font(.largeTitle)
+                                                
+                    }
+                    .padding(.bottom)
                 }
                 .padding()
+                
                 
                 VStack(spacing: 32) {
                     VStack {
                         if let userAccuracy = flagData.first?.user_accuracy {
                             let userAccuracyRightScale = userAccuracy * 100
                             HStack {
-                                Text("Accuracy: \(userAccuracyRightScale, specifier: "%.2f")")
+                                Text("Accuracy: \(userAccuracyRightScale, specifier: "%.0f") %")
                                     .font(.headline)
                                 Spacer()
                             }
                             .padding(.horizontal)
-                            ProgressBar(value: Int(userAccuracyRightScale), color: .green)
+                            ProgressBar(value: Int(userAccuracyRightScale), color: .white)
                                 .frame(height: 20)
+                                .cornerRadius(8)
+
                                 .padding(.horizontal)
                         }
                     }
@@ -315,8 +327,10 @@ struct FlagStatisticsView: View {
                                 Spacer()
                             }
                             .padding(.horizontal)
-                                ProgressBar(value: Int(invertedSpeed), color: .red)
+                                ProgressBar(value: Int(invertedSpeed), color: .white)
                                     .frame(height: 20)
+                                    .cornerRadius(8)
+
                                     .padding(.horizontal)
                         }
                     }
@@ -324,13 +338,14 @@ struct FlagStatisticsView: View {
                         if let userConsistency = flagData.first?.user_consistency {
                             let userConsistencyRightScale = userConsistency * 100
                             HStack {
-                                Text("Performance: \(userConsistencyRightScale, specifier: "%.2f")")
+                                Text("Performance: \(userConsistencyRightScale, specifier: "%.0f") %")
                                     .font(.headline)
                                 Spacer()
                             }
                             .padding(.horizontal)
-                            ProgressBar(value: Int(userConsistencyRightScale), color: .blue)
+                            ProgressBar(value: Int(userConsistencyRightScale), color: .white)
                                 .frame(height: 20)
+                                .cornerRadius(8)
                                 .padding(.horizontal)
                         }
                     }
@@ -338,10 +353,7 @@ struct FlagStatisticsView: View {
                     
                     
                 }
-                
 
-
-                
                 Text("FLAG STATISTICS")
                     .font(.headline)
                     .fontWeight(.black)
@@ -355,7 +367,7 @@ struct FlagStatisticsView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 64)
                             #if FLAGGORNA
-                                .border(Color.gray, width: 1)
+                                .border(Color.gray, width: 0.25)
                             #elseif TEAM_LOGO_QUIZ
                             //
                             #endif
@@ -368,6 +380,8 @@ struct FlagStatisticsView: View {
                                 .font(.footnote)
                             CircleIndicatorView(data: data)
                                 .padding(8)
+                            Rectangle()
+                                .frame(width: 8, height: 42)
                         }
                         .padding(4)
                     }

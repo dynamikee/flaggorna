@@ -275,6 +275,7 @@ struct MainGameView: View {
                     }
                 }
                 
+                
                 try viewContext.save()
             }
         } catch {
