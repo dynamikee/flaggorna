@@ -75,16 +75,22 @@ struct GameOverView: View {
             
             ZStack {
                 Circle()
-                    .fill(Color.blue)
+                    .fill(Color.orange)
                     .frame(width: 12, height: 12)
                     .modifier(ParticlesModifier())
                     .offset(x: -100, y : -50)
-                
+                        
                 Circle()
-                    .fill(Color.red)
+                    .fill(Color.white)
                     .frame(width: 12, height: 12)
                     .modifier(ParticlesModifier())
                     .offset(x: 60, y : 70)
+                
+                Circle()
+                    .fill(Color.yellow)
+                    .frame(width: 12, height: 12)
+                    .modifier(ParticlesModifier())
+                    .offset(x: 0, y : 0)
             }
             Spacer()
             
