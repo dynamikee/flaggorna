@@ -114,18 +114,6 @@ struct StartGameView: View {
                 Spacer()
                 Spacer()
                 
-                //            Button(action: {
-                //                loadData()
-                //                score = 0
-                //                rounds = numberOfRounds
-                //                self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                //                currentScene = "GetReady"
-                //            }){
-                //                Text("SINGLE PLAYER")
-                //            }
-                //            .buttonStyle(OrdinaryButtonStyle())
-                //            .padding()
-                
                 Spacer()
                 
             }
@@ -260,7 +248,7 @@ struct FlagStatisticsView: View {
     var sortedFlagData: [FlagData] {
         flagData.sorted { $0.country_name ?? "" < $1.country_name ?? "" }
     }
-    
+        
     let userName = UserDefaults.standard.string(forKey: "userName") ?? "Not played yet"
 
     
@@ -271,33 +259,69 @@ struct FlagStatisticsView: View {
             
             ScrollView {
                 
-                Text(userName)
-                    .font(.largeTitle)
-                    .fontWeight(.black)
-                                        .padding()
-                                        .padding(.top, 32)
+                HStack{
+                    Image("angola") // Replace with the actual image name
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 64, height: 64) // Set the desired width and height
+                        .clipShape(Circle()) // Mask the image to a circle shape
+                        .overlay(
+                            Circle()
+                                .stroke(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)), lineWidth: 0.5) // Set the border color and width
+                        )
+                        .padding()
+                        .padding(.top, 32)
+                        
+                    Text(userName)
+                        .font(.largeTitle)
+                        .fontWeight(.black)
+                        .padding(.top, 32)
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
+                        .padding()
+                        .padding(.top, 36)
+
+                }
+                
                 
                 let showHighscore = UserDefaults.standard.string(forKey: "highScore") ?? "No score yet"
                 
-                VStack (spacing: 10) {
-                    Text("BEST SCORE")
-                        .font(.headline)
-                        .fontWeight(.black)
-                    HStack{
-                        Image(systemName: "medal.fill")
-                            .foregroundColor(.yellow)
-                            .font(.largeTitle)
-                        Text(showHighscore)
-                                                .font(.largeTitle)
-                                                .fontWeight(.black)
-                        Image(systemName: "medal.fill")
-                            .foregroundColor(.yellow)
-                            .font(.largeTitle)
-                                                
+                HStack {
+                    VStack (spacing: 10) {
+                        Text("BEST SCORE")
+                            .font(.headline)
+                            .fontWeight(.black)
+                        HStack{
+                            Text(showHighscore)
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                        }
+                        .padding(.bottom)
                     }
-                    .padding(.bottom)
+                    .padding()
+                    .frame(maxWidth: .infinity) // Equal width for both columns
+                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
+
+                    VStack (spacing: 10) {
+                        Text("# GAMES PLAYED")
+                            .font(.headline)
+                            .fontWeight(.black)
+                        HStack{
+                            Text("\(flagData.first?.user_games_played ?? 0)")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                        }
+                        .padding(.bottom)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity) // Equal width for both columns
+                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
                 }
                 .padding()
+
+                
                 
                 
                 VStack(spacing: 32) {
@@ -306,7 +330,7 @@ struct FlagStatisticsView: View {
                             let userAccuracyRightScale = userAccuracy * 100
                             HStack {
                                 Text("Accuracy: \(userAccuracyRightScale, specifier: "%.0f") %")
-                                    .font(.headline)
+                                    .font(.body)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -323,7 +347,7 @@ struct FlagStatisticsView: View {
                             
                             HStack {
                                 Text("Reaction: \(userSpeed, specifier: "%.2f") seconds")
-                                    .font(.headline)
+                                    .font(.body)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -339,7 +363,7 @@ struct FlagStatisticsView: View {
                             let userConsistencyRightScale = userConsistency * 100
                             HStack {
                                 Text("Performance: \(userConsistencyRightScale, specifier: "%.0f") %")
-                                    .font(.headline)
+                                    .font(.body)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -354,10 +378,15 @@ struct FlagStatisticsView: View {
                     
                 }
 
-                Text("FLAG STATISTICS")
-                    .font(.headline)
-                    .fontWeight(.black)
-                    .padding(.top, 24)
+                HStack {
+                    Text("FLAG STATISTICS")
+                        .font(.headline)
+                        .fontWeight(.black)
+                        //.padding(.top, 24)
+                        .padding()
+                    Spacer()
+                }
+                
                 
                 VStack {
                     ForEach(sortedFlagData, id: \.self) { data in
@@ -374,7 +403,7 @@ struct FlagStatisticsView: View {
                                 .padding(.trailing, 8)
                             Text(data.country_name ?? "")
                                 .font(.body)
-                                .fontWeight(.bold)
+                                //.fontWeight(.bold)
                             Spacer()
                             Text("Correct: \(data.right_answers) of \(data.impressions)")
                                 .font(.footnote)
@@ -383,7 +412,6 @@ struct FlagStatisticsView: View {
                             Rectangle()
                                 .frame(width: 8, height: 42)
                         }
-                        .padding(4)
                     }
                     
                     VStack {
@@ -454,8 +482,7 @@ struct ProgressBar: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .frame(width: geometry.size.width, height: geometry.size.height)
-                    .opacity(0.3)
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
 
                 Rectangle()
                     .frame(width: min(CGFloat(self.value) / 100 * geometry.size.width, geometry.size.width), height: geometry.size.height)
