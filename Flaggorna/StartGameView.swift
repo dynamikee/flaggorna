@@ -292,7 +292,6 @@ struct FlagStatisticsView: View {
                     VStack (spacing: 10) {
                         Text("BEST SCORE")
                             .font(.headline)
-                            .fontWeight(.black)
                         HStack{
                             Text(showHighscore)
                                 .font(.largeTitle)
@@ -302,12 +301,11 @@ struct FlagStatisticsView: View {
                     }
                     .padding()
                     .frame(maxWidth: .infinity) // Equal width for both columns
-                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
+                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
 
                     VStack (spacing: 10) {
-                        Text("# GAMES PLAYED")
+                        Text("GAMES PLAYED")
                             .font(.headline)
-                            .fontWeight(.black)
                         HStack{
                             Text("\(flagData.first?.user_games_played ?? 0)")
                                 .font(.largeTitle)
@@ -317,7 +315,7 @@ struct FlagStatisticsView: View {
                     }
                     .padding()
                     .frame(maxWidth: .infinity) // Equal width for both columns
-                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
+                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
                 }
                 .padding()
 
@@ -325,12 +323,12 @@ struct FlagStatisticsView: View {
                 
                 
                 VStack(spacing: 32) {
-                    VStack {
+                    VStack (spacing: 16) {
                         if let userAccuracy = flagData.first?.user_accuracy {
                             let userAccuracyRightScale = userAccuracy * 100
                             HStack {
-                                Text("Accuracy: \(userAccuracyRightScale, specifier: "%.0f") %")
-                                    .font(.body)
+                                Text("ACCURACY: \(userAccuracyRightScale, specifier: "%.0f") %")
+                                    .font(.headline)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -341,13 +339,13 @@ struct FlagStatisticsView: View {
                                 .padding(.horizontal)
                         }
                     }
-                    VStack {
+                    VStack (spacing: 16) {
                         if let userSpeed = flagData.first?.user_speed {
                             let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
                             
                             HStack {
-                                Text("Reaction: \(userSpeed, specifier: "%.2f") seconds")
-                                    .font(.body)
+                                Text("REACTION: \(userSpeed, specifier: "%.2f") seconds")
+                                    .font(.headline)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -358,12 +356,12 @@ struct FlagStatisticsView: View {
                                     .padding(.horizontal)
                         }
                     }
-                    VStack {
+                    VStack (spacing: 16) {
                         if let userConsistency = flagData.first?.user_consistency {
                             let userConsistencyRightScale = userConsistency * 100
                             HStack {
-                                Text("Performance: \(userConsistencyRightScale, specifier: "%.0f") %")
-                                    .font(.body)
+                                Text("PERFORMANCE: \(userConsistencyRightScale, specifier: "%.0f") %")
+                                    .font(.headline)
                                 Spacer()
                             }
                             .padding(.horizontal)
@@ -376,14 +374,13 @@ struct FlagStatisticsView: View {
                     
                     
                     
-                }
+                }.padding(.vertical)
 
                 HStack {
                     Text("FLAG STATISTICS")
                         .font(.headline)
-                        .fontWeight(.black)
-                        //.padding(.top, 24)
-                        .padding()
+                        .padding(.horizontal)
+                        .padding(.top)
                     Spacer()
                 }
                 
@@ -482,7 +479,7 @@ struct ProgressBar: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .frame(width: geometry.size.width, height: geometry.size.height)
-                    .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.5)))
+                    .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
 
                 Rectangle()
                     .frame(width: min(CGFloat(self.value) / 100 * geometry.size.width, geometry.size.width), height: geometry.size.height)
