@@ -244,7 +244,6 @@ struct StartGameView: View {
 struct FlagStatisticsView: View {
     
     @State private var showFlagSelection = false
-    @State private var selectedUserFlag = ""
     
     let flagData: [FlagData]
     
@@ -253,6 +252,21 @@ struct FlagStatisticsView: View {
     }
         
     let userName = UserDefaults.standard.string(forKey: "userName") ?? "Name"
+
+    @State private var selectedUserFlag: String
+    
+    init(flagData: [FlagData]) {
+        self.flagData = flagData
+
+        let storedUserFlag = UserDefaults.standard.string(forKey: "userFlag")
+        if let storedFlag = storedUserFlag, !storedFlag.isEmpty {
+            self._selectedUserFlag = State(initialValue: storedFlag)
+        } else {
+            let randomFlagIndex = Int.random(in: 0..<flagData.count)
+            self._selectedUserFlag = State(initialValue: flagData[randomFlagIndex].flag ?? "sweden")
+            UserDefaults.standard.setValue(selectedUserFlag, forKey: "userFlag")
+        }
+    }
 
     
     var body: some View {
@@ -285,7 +299,7 @@ struct FlagStatisticsView: View {
                     } else {
                         
                         HStack{
-                            Image("angola") // Replace with the actual image name
+                            Image(selectedUserFlag) // Replace with the actual image name
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 64, height: 64) // Set the desired width and height
