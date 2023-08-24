@@ -243,199 +243,238 @@ struct StartGameView: View {
 
 struct FlagStatisticsView: View {
     
+    @State private var showFlagSelection = false
+    @State private var selectedUserFlag = ""
+    
     let flagData: [FlagData]
     
     var sortedFlagData: [FlagData] {
         flagData.sorted { $0.country_name ?? "" < $1.country_name ?? "" }
     }
         
-    let userName = UserDefaults.standard.string(forKey: "userName") ?? "Not played yet"
+    let userName = UserDefaults.standard.string(forKey: "userName") ?? "Name"
 
     
     var body: some View {
-        ZStack {
-            Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
-                .edgesIgnoringSafeArea(.all)
-            
-            ScrollView {
+        
+        ScrollViewReader { scrollViewProxy in
+        
+            ZStack {
+                Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00))
+                    .edgesIgnoringSafeArea(.all)
                 
-                HStack{
-                    Image("angola") // Replace with the actual image name
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 64, height: 64) // Set the desired width and height
-                        .clipShape(Circle()) // Mask the image to a circle shape
-                        .overlay(
-                            Circle()
-                                .stroke(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)), lineWidth: 0.5) // Set the border color and width
-                        )
+                ScrollView {
+                    if showFlagSelection {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                            ForEach(sortedFlagData, id: \.self) { data in
+                                Button(action: {
+                                    showFlagSelection = false
+
+                                }) {
+                                    Image(data.flag ?? "")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 64)
+                                        .clipShape(Circle())
+                                    //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
+                                        .padding(.trailing, 8)
+                                }
+                            }
+                        }
                         .padding()
-                        .padding(.top, 32)
+                    } else {
                         
-                    Text(userName)
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-                        .padding(.top, 32)
-                    Image(systemName: "pencil.circle.fill")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
-                        .padding()
-                        .padding(.top, 36)
-
-                }
-                
-                
-                let showHighscore = UserDefaults.standard.string(forKey: "highScore") ?? "No score yet"
-                
-                HStack {
-                    VStack (spacing: 10) {
-                        Text("BEST SCORE")
-                            .font(.headline)
                         HStack{
-                            Text(showHighscore)
-                                .font(.largeTitle)
-                                .fontWeight(.black)
-                        }
-                        .padding(.bottom)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity) // Equal width for both columns
-                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
-
-                    VStack (spacing: 10) {
-                        Text("GAMES PLAYED")
-                            .font(.headline)
-                        HStack{
-                            Text("\(flagData.first?.user_games_played ?? 0)")
-                                .font(.largeTitle)
-                                .fontWeight(.black)
-                        }
-                        .padding(.bottom)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity) // Equal width for both columns
-                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
-                }
-                .padding()
-
-                
-                
-                
-                VStack(spacing: 32) {
-                    VStack (spacing: 16) {
-                        if let userAccuracy = flagData.first?.user_accuracy {
-                            let userAccuracyRightScale = userAccuracy * 100
-                            HStack {
-                                Text("ACCURACY: \(userAccuracyRightScale, specifier: "%.0f") %")
-                                    .font(.headline)
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            ProgressBar(value: Int(userAccuracyRightScale), color: .white)
-                                .frame(height: 20)
-                                .cornerRadius(8)
-
-                                .padding(.horizontal)
-                        }
-                    }
-                    VStack (spacing: 16) {
-                        if let userSpeed = flagData.first?.user_speed {
-                            let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
-                            
-                            HStack {
-                                Text("REACTION: \(userSpeed, specifier: "%.2f") seconds")
-                                    .font(.headline)
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                                ProgressBar(value: Int(invertedSpeed), color: .white)
-                                    .frame(height: 20)
-                                    .cornerRadius(8)
-
-                                    .padding(.horizontal)
-                        }
-                    }
-                    VStack (spacing: 16) {
-                        if let userConsistency = flagData.first?.user_consistency {
-                            let userConsistencyRightScale = userConsistency * 100
-                            HStack {
-                                Text("PERFORMANCE: \(userConsistencyRightScale, specifier: "%.0f") %")
-                                    .font(.headline)
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            ProgressBar(value: Int(userConsistencyRightScale), color: .white)
-                                .frame(height: 20)
-                                .cornerRadius(8)
-                                .padding(.horizontal)
-                        }
-                    }
-                    
-                    
-                    
-                }.padding(.vertical)
-
-                HStack {
-                    Text("FLAG STATISTICS")
-                        .font(.headline)
-                        .padding(.horizontal)
-                        .padding(.top)
-                    Spacer()
-                }
-                
-                
-                VStack {
-                    ForEach(sortedFlagData, id: \.self) { data in
-                        HStack {
-                            Image(data.flag ?? "")
+                            Image("angola") // Replace with the actual image name
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 64)
-                            #if FLAGGORNA
-                                .border(Color.gray, width: 0.25)
-                            #elseif TEAM_LOGO_QUIZ
-                            //
-                            #endif
-                                .padding(.trailing, 8)
-                            Text(data.country_name ?? "")
-                                .font(.body)
-                                //.fontWeight(.bold)
-                            Spacer()
-                            Text("Correct: \(data.right_answers) of \(data.impressions)")
-                                .font(.footnote)
-                            CircleIndicatorView(data: data)
-                                .padding(8)
-                            Rectangle()
-                                .frame(width: 8, height: 42)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 64, height: 64) // Set the desired width and height
+                                .clipShape(Circle()) // Mask the image to a circle shape
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)), lineWidth: 1) // Set the border color and width
+                                )
+                                .padding()
+                                .padding(.top, 32)
+                                .onTapGesture {
+                                    showFlagSelection = true // Set the flag selection mode to true
+                                }
+                                
+                            
+                            Text(userName)
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .padding(.top, 32)
+                                .id(0)
+                            Image(systemName: "pencil.circle.fill")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
+                                .padding()
+                                .padding(.top, 36)
+                            
                         }
+                        
+                        
+                        let showHighscore = UserDefaults.standard.string(forKey: "highScore") ?? "-"
+                        
+                        HStack {
+                            VStack (spacing: 10) {
+                                Text("BEST SCORE")
+                                    .font(.headline)
+                                HStack{
+                                    Text(showHighscore)
+                                        .font(.largeTitle)
+                                        .fontWeight(.black)
+                                }
+                                .padding(.bottom)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity) // Equal width for both columns
+                            .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
+                            
+                            VStack (spacing: 10) {
+                                Text("GAMES PLAYED")
+                                    .font(.headline)
+                                HStack{
+                                    Text("\(flagData.first?.user_games_played ?? 0)")
+                                        .font(.largeTitle)
+                                        .fontWeight(.black)
+                                }
+                                .padding(.bottom)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity) // Equal width for both columns
+                            .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 0.8)))
+                        }
+                        .padding()
+                        
+                        
+                        
+                        
+                        VStack(spacing: 32) {
+                            VStack (spacing: 16) {
+                                if let userAccuracy = flagData.first?.user_accuracy {
+                                    let userAccuracyRightScale = userAccuracy * 100
+                                    HStack {
+                                        Text("ACCURACY: \(userAccuracyRightScale, specifier: "%.0f") %")
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal)
+                                    ProgressBar(value: Int(userAccuracyRightScale), color: .white)
+                                        .frame(height: 20)
+                                        .cornerRadius(8)
+                                    
+                                        .padding(.horizontal)
+                                }
+                            }
+                            VStack (spacing: 16) {
+                                if let userSpeed = flagData.first?.user_speed {
+                                    let invertedSpeed = 100 - Int((userSpeed / 4) * 100) // Inverting the speed value
+                                    
+                                    HStack {
+                                        Text("REACTION: \(userSpeed, specifier: "%.2f") seconds")
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal)
+                                    ProgressBar(value: Int(invertedSpeed), color: .white)
+                                        .frame(height: 20)
+                                        .cornerRadius(8)
+                                    
+                                        .padding(.horizontal)
+                                }
+                            }
+                            VStack (spacing: 16) {
+                                if let userConsistency = flagData.first?.user_consistency {
+                                    let userConsistencyRightScale = userConsistency * 100
+                                    HStack {
+                                        Text("PERFORMANCE: \(userConsistencyRightScale, specifier: "%.0f") %")
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal)
+                                    ProgressBar(value: Int(userConsistencyRightScale), color: .white)
+                                        .frame(height: 20)
+                                        .cornerRadius(8)
+                                        .padding(.horizontal)
+                                }
+                            }
+                            
+                        }.padding(.vertical)
+                        
+                        HStack {
+                            Text("FLAG STATISTICS")
+                                .font(.headline)
+                                .padding(.horizontal)
+                                .padding(.top)
+                            Spacer()
+                        }
+                        
+                        
+                        VStack {
+                            ForEach(sortedFlagData, id: \.self) { data in
+                                HStack {
+                                    Image(data.flag ?? "")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 64)
+#if FLAGGORNA
+                                        .border(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)), width: 1)
+#elseif TEAM_LOGO_QUIZ
+                                    //
+#endif
+                                        .padding(.trailing, 8)
+                                    Text(data.country_name ?? "")
+                                        .font(.body)
+                                    //.fontWeight(.bold)
+                                    Spacer()
+                                    Text("Correct: \(data.right_answers) of \(data.impressions)  ")
+                                        .font(.footnote)
+                                    IndicatorView(data: data)
+                                    //.padding(8)
+                                }
+                            }
+                            
+                            VStack {
+                                Button(action: {
+                                    // Open Terms of Use (EULA)
+                                    openTermsOfUse()
+                                }) {
+                                    Text("Terms of Use")
+                                }
+                                .buttonStyle(LowKeyButtonStyle())
+                                .padding(24)
+                                
+                                Button(action: {
+                                    // Open Privacy Policy
+                                    openPrivacyPolicy()
+                                }) {
+                                    Text("Privacy Policy")
+                                }
+                                .buttonStyle(LowKeyButtonStyle())
+                                .padding(24)
+                            }
+                            .padding(24)
+                            
+                        }
+                        .padding()
+                        
                     }
                     
-                    VStack {
-                        Button(action: {
-                            // Open Terms of Use (EULA)
-                            openTermsOfUse()
-                        }) {
-                            Text("Terms of Use")
-                        }
-                        .buttonStyle(LowKeyButtonStyle())
-                        .padding(24)
-                        
-                        Button(action: {
-                            // Open Privacy Policy
-                            openPrivacyPolicy()
-                        }) {
-                            Text("Privacy Policy")
-                        }
-                        .buttonStyle(LowKeyButtonStyle())
-                        .padding(24)
-                    }
-                    .padding(24)
                     
                 }
-                .padding()
+                .preferredColorScheme(.dark)
+                .onChange(of: showFlagSelection) { newValue in
+                            if !newValue {
+                                
+                                scrollViewProxy.scrollTo(0)
+                                
+                            }
+                        }
+
             }
-            .preferredColorScheme(.dark)
         }
     }
     
@@ -490,7 +529,7 @@ struct ProgressBar: View {
     }
 }
 
-struct CircleIndicatorView: View {
+struct IndicatorView: View {
     let data: FlagData
     
     private let greenThreshold: Double = 0.75
@@ -498,27 +537,20 @@ struct CircleIndicatorView: View {
     
     var body: some View {
         let correctRatio = data.impressions > 0 ? Double(data.right_answers) / Double(data.impressions) : 0
-        let symbolName: String
         let color: Color
         
         if data.impressions == 0 {
-            symbolName = "circle.dotted"
             color = .gray
         } else if correctRatio >= greenThreshold {
-            symbolName = "circle.fill"
             color = .green
         } else if correctRatio <= redThreshold {
-            symbolName = "circle.slash"
             color = .red
         } else {
-            symbolName = "circle.bottomhalf.filled"
             color = .yellow
         }
         
-        return Image(systemName: symbolName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
+        return Rectangle()
+            .frame(width: 8, height: 42)
             .foregroundColor(color)
     }
 }
