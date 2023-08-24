@@ -299,13 +299,14 @@ struct FlagStatisticsView: View {
                                 .onTapGesture {
                                     showFlagSelection = true // Set the flag selection mode to true
                                 }
+                                .id(0)
                                 
                             
                             Text(userName)
                                 .font(.largeTitle)
                                 .fontWeight(.black)
                                 .padding(.top, 32)
-                                .id(0)
+                                
                             Image(systemName: "pencil.circle.fill")
                                 .font(.title)
                                 .fontWeight(.bold)
