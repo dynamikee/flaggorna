@@ -245,7 +245,7 @@ struct FlagStatisticsView: View {
     
     @State private var showFlagSelection = false
     @State private var isEditingName = false
-    @State private var userName = UserDefaults.standard.string(forKey: "userName") ?? "Name"
+    @State private var userName = UserDefaults.standard.string(forKey: "userName") ?? ""
     @State private var editedName = ""
     
     let flagData: [FlagData]

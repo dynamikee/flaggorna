@@ -39,8 +39,8 @@ struct JoinMultiplayerPeerView: View {
     
     @StateObject private var multipeerDelegate = MultipeerDelegate()
     
-    @State var isSeeking = false
-    
+    @State private var isSeeking: Bool = UserDefaults.standard.string(forKey: "userName") != nil
+
     let serviceType = "flaggorna-quiz"
     
     @State private var showStoreView = false
