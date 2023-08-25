@@ -24,6 +24,7 @@ struct JoinMultiplayerPeerView: View {
     @State private var uuidString: String = ""
     @State private var name: String = ""
     @State private var color: Color = .white
+    @State private var flag: String = "sweden"
     @State private var score: Int = 0
     @State private var currentRound: Int = 0
     @State private var gameCode: String = ""
@@ -45,6 +46,7 @@ struct JoinMultiplayerPeerView: View {
     
     @State private var showStoreView = false
     
+    
     private func loadUserData() {
         if let userID = userDefaults.string(forKey: "userID") {
             self.uuidString = userID
@@ -61,8 +63,219 @@ struct JoinMultiplayerPeerView: View {
         } else {
             self.color = colors.randomElement()!
         }
+        if let flag = userDefaults.string(forKey: "userFlag") {
+            self.flag = flag
+        } else {
+            self.flag = flagImageNames.randomElement()!
+        }
+           
+            
     }
     
+    private let flagImageNames = [
+        "afghanistan", "aland", "albania", "algeria", "american_samoa", "andorra", "angola", "anguilla",
+        "antarctica", "antilles", "argentina", "armenia", "aruba", "australia", "austria", "azerbaijan",
+        "bahamas", "bahrain", "bangladesh", "barbados", "barbuda_antigua", "belgium", "belize", "benin",
+        "bermuda", "bhutan", "bolivia", "bonaire", "bosnia_herzegovina", "botswana", "brazil", "british_indian_ocean",
+        "british_virgin_islands", "brunei", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia",
+        "cameroon", "canada", "catalonia", "cayman_islands", "central_africa", "chad", "chile", "china",
+        "christmas_islands", "colombia", "comoros", "congo",
+        "cook_islands",
+        "costa_rica",
+        "croatia",
+        "cuba",
+        "curacao",
+        "cyprus",
+        "czech_republic",
+        "democratic_congo",
+        "denmark",
+        "djibouti",
+        "dominica",
+        "dominican_republic",
+        "dubai",
+        "east_timor",
+        "ecuador",
+        "egypt",
+        "el_salvador",
+        "england",
+        "equatorial_guinea",
+        "eritrea",
+        "estonia",
+        "eswatini",
+        "ethiopia",
+        "european_union",
+        "falkland_islands",
+        "faroe_islands",
+        "fiji",
+        "finland",
+        "france",
+        "french_guiana",
+        "gabon",
+        "gambia",
+        "georgia",
+        "germany",
+        "ghana",
+        "gibraltar",
+        "great_britain",
+        "greece",
+        "greenland",
+        "grenada",
+        "guadeloupe",
+        "guam",
+        "guatemala",
+        "guernsey",
+        "guinea_bissau",
+        "guinea",
+        "guyana",
+        "haiti",
+        "honduras",
+        "hong_kong",
+        "hungary",
+        "iceland",
+        "india",
+        "indonesia",
+        "iran",
+        "iraq",
+        "ireland",
+        "isle_of_man",
+        "israel",
+        "italy",
+        "ivoire_coast",
+        "jamaica",
+        "japan",
+        "jersey",
+        "jordan",
+        "kashmir",
+        "kazakhstan",
+        "kenya",
+        "kiribati",
+        "kosovo",
+        "kurdistan",
+        "kuwait",
+        "kyrgyz_republic",
+        "laos",
+        "latvia",
+        "lebanon",
+        "lesotho",
+        "liberia",
+        "libya",
+        "liechtenstein",
+        "lithuania",
+        "luxembourg",
+        "macao",
+        "macedonia",
+        "madagascar",
+        "malawi",
+        "malaysia",
+        "maldives",
+        "mali",
+        "malta",
+        "marshall_islands",
+        "martinique",
+        "mauritania",
+        "mauritius",
+        "mexico",
+        "micronesia",
+        "moldova",
+        "monaco",
+        "mongolia",
+        "montenegro",
+        "montserrat",
+        "morocco",
+        "mozambique",
+        "myanmar",
+        "namibia",
+        "nauru",
+        "nepal",
+        "netherlands",
+        "new_caledonia",
+        "new_zealand",
+        "nicaragua",
+        "niger",
+        "nigeria",
+        "niue",
+        "north_korea",
+        "northern_ireland",
+        "northern_mariana_islands",
+        "norway",
+        "oman",
+        "pakistan",
+        "palau",
+        "palestine",
+        "panama",
+        "papua_new_guinea",
+        "paraguay",
+        "peru",
+        "philippines",
+        "pitcairn",
+        "poland",
+        "portugal",
+        "puerto_rico",
+        "qatar",
+        "reunion",
+        "romania",
+        "rwanda",
+        "saarc",
+        "saint_helena",
+        "saint_lucia",
+        "saint_martin",
+        "samoa",
+        "san_marino",
+        "sao_tome_principe",
+        "saudi_arabia",
+        "scotland",
+        "senegal",
+        "serbia",
+        "seychelles",
+        "sierra_leone",
+        "singapore",
+        "slovakia",
+        "slovenia",
+        "solomon_islands",
+        "somalia",
+        "south_africa",
+        "south_korea",
+        "south_sudan",
+        "spain",
+        "sri_lanka",
+        "st_kitts_and_nevis",
+        "st_vincent_grenadines",
+        "sudan",
+        "suriname",
+        "sweden",
+        "switzerland",
+        "syria",
+        "tahiti",
+        "taiwan",
+        "tajikistan",
+        "tamil_eelam",
+        "tanzania",
+        "thailand",
+        "togo",
+        "tonga",
+        "treaty_antarctica",
+        "trinidad_tobago",
+        "tunisia",
+        "turkey",
+        "turkmenistan",
+        "uae",
+        "uganda",
+        "ukraine",
+        "uruguay",
+        "usa",
+        "uzbekistan",
+        "vanuatu",
+        "vatican_city",
+        "venezuela",
+        "vietnam",
+        "virgin_islands_us",
+        "wales",
+        "western_sahara",
+        "yemen",
+        "zambia",
+        "zanzibar",
+        "zimbabwe"
+    ]
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -119,6 +332,13 @@ struct JoinMultiplayerPeerView: View {
         
         if isSeeking == false {
             HStack {
+                Image(flag)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 64)
+                    .clipShape(Circle())
+                //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
+                    .padding(.trailing, 8)
                 TextField("Enter your name", text: $name)
                     .font(.title)
                     .fontWeight(.black)
@@ -128,6 +348,7 @@ struct JoinMultiplayerPeerView: View {
                                     isSeeking = true
                     }
                     userDefaults.set(name, forKey: "userName")
+                    userDefaults.set(flag, forKey: "userFlag")
                 }) {
                     Text(Image(systemName: "arrow.forward"))
                         .font(.title)
@@ -167,12 +388,17 @@ struct JoinMultiplayerPeerView: View {
                 VStack {
                     ForEach(socketManager.users.sorted(by: { $0.name < $1.name }), id: \.id) { user in
                         HStack {
-                            Circle()
-                                .foregroundColor(user.color)
-                                .frame(width: 20, height: 20)
-                            Text(user.name)
-                                .font(.title3)
-                                .fontWeight(.bold)
+                            Image(user.flag)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 64)
+                                .clipShape(Circle())
+                            //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
+                                .padding(.trailing, 8)
+                                  
+                            Text(user.name + (user.id.uuidString == uuidString ? " (you)" : ""))
+                                .font(.title2)
+                                .fontWeight(.black)
                                 .foregroundColor(.white)
                             Spacer()
                         }
@@ -373,13 +599,14 @@ struct JoinMultiplayerPeerView: View {
             return
         }
         
-        let user = User(id: uuid, name: name, color: color, score: score, currentRound: currentRound)
+        let user = User(id: uuid, name: name, color: color, flag: flag, score: score, currentRound: currentRound)
         
         // Save user data to UserDefaults
         let defaults = UserDefaults.standard
         defaults.set(uuidString, forKey: "userID")
         defaults.set(name, forKey: "userName")
         defaults.set(colorToString[color], forKey: "userColor")
+        defaults.set(flag, forKey: "userFlag")
         
         
         socketManager.addUser(user)

@@ -118,13 +118,15 @@ class User: ObservableObject, Hashable, Identifiable {
     @Published var id: UUID
     @Published var name: String
     @Published var color: Color
+    @Published var flag: String
     @Published var score: Int
     @Published var currentRound: Int
     
-    init(id: UUID = UUID(), name: String, color: Color, score: Int = 0, currentRound: Int = 0, wifiName: String = "") {
+    init(id: UUID = UUID(), name: String, color: Color, flag: String = "", score: Int = 0, currentRound: Int = 0, wifiName: String = "") {
         self.id = id
         self.name = name
         self.color = color
+        self.flag = flag
         self.score = score
         self.currentRound = currentRound
     }
