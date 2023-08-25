@@ -244,6 +244,9 @@ struct StartGameView: View {
 struct FlagStatisticsView: View {
     
     @State private var showFlagSelection = false
+    @State private var isEditingName = false
+    @State private var userName = UserDefaults.standard.string(forKey: "userName") ?? "Name"
+    @State private var editedName = ""
     
     let flagData: [FlagData]
     
@@ -251,7 +254,6 @@ struct FlagStatisticsView: View {
         flagData.sorted { $0.country_name ?? "" < $1.country_name ?? "" }
     }
         
-    let userName = UserDefaults.standard.string(forKey: "userName") ?? "Name"
 
     @State private var selectedUserFlag: String
     
@@ -282,6 +284,8 @@ struct FlagStatisticsView: View {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                             ForEach(sortedFlagData, id: \.self) { data in
                                 Button(action: {
+                                    selectedUserFlag = data.flag ?? "sweden"
+                                    UserDefaults.standard.setValue(selectedUserFlag, forKey: "userFlag")
                                     showFlagSelection = false
 
                                 }) {
@@ -298,7 +302,7 @@ struct FlagStatisticsView: View {
                         .padding()
                     } else {
                         
-                        HStack{
+                        VStack{
                             Image(selectedUserFlag) // Replace with the actual image name
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -308,7 +312,6 @@ struct FlagStatisticsView: View {
                                     Circle()
                                         .stroke(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.00)), lineWidth: 1) // Set the border color and width
                                 )
-                                .padding()
                                 .padding(.top, 32)
                                 .onTapGesture {
                                     showFlagSelection = true // Set the flag selection mode to true
@@ -316,18 +319,63 @@ struct FlagStatisticsView: View {
                                 .id(0)
                                 
                             
-                            Text(userName)
-                                .font(.largeTitle)
-                                .fontWeight(.black)
-                                .padding(.top, 32)
                                 
-                            Image(systemName: "pencil.circle.fill")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
-                                .padding()
-                                .padding(.top, 36)
                             
+                            if isEditingName {
+                                HStack {
+                                    TextField("Enter your name", text: $editedName, onCommit: {
+                                        let truncatedName = String(editedName.prefix(20)) // Limit to first 12 characters
+                                        userName = truncatedName
+                                        isEditingName = false
+                                        UserDefaults.standard.set(truncatedName, forKey: "userName")
+                                    })
+                                    .font(.largeTitle)
+                                    .fontWeight(.black)
+                                    .padding(4)
+                                    .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
+                                    .foregroundColor(.white)
+                                    
+                                    Image(systemName: "checkmark")
+                                        .font(.title)
+                                        .foregroundColor(Color.white)
+                                        .onTapGesture {
+                                            let truncatedName = String(editedName.prefix(20)) // Limit to first 12 characters
+                                            userName = truncatedName
+                                            isEditingName = false
+                                            UserDefaults.standard.set(truncatedName, forKey: "userName")
+                                            
+                                        }
+                                    
+                                }
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
+    
+                            } else {
+                                HStack {
+                                    Image(systemName: "pencil")
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color(UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1.00)))
+                                    Text(userName)
+                                        .font(.largeTitle)
+                                        .fontWeight(.black)
+                                        .multilineTextAlignment(.center)
+                                        .onTapGesture {
+                                            isEditingName = true // Activate editing mode
+                                            editedName = userName // Initialize the editedName with the current name
+                                            
+                                            
+                                        }
+                                    Image(systemName: "pencil")
+                                        .font(.title)
+                                        .foregroundColor(Color.white)
+                                        .onTapGesture {
+                                            isEditingName = true // Activate editing mode
+                                            editedName = userName // Initialize the editedName with the current name
+                                        }
+                                }
+                                .padding(.horizontal)
+                            }
                         }
                         
                         
