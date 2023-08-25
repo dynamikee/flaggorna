@@ -30,6 +30,7 @@ struct WrongAnswerMultiplayerView: View {
                     }
                 }
             }
+            .padding()
             Spacer()
             Text("Oh no!")
                 .font(.largeTitle)
@@ -44,23 +45,28 @@ struct WrongAnswerMultiplayerView: View {
             VStack {
                 ForEach(socketManager.users.sorted(by: { $0.score < $1.score }).reversed(), id: \.id) { user in
                     HStack {
-                        Circle()
-                            .foregroundColor(user.color)
-                            .frame(width: 20, height: 20)
+                        Image(user.flag)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 64)
+                            .clipShape(Circle())
+                        //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
+                            .padding(.trailing, 8)
                         Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.bold)
+                            .font(.title2)
+                            .fontWeight(.black)
                             .foregroundColor(.white)
                         Spacer()
                         Text(String(user.score))
-                            .font(.title3)
-                            .fontWeight(.bold)
+                            .font(.title2)
+                            .fontWeight(.black)
                             .foregroundColor(.white)
+                            .padding(.trailing, 8)
                         
                     }
-                    .padding(.horizontal, 16)
                 }
             }
+            .padding()
             Spacer()
             if showNextButton {
                 Button(action: {

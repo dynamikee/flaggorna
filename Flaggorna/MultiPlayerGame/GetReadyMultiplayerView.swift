@@ -28,6 +28,8 @@ struct GetReadyMultiplayerView: View {
                     }
                 }
             }
+            .padding()
+            
             Spacer()
         
             Text("GET READY!")
