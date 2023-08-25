@@ -66,9 +66,10 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                    let userID = UUID(uuidString: userIDString),
                                    let userName = userDict["name"] as? String,
                                    let userColorString = userDict["color"] as? String,
+                                   let userFlagString = userDict["flag"] as? String,
                                    let userScoreString = userDict["score"] as? String,
                                    let userCurrentRoundString = userDict["currentRound"] as? String {
-                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString), score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0)
+                                    let newUser = User(id: userID, name: userName, color: color(for: userColorString), flag: userFlagString, score: Int(userScoreString) ?? 0, currentRound: Int(userCurrentRoundString) ?? 0)
                                     newUsers.insert(newUser)
                                 }
                                 
@@ -292,7 +293,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         let usersDict: [String: Any] = [
             "type": "usersArray",
             "gameCode": self.gameCode,
-            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "score": String($0.score), "currentRound": String($0.currentRound)] }
+            "users": usersArray.map { ["id": $0.id.uuidString, "name": $0.name, "color": colorToString[$0.color] ?? "", "flag": $0.flag, "score": String($0.score), "currentRound": String($0.currentRound)] }
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: usersDict, options: []),
             let jsonString = String(data: jsonData, encoding: .utf8) {
