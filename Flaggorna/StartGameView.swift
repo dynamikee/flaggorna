@@ -324,10 +324,15 @@ struct FlagStatisticsView: View {
                             if isEditingName {
                                 HStack {
                                     TextField("Enter your name", text: $editedName, onCommit: {
-                                        let truncatedName = String(editedName.prefix(20)) // Limit to first 12 characters
-                                        userName = truncatedName
-                                        isEditingName = false
-                                        UserDefaults.standard.set(truncatedName, forKey: "userName")
+                                        if editedName.isEmpty {
+                                            //
+                                        } else {
+                                            let truncatedName = String(editedName.prefix(20)) // Limit to first 12 characters
+                                            userName = truncatedName
+                                            isEditingName = false
+                                            UserDefaults.standard.set(truncatedName, forKey: "userName")
+                                        }
+                                        
                                     })
                                     .font(.largeTitle)
                                     .fontWeight(.black)
