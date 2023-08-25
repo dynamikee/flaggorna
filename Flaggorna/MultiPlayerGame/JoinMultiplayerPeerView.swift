@@ -46,6 +46,8 @@ struct JoinMultiplayerPeerView: View {
     
     @State private var showStoreView = false
     
+    @State private var showFlagSelection = false
+    
     
     private func loadUserData() {
         if let userID = userDefaults.string(forKey: "userID") {
@@ -299,6 +301,33 @@ struct JoinMultiplayerPeerView: View {
     
     var body: some View {
         
+        if showFlagSelection {
+            ScrollView {
+
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                ForEach(flagImageNames, id: \.self) { data in
+                    Button(action: {
+                        let selectedUserFlag = data
+                        UserDefaults.standard.setValue(selectedUserFlag, forKey: "userFlag")
+                        showFlagSelection = false
+
+                    }) {
+                        Image(data)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 64)
+                            .clipShape(Circle())
+                        //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
+                            .padding(.trailing, 8)
+                    }
+                }
+            }
+            .padding()
+                
+            }
+            
+        } else {
+
         
         VStack {
             HStack {
@@ -339,6 +368,10 @@ struct JoinMultiplayerPeerView: View {
                     .clipShape(Circle())
                 //.border(sortedFlagData == data ? Color.blue : Color.clear, width: 2)
                     .padding(.trailing, 8)
+                    .onTapGesture {
+                        showFlagSelection = true // Set the flag selection mode to true
+                    }
+                
                 TextField("Enter your name", text: $name)
                     .font(.title)
                     .fontWeight(.black)
@@ -511,6 +544,8 @@ struct JoinMultiplayerPeerView: View {
                 }
                 
             }
+            
+        }
             
         }
         
