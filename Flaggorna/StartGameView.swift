@@ -334,7 +334,6 @@ struct FlagStatisticsView: View {
                                     .padding(4)
                                     .background(Color(UIColor(red: 0.22, green: 0.22, blue: 0.25, alpha: 1.0)))
                                     .foregroundColor(.white)
-                                    
                                     Image(systemName: "checkmark")
                                         .font(.title)
                                         .foregroundColor(Color.white)
@@ -344,7 +343,10 @@ struct FlagStatisticsView: View {
                                             isEditingName = false
                                             UserDefaults.standard.set(truncatedName, forKey: "userName")
                                             
+                                            
                                         }
+                                        .disabled(editedName.isEmpty)
+
                                     
                                 }
                                 .padding(.vertical, 8)
