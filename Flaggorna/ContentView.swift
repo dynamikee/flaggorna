@@ -104,6 +104,8 @@ struct ResetMessage: Codable {
 struct Country: Codable, Hashable {
     var name: String
     var flag: String
+    var level: String
+    var continent: String
 }
 
 class User: ObservableObject, Hashable, Identifiable {

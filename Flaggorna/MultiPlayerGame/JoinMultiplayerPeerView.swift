@@ -48,6 +48,13 @@ struct JoinMultiplayerPeerView: View {
     
     @State private var showFlagSelection = false
     
+    @State private var showGameModeSelection = false
+    @State private var selectedLevel: String = ""
+    @State private var levelList: [String] = []
+    @State private var selectedContinents: [String] = []
+    @State private var continentList: [String] = []
+    
+    
     
     private func loadUserData() {
         if let userID = userDefaults.string(forKey: "userID") {
@@ -326,7 +333,93 @@ struct JoinMultiplayerPeerView: View {
                 
             }
             
-        } else {
+        } else if showGameModeSelection {
+            
+                VStack {
+                    Text("Choose continent")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                    ScrollView {
+                        VStack (alignment: .leading) {
+                            ForEach(continentList.sorted(), id: \.self) { continent in
+                                            Button(action: {
+                                                if selectedContinents.contains(continent) {
+                                                    selectedContinents.removeAll(where: { $0 == continent })
+                                                    } else {
+                                                        selectedContinents.append   (continent)
+                                                    }
+                                            }) {
+                                                HStack {
+                                                    Image(systemName: selectedContinents.contains(continent) ? "checkmark.square.fill" : "square")
+                                                        .resizable()
+                                                        .frame(width: 32, height: 32)
+                                                        .foregroundColor(selectedContinents.contains(continent) ? .white : .white)
+                                                        .fontWeight(.bold)
+                                                    
+                                                    Text(continent)
+                                                        .font(.title)
+                                                        .fontWeight(.black)
+                                                        .foregroundColor(.white)
+                                                    Spacer()
+                                                    
+                                                }
+                                            }
+                                            .padding(.vertical, 8)
+                                        }
+                            Spacer()
+//                            Text("Choose level")
+//                                .font(.title)
+//                                .fontWeight(.black)
+//                                .foregroundColor(.white)
+//                            ForEach(levelList, id: \.self) { level in
+//                                            Button(action: {
+//                                                selectedLevel = level
+//                                            }) {
+//                                                HStack {
+//                                                    Image(systemName: selectedLevel == level ? "largecircle.fill.circle" : "circle")
+//                                                        .resizable()
+//                                                        .frame(width: 24, height: 24)
+//                                                        .foregroundColor(selectedLevel == level ? .white : .white)
+//
+//                                                    Text(level)
+//                                                        .font(.title)
+//                                                        .fontWeight(.black)
+//                                                        .foregroundColor(.white)
+//                                                }
+//                                            }
+//                                            .padding(.vertical, 8)
+//                                        }
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    
+                    Button(action: {
+                        
+                        showGameModeSelection = false
+                        
+                        let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+                        self.countries = filteredCountries
+
+                        print(countries)
+                        print($countries)
+
+                    }) {
+                        Text("DONE")
+                            
+                    }
+                    .buttonStyle(OrdinaryButtonStyle())
+                    .padding()
+                }
+                .padding()
+            
+            
+            } else {
+                
 
         
         VStack {
@@ -350,7 +443,15 @@ struct JoinMultiplayerPeerView: View {
                         .foregroundColor(.white)
                 }
                 Spacer()
-                
+                Button(action: {
+                    showGameModeSelection = true
+                    
+                }) {
+                    Text(Image(systemName:  "slider.vertical.3"))
+                        .font(.title)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                }
             }
             Spacer()
         }
@@ -442,7 +543,7 @@ struct JoinMultiplayerPeerView: View {
                 
                 if socketManager.users.count < 2 {
                     Button {
-                        loadData()
+                        //loadData()
                         score = 0
                         rounds = numberOfRounds
                         self.roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
@@ -456,6 +557,7 @@ struct JoinMultiplayerPeerView: View {
                         multiplayer = false
                         //self.socketManager.countries = []
                         currentScene = "GetReady"
+                        self.socketManager.stopUsersTimer()
                         self.socketManager.socket.disconnect()
                     } label: {
                         Text("START GAME")
@@ -516,6 +618,7 @@ struct JoinMultiplayerPeerView: View {
             .preferredColorScheme(.dark)
             .padding()
             .onAppear {
+                loadData()
                 loadUserData()
                 self.socketManager.socket.connect()
                 self.socketManager.startUsersTimer()
@@ -560,11 +663,19 @@ struct JoinMultiplayerPeerView: View {
         #endif
         let data = try! Data(contentsOf: URL(fileURLWithPath: file))
         let decoder = JSONDecoder()
-        self.countries = try! decoder.decode([Country].self, from: data)
+        countries = try! decoder.decode([Country].self, from: data)
         
+        let uniqueDifficultyLevels = Set(countries.map { $0.level })
+            levelList = Array(uniqueDifficultyLevels)
+        
+        let uniqueContinents = Set(countries.map { $0.continent })
+        continentList = Array(uniqueContinents)
+        selectedContinents = continentList
+
         // Update Core Data with flag data
         updateFlagData()
     }
+    
     
     private func updateFlagData() {
         let managedObjectContext = PersistenceController.shared.container.viewContext
@@ -684,6 +795,7 @@ struct JoinMultiplayerPeerView: View {
         }
     }
 }
+
 
 class MultipeerDelegate: NSObject, ObservableObject, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
     

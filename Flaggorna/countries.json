@@ -108,6 +108,7 @@
     "id": 16,
     "name": "European Union",
     "flag": "european_union",
+    "level": "Intermediate",
     "continent": "Europe"
   },
   {
@@ -1235,6 +1236,484 @@
     "name": "Antarctica",
     "flag": "antarctica",
     "level": "Easy",
-    "continent": "Antartica"
+    "continent": "Oceania"
+  },
+  {
+    "id": 178,
+    "name": "American Samoa",
+    "flag": "american_samoa",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 179,
+    "name": "Anguilla",
+    "flag": "anguilla",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 180,
+    "name": "Antilles",
+    "flag": "antilles",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 181,
+    "name": "Aruba",
+    "flag": "aruba",
+    "level": "Hard",
+    "continent": "South_America"
+  },
+  {
+    "id": 182,
+    "name": "Bahamas",
+    "flag": "bahamas",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 183,
+    "name": "Barbados",
+    "flag": "barbados",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 184,
+    "name": "Antigua & Barbuda",
+    "flag": "barbuda_antigua",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 185,
+    "name": "Belize",
+    "flag": "belize",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 186,
+    "name": "Benin",
+    "flag": "benin",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 187,
+    "name": "Bermuda",
+    "flag": "bermuda",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 188,
+    "name": "Bonaire",
+    "flag": "bonaire",
+    "level": "Hard",
+    "continent": "South_America"
+  },
+  {
+    "id": 189,
+    "name": "British Indian Ocean",
+    "flag": "british_indian_ocean",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 190,
+    "name": "Cape Verde",
+    "flag": "cabo_verde",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 191,
+    "name": "Cayman Islands",
+    "flag": "cayman_islands",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 192,
+    "name": "British Virgin Islands",
+    "flag": "british_virgin_islands",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 193,
+    "name": "Christmas Island",
+    "flag": "christmas_islands",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 194,
+    "name": "Comoros",
+    "flag": "comoros",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 195,
+    "name": "Cook Islands",
+    "flag": "cook_islands",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 196,
+    "name": "Curacao",
+    "flag": "curacao",
+    "level": "Hard",
+    "continent": "South_America"
+  },
+  {
+    "id": 197,
+    "name": "Congo-Kinshasa",
+    "flag": "democratic_congo",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 198,
+    "name": "Dominica",
+    "flag": "dominica",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 199,
+    "name": "Dominican Republic",
+    "flag": "dominica",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 200,
+    "name": "Equatorial Guinea",
+    "flag": "equatorial_guinea",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 201,
+    "name": "Eswatini",
+    "flag": "eswatini",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 202,
+    "name": "Falkland Islands",
+    "flag": "falkland_islands",
+    "level": "Hard",
+    "continent": "South_America"
+  },
+  {
+    "id": 203,
+    "name": "Grenada",
+    "flag": "grenada",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 204,
+    "name": "Guadeloupe",
+    "flag": "guadeloupe",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 205,
+    "name": "Guam",
+    "flag": "guam",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 206,
+    "name": "Guinea-Bissau",
+    "flag": "guinea_bissau",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 207,
+    "name": "Hong Kong",
+    "flag": "hong_kong",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 208,
+    "name": "Ivoire Coast",
+    "flag": "ivoire_coast",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 209,
+    "name": "Kashmir",
+    "flag": "kashmir",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 210,
+    "name": "Kiribati",
+    "flag": "kiribati",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 211,
+    "name": "Kyrgyzstan",
+    "flag": "kyrgyz_republic",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 212,
+    "name": "Lebanon",
+    "flag": "lebanon",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 213,
+    "name": "Lesotho",
+    "flag": "lesotho",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 214,
+    "name": "Marshall Islands",
+    "flag": "marshall_islands",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 215,
+    "name": "Martinique",
+    "flag": "martinique",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 216,
+    "name": "Mauritania",
+    "flag": "mauritania",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 217,
+    "name": "Mauritius",
+    "flag": "mauritius",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 218,
+    "name": "Micronesia",
+    "flag": "micronesia",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 219,
+    "name": "Montserrat",
+    "flag": "montserrat",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 220,
+    "name": "Nauru",
+    "flag": "nauru",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 221,
+    "name": "New Caledonia",
+    "flag": "new_caledonia",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 222,
+    "name": "Niue",
+    "flag": "niue",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 223,
+    "name": "Northern Mariana Islands",
+    "flag": "northern_mariana_islands",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 224,
+    "name": "Palau",
+    "flag": "palau",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 225,
+    "name": "Palestine",
+    "flag": "palestine",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 226,
+    "name": "Pitcairn Islands",
+    "flag": "pitcairn",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 227,
+    "name": "Réunion",
+    "flag": "reunion",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 228,
+    "name": "SAARC",
+    "flag": "saarc",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 229,
+    "name": "Saint Helena",
+    "flag": "saint_helena",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 230,
+    "name": "Saint Lucia",
+    "flag": "saint_lucia",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 231,
+    "name": "Saint Martin",
+    "flag": "saint_martin",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 232,
+    "name": "São Tomé and Príncipe",
+    "flag": "sao_tome_principe",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 233,
+    "name": "Seychelles",
+    "flag": "seychelles",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 234,
+    "name": "Solomon Islands",
+    "flag": "solomon_islands",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 235,
+    "name": "South Sudan",
+    "flag": "south_sudan",
+    "level": "Hard",
+    "continent": "Africa"
+  },
+  {
+    "id": 236,
+    "name": "Saint Kitts and Nevis",
+    "flag": "st_kitts_and_nevis",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 237,
+    "name": "Saint Vincent and the Grenadines",
+    "flag": "st_vincent_grenadines",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 238,
+    "name": "Tamil Eelam",
+    "flag": "tamil_eelam",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 239,
+    "name": "Tonga",
+    "flag": "tonga",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 240,
+    "name": "United Arab Emirates",
+    "flag": "uae",
+    "level": "Hard",
+    "continent": "Asia"
+  },
+  {
+    "id": 241,
+    "name": "Vanuatu",
+    "flag": "vanuatu",
+    "level": "Hard",
+    "continent": "Oceania"
+  },
+  {
+    "id": 242,
+    "name": "Vatican City",
+    "flag": "vatican_city",
+    "level": "Hard",
+    "continent": "Europe"
+  },
+  {
+    "id": 243,
+    "name": "Virgin Islands",
+    "flag": "virgin_islands_us",
+    "level": "Hard",
+    "continent": "North_America"
+  },
+  {
+    "id": 244,
+    "name": "Wales",
+    "flag": "wales",
+    "level": "Hard",
+    "continent": "Europe"
+  },
+  {
+    "id": 245,
+    "name": "Zanzibar",
+    "flag": "zanzibar",
+    "level": "Hard",
+    "continent": "Africa"
   }
 ]
+
+
