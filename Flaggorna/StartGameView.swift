@@ -89,6 +89,7 @@ struct StartGameView: View {
                     score = 0
                     rounds = numberOfRounds
                     multiplayer = true
+                    loadData()
                     SocketManager.shared.currentScene = "JoinMultiplayerPeer"
                     
                 }){

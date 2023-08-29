@@ -46,6 +46,8 @@ struct ContentView: View {
                 switch currentScene {
                 case "Start":
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                case "GameModeView":
+                    GameModeView(currentScene: $currentScene, countries: $countries, multiplayer: $multiplayer)
                 case "GetReady":
                     GetReadyView(currentScene: $currentScene)
                 case "Main":

@@ -15,6 +15,7 @@
 		BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0D2A098D6E00FE8348 /* FlagNode.swift */; };
 		BA696B102A0BABAA00FE8348 /* SceneViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */; };
 		BA82C9902A3B867400BE4E9C /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA82C98F2A3B867300BE4E9C /* StoreView.swift */; };
+		BA86A37A2A9E5ECB003A5EBD /* GameModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA86A3792A9E5ECB003A5EBD /* GameModeView.swift */; };
 		BA9C45702A60085600439C00 /* RightAnswerMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD40D2429ABD8300054E972 /* RightAnswerMultiplayerView.swift */; };
 		BA9C45712A60085600439C00 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */; };
 		BA9C45722A60085600439C00 /* GameOverMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC78E129B66E8D006E3129 /* GameOverMultiplayerView.swift */; };
@@ -79,6 +80,7 @@
 		BA696B0D2A098D6E00FE8348 /* FlagNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagNode.swift; sourceTree = "<group>"; };
 		BA696B0F2A0BABAA00FE8348 /* SceneViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewContainer.swift; sourceTree = "<group>"; };
 		BA82C98F2A3B867300BE4E9C /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = /Users/mikaelmattsson/Documents/dev/Flaggorna/Flaggorna/StoreView.swift; sourceTree = "<absolute>"; };
+		BA86A3792A9E5ECB003A5EBD /* GameModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModeView.swift; sourceTree = "<group>"; };
 		BA9C45942A60085600439C00 /* Team logo quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team logo quiz.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Flaggorna copy-Info.plist"; path = "/Users/mikaelmattsson/Documents/dev/flaggorna/Flaggorna copy-Info.plist"; sourceTree = "<absolute>"; };
 		BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TeamStats.xcdatamodel; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				BABC466629A0AED90048AE12 /* GetReadyView.swift */,
+				BA86A3792A9E5ECB003A5EBD /* GameModeView.swift */,
 				BABC466D29A0B0950048AE12 /* RightAnswerView.swift */,
 				BABC466F29A0B0D40048AE12 /* WrongAnswerView.swift */,
 				BABC467129A0B0F90048AE12 /* GameOverView.swift */,
@@ -479,6 +482,7 @@
 				BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */,
 				BAF21C0429994100009035E8 /* FlaggornaApp.swift in Sources */,
 				BA696B0E2A098D6E00FE8348 /* FlagNode.swift in Sources */,
+				BA86A37A2A9E5ECB003A5EBD /* GameModeView.swift in Sources */,
 				BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */,
 				BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */,
 				BABC469129A282420048AE12 /* JoinMultiplayerView.swift in Sources */,

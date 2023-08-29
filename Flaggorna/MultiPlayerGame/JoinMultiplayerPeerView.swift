@@ -75,216 +75,15 @@ struct JoinMultiplayerPeerView: View {
         if let flag = userDefaults.string(forKey: "userFlag") {
             self.flag = flag
         } else {
-            self.flag = flagImageNames.randomElement()!
+            if let randomCountry = countries.randomElement() {
+                self.flag = randomCountry.flag
+            } else {
+                // Handle the case where the countries array is empty
+                self.flag = "Sweden"
+            }
         }
-           
             
     }
-    
-    private let flagImageNames = [
-        "afghanistan", "aland", "albania", "algeria", "american_samoa", "andorra", "angola", "anguilla",
-        "antarctica", "antilles", "argentina", "armenia", "aruba", "australia", "austria", "azerbaijan",
-        "bahamas", "bahrain", "bangladesh", "barbados", "barbuda_antigua", "belgium", "belize", "benin",
-        "bermuda", "bhutan", "bolivia", "bonaire", "bosnia_herzegovina", "botswana", "brazil", "british_indian_ocean",
-        "british_virgin_islands", "brunei", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia",
-        "cameroon", "canada", "catalonia", "cayman_islands", "central_africa", "chad", "chile", "china",
-        "christmas_islands", "colombia", "comoros", "congo",
-        "cook_islands",
-        "costa_rica",
-        "croatia",
-        "cuba",
-        "curacao",
-        "cyprus",
-        "czech_republic",
-        "democratic_congo",
-        "denmark",
-        "djibouti",
-        "dominica",
-        "dominican_republic",
-        "dubai",
-        "east_timor",
-        "ecuador",
-        "egypt",
-        "el_salvador",
-        "england",
-        "equatorial_guinea",
-        "eritrea",
-        "estonia",
-        "eswatini",
-        "ethiopia",
-        "european_union",
-        "falkland_islands",
-        "faroe_islands",
-        "fiji",
-        "finland",
-        "france",
-        "french_guiana",
-        "gabon",
-        "gambia",
-        "georgia",
-        "germany",
-        "ghana",
-        "gibraltar",
-        "great_britain",
-        "greece",
-        "greenland",
-        "grenada",
-        "guadeloupe",
-        "guam",
-        "guatemala",
-        "guernsey",
-        "guinea_bissau",
-        "guinea",
-        "guyana",
-        "haiti",
-        "honduras",
-        "hong_kong",
-        "hungary",
-        "iceland",
-        "india",
-        "indonesia",
-        "iran",
-        "iraq",
-        "ireland",
-        "isle_of_man",
-        "israel",
-        "italy",
-        "ivoire_coast",
-        "jamaica",
-        "japan",
-        "jersey",
-        "jordan",
-        "kashmir",
-        "kazakhstan",
-        "kenya",
-        "kiribati",
-        "kosovo",
-        "kurdistan",
-        "kuwait",
-        "kyrgyz_republic",
-        "laos",
-        "latvia",
-        "lebanon",
-        "lesotho",
-        "liberia",
-        "libya",
-        "liechtenstein",
-        "lithuania",
-        "luxembourg",
-        "macao",
-        "macedonia",
-        "madagascar",
-        "malawi",
-        "malaysia",
-        "maldives",
-        "mali",
-        "malta",
-        "marshall_islands",
-        "martinique",
-        "mauritania",
-        "mauritius",
-        "mexico",
-        "micronesia",
-        "moldova",
-        "monaco",
-        "mongolia",
-        "montenegro",
-        "montserrat",
-        "morocco",
-        "mozambique",
-        "myanmar",
-        "namibia",
-        "nauru",
-        "nepal",
-        "netherlands",
-        "new_caledonia",
-        "new_zealand",
-        "nicaragua",
-        "niger",
-        "nigeria",
-        "niue",
-        "north_korea",
-        "northern_ireland",
-        "northern_mariana_islands",
-        "norway",
-        "oman",
-        "pakistan",
-        "palau",
-        "palestine",
-        "panama",
-        "papua_new_guinea",
-        "paraguay",
-        "peru",
-        "philippines",
-        "pitcairn",
-        "poland",
-        "portugal",
-        "puerto_rico",
-        "qatar",
-        "reunion",
-        "romania",
-        "rwanda",
-        "saarc",
-        "saint_helena",
-        "saint_lucia",
-        "saint_martin",
-        "samoa",
-        "san_marino",
-        "sao_tome_principe",
-        "saudi_arabia",
-        "scotland",
-        "senegal",
-        "serbia",
-        "seychelles",
-        "sierra_leone",
-        "singapore",
-        "slovakia",
-        "slovenia",
-        "solomon_islands",
-        "somalia",
-        "south_africa",
-        "south_korea",
-        "south_sudan",
-        "spain",
-        "sri_lanka",
-        "st_kitts_and_nevis",
-        "st_vincent_grenadines",
-        "sudan",
-        "suriname",
-        "sweden",
-        "switzerland",
-        "syria",
-        "tahiti",
-        "taiwan",
-        "tajikistan",
-        "tamil_eelam",
-        "tanzania",
-        "thailand",
-        "togo",
-        "tonga",
-        "treaty_antarctica",
-        "trinidad_tobago",
-        "tunisia",
-        "turkey",
-        "turkmenistan",
-        "uae",
-        "uganda",
-        "ukraine",
-        "uruguay",
-        "usa",
-        "uzbekistan",
-        "vanuatu",
-        "vatican_city",
-        "venezuela",
-        "vietnam",
-        "virgin_islands_us",
-        "wales",
-        "western_sahara",
-        "yemen",
-        "zambia",
-        "zanzibar",
-        "zimbabwe"
-    ]
     
     private let colors = [
         Color.red, Color.green, Color.blue, Color.orange, Color.pink, Color.purple,
@@ -312,14 +111,14 @@ struct JoinMultiplayerPeerView: View {
             ScrollView {
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(flagImageNames, id: \.self) { data in
+                ForEach(countries, id: \.self) { country in
                     Button(action: {
-                        let selectedUserFlag = data
+                        let selectedUserFlag = country.flag
                         UserDefaults.standard.setValue(selectedUserFlag, forKey: "userFlag")
                         showFlagSelection = false
 
                     }) {
-                        Image(data)
+                        Image(country.flag)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 64)
@@ -333,92 +132,7 @@ struct JoinMultiplayerPeerView: View {
                 
             }
             
-        } else if showGameModeSelection {
-            
-                VStack {
-                    Text("Choose continent")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                    ScrollView {
-                        VStack (alignment: .leading) {
-                            ForEach(continentList.sorted(), id: \.self) { continent in
-                                            Button(action: {
-                                                if selectedContinents.contains(continent) {
-                                                    selectedContinents.removeAll(where: { $0 == continent })
-                                                    } else {
-                                                        selectedContinents.append   (continent)
-                                                    }
-                                            }) {
-                                                HStack {
-                                                    Image(systemName: selectedContinents.contains(continent) ? "checkmark.square.fill" : "square")
-                                                        .resizable()
-                                                        .frame(width: 32, height: 32)
-                                                        .foregroundColor(selectedContinents.contains(continent) ? .white : .white)
-                                                        .fontWeight(.bold)
-                                                    
-                                                    Text(continent)
-                                                        .font(.title)
-                                                        .fontWeight(.black)
-                                                        .foregroundColor(.white)
-                                                    Spacer()
-                                                    
-                                                }
-                                            }
-                                            .padding(.vertical, 8)
-                                        }
-                            Spacer()
-//                            Text("Choose level")
-//                                .font(.title)
-//                                .fontWeight(.black)
-//                                .foregroundColor(.white)
-//                            ForEach(levelList, id: \.self) { level in
-//                                            Button(action: {
-//                                                selectedLevel = level
-//                                            }) {
-//                                                HStack {
-//                                                    Image(systemName: selectedLevel == level ? "largecircle.fill.circle" : "circle")
-//                                                        .resizable()
-//                                                        .frame(width: 24, height: 24)
-//                                                        .foregroundColor(selectedLevel == level ? .white : .white)
-//
-//                                                    Text(level)
-//                                                        .font(.title)
-//                                                        .fontWeight(.black)
-//                                                        .foregroundColor(.white)
-//                                                }
-//                                            }
-//                                            .padding(.vertical, 8)
-//                                        }
-                            
-                            
-                        }
-                        
-                        
-                    }
-                    
-                    
-                    Button(action: {
-                        
-                        showGameModeSelection = false
-                        
-                        let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
-                        self.countries = filteredCountries
-
-                        print(countries)
-                        print($countries)
-
-                    }) {
-                        Text("DONE")
-                            
-                    }
-                    .buttonStyle(OrdinaryButtonStyle())
-                    .padding()
-                }
-                .padding()
-            
-            
-            } else {
+        } else {
                 
 
         
@@ -444,7 +158,9 @@ struct JoinMultiplayerPeerView: View {
                 }
                 Spacer()
                 Button(action: {
-                    showGameModeSelection = true
+                    
+                    multiplayer = false
+                    currentScene = "GameModeView"
                     
                 }) {
                     Text(Image(systemName:  "slider.vertical.3"))
@@ -618,7 +334,7 @@ struct JoinMultiplayerPeerView: View {
             .preferredColorScheme(.dark)
             .padding()
             .onAppear {
-                loadData()
+                //loadData()
                 loadUserData()
                 self.socketManager.socket.connect()
                 self.socketManager.startUsersTimer()
