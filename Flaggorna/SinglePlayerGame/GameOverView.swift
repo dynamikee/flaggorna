@@ -172,7 +172,9 @@ struct GameOverView: View {
             Spacer()
             
             Button(action: {
-                loadData()
+                FlagDataManager.loadDataAndUpdateFlagData() { countries in
+                    self.countries = countries
+                }
                 score = 0
                 rounds = 10
                 roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
@@ -262,7 +264,9 @@ struct GameOverView: View {
             Spacer()
             
             Button(action: {
-                loadData()
+                FlagDataManager.loadDataAndUpdateFlagData() { countries in
+                    self.countries = countries
+                }
                 score = 0
                 rounds = 10
                 roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)

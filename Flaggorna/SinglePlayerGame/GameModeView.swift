@@ -15,7 +15,6 @@ struct GameModeView: View {
     
     @EnvironmentObject var socketManager: SocketManager
 
-
     @State private var selectedContinents: [String] = []
     @State private var continentList: [String] = []
     
