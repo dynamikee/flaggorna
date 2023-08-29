@@ -12,10 +12,11 @@ struct GameModeView: View {
     @Binding var currentScene: String
     @Binding var countries: [Country]
     @Binding var multiplayer: Bool
+    @Binding var selectedContinents: [String]
     
     @EnvironmentObject var socketManager: SocketManager
 
-    @State private var selectedContinents: [String] = []
+    //@State private var selectedContinents: [String] = []
     @State private var continentList: [String] = []
     
     var body: some View {
@@ -93,8 +94,6 @@ struct GameModeView: View {
                 let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
                 self.countries = filteredCountries
                 self.socketManager.countries = filteredCountries
-
-                print(self.countries)
 
             }) {
                 Text("DONE")

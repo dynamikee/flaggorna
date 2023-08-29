@@ -18,6 +18,8 @@ struct GameOverView: View {
     @Binding var countries: [Country]
     @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
+    @Binding var selectedContinents: [String]
+
     
     @State var highestScore = UserDefaults.standard.integer(forKey: "highScore")
     @State var highscores: [Highscore] = []
@@ -175,6 +177,9 @@ struct GameOverView: View {
                 FlagDataManager.loadDataAndUpdateFlagData() { countries in
                     self.countries = countries
                 }
+                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+                self.countries = filteredCountries
+                
                 score = 0
                 rounds = 10
                 roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
@@ -267,6 +272,10 @@ struct GameOverView: View {
                 FlagDataManager.loadDataAndUpdateFlagData() { countries in
                     self.countries = countries
                 }
+                
+                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+                self.countries = filteredCountries
+                
                 score = 0
                 rounds = 10
                 roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
@@ -352,23 +361,6 @@ struct GameOverView: View {
         }
     }
 
-
-
-
-
-
-    
-    
-    private func loadData() {
-#if FLAGGORNA
-let file = Bundle.main.path(forResource: "countries", ofType: "json")!
-#elseif TEAM_LOGO_QUIZ
-let file = Bundle.main.path(forResource: "teams", ofType: "json")!
-#endif
-        let data = try! Data(contentsOf: URL(fileURLWithPath: file))
-        let decoder = JSONDecoder()
-        self.countries = try! decoder.decode([Country].self, from: data)
-    }
     
     private func fetchTopHighscores() {
         #if FLAGGORNA

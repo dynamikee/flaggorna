@@ -13,6 +13,7 @@ struct ContentView: View {
     
     @State var numberOfRounds = 10 //Number of rounds in a game - could be set by a user later
     @State var roundsArray: [RoundStatus] = []
+    @State var selectedContinents: [String] = []
 
     @EnvironmentObject var socketManager: SocketManager
 
@@ -47,7 +48,7 @@ struct ContentView: View {
                 case "Start":
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 case "GameModeView":
-                    GameModeView(currentScene: $currentScene, countries: $countries, multiplayer: $multiplayer)
+                    GameModeView(currentScene: $currentScene, countries: $countries, multiplayer: $multiplayer, selectedContinents: $selectedContinents)
                 case "GetReady":
                     GetReadyView(currentScene: $currentScene)
                 case "Main":
@@ -55,9 +56,9 @@ struct ContentView: View {
                 case "Right":
                     RightAnswerView(currentScene: $currentScene, score: $score, rounds: $rounds, roundsArray: $roundsArray)
                 case "Wrong":
-                    WrongAnswerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                    WrongAnswerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, currentCountry: $currentCountry, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 case "GameOver":
-                    GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                    GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 default:
                     StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
                 }

@@ -18,6 +18,7 @@ struct WrongAnswerView: View {
     @Binding var currentCountry: String
     @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
+    @Binding var selectedContinents: [String]
     
     
     var body: some View {
@@ -66,6 +67,9 @@ struct WrongAnswerView: View {
                 FlagDataManager.loadDataAndUpdateFlagData() { countries in
                     self.countries = countries
                 }
+                
+                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+                self.countries = filteredCountries
                 
                 score = 0
                 rounds = 10
