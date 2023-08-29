@@ -14,6 +14,8 @@ struct GameOverMultiplayerView: View {
     @Binding var score: Int
     @Binding var rounds: Int
     @Binding var multiplayer: Bool
+    @Binding var selectedContinents: [String]
+
     //@Binding var gameCode: String
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -107,7 +109,7 @@ struct GameOverMultiplayerView: View {
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         
                         let flagQuestion = socketManager.generateFlagQuestion()
-                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: selectedContinents)
                         let jsonData = try? JSONEncoder().encode(startMessage)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)

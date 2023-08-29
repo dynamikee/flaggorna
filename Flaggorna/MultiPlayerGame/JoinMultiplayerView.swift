@@ -266,10 +266,10 @@ struct JoinMultiplayerView: View {
                             SocketManager.shared.currentScene = "GetReadyMultiplayer"
                             
                             let flagQuestion = socketManager.generateFlagQuestion()
-                            let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
-                            let jsonData = try? JSONEncoder().encode(startMessage)
-                            let jsonString = String(data: jsonData!, encoding: .utf8)!
-                            socketManager.send(jsonString)
+                            //let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                            //let jsonData = try? JSONEncoder().encode(startMessage)
+                            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                            //socketManager.send(jsonString)
                         }
                     }){
                         Text("START GAME")

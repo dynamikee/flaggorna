@@ -24,22 +24,20 @@ struct ContentView: View {
             
             if multiplayer {
                 switch SocketManager.shared.currentScene {
-                case "JoinMultiplayer":
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
                 case "JoinMultiplayerPeer":
-                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 case "GetReadyMultiplayer":
                     GetReadyMultiplayerView(currentScene: $currentScene, rounds: $rounds, numberOfRounds: $numberOfRounds)
                 case "MainMultiplayer":
                     MainGameMultiplayerView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds)
                 case "RightMultiplayer":
-                    RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, numberOfRounds: $numberOfRounds, countries: $countries)
+                    RightAnswerMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, numberOfRounds: $numberOfRounds, countries: $countries, selectedContinents: $selectedContinents)
                 case "WrongMultiplayer":
-                    WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds, numberOfRounds: $numberOfRounds, countries: $countries)
+                    WrongAnswerMultiplayerView(currentScene: $currentScene, rounds: $rounds, numberOfRounds: $numberOfRounds, countries: $countries, selectedContinents: $selectedContinents)
                 case "GameOverMultiplayer":
-                    GameOverMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, multiplayer: $multiplayer)
+                    GameOverMultiplayerView(currentScene: $currentScene, score: $score, rounds: $rounds, multiplayer: $multiplayer, selectedContinents: $selectedContinents)
                 default:
-                    JoinMultiplayerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer)
+                    JoinMultiplayerPeerView(currentScene: $currentScene, countries: $countries, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 }
                 
                 
@@ -96,6 +94,7 @@ struct StartMessage: Codable {
     let type: String
     let gameCode: String
     let question: FlagQuestion
+    let selectedContinents: [String]
 }
 
 struct ResetMessage: Codable {

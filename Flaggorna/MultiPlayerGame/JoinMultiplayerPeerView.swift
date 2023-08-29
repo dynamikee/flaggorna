@@ -20,6 +20,7 @@ struct JoinMultiplayerPeerView: View {
     @Binding var multiplayer: Bool
     @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
+    @Binding var selectedContinents: [String]
     
     @State private var uuidString: String = ""
     @State private var name: String = ""
@@ -51,7 +52,7 @@ struct JoinMultiplayerPeerView: View {
     @State private var showGameModeSelection = false
     @State private var selectedLevel: String = ""
     @State private var levelList: [String] = []
-    @State private var selectedContinents: [String] = []
+    //@State private var selectedContinents: [String] = []
     @State private var continentList: [String] = []
     
     
@@ -280,7 +281,7 @@ struct JoinMultiplayerPeerView: View {
                             SocketManager.shared.currentScene = "GetReadyMultiplayer"
                             
                             let flagQuestion = socketManager.generateFlagQuestion()
-                            let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                            let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion, selectedContinents: selectedContinents)
                             let jsonData = try? JSONEncoder().encode(startMessage)
                             let jsonString = String(data: jsonData!, encoding: .utf8)!
                             socketManager.send(jsonString)
@@ -307,7 +308,7 @@ struct JoinMultiplayerPeerView: View {
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         
                         let flagQuestion = socketManager.generateFlagQuestion()
-                        let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion)
+                        let startMessage = StartMessage(type: "startGame", gameCode: gameCode, question: flagQuestion, selectedContinents: selectedContinents)
                         let jsonData = try? JSONEncoder().encode(startMessage)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)

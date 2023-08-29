@@ -13,6 +13,9 @@ struct RightAnswerMultiplayerView: View {
     @Binding var rounds: Int
     @Binding var numberOfRounds: Int
     @Binding var countries: [Country]
+    @Binding var selectedContinents: [String]
+
+    
     @EnvironmentObject var socketManager: SocketManager
     @State private var showNextButton: Bool = false
     
@@ -89,7 +92,7 @@ struct RightAnswerMultiplayerView: View {
                 Button(action: {
                     let flagQuestion = generateFlagQuestion()
                     SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion)
+                    let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: selectedContinents)
                     let jsonData = try? JSONEncoder().encode(startMessage)
                     let jsonString = String(data: jsonData!, encoding: .utf8)!
                     socketManager.send(jsonString)
