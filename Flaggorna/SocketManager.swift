@@ -117,6 +117,12 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                         
                         let question = FlagQuestion(flag: flag, answerOptions: answerOptions, correctAnswer: correctAnswer)
                         
+                        guard let jsonSelectedContinents = json["selectedContinents"] as? [String] else {
+                            return
+                        }
+                        let filteredCountries = countries.filter { jsonSelectedContinents.contains($0.continent) }
+                        self.countries = filteredCountries
+                        
                         DispatchQueue.main.async { [weak self] in
                             
                             self?.stopUsersTimer()

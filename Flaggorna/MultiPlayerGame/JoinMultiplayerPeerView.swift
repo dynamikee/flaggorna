@@ -285,7 +285,6 @@ struct JoinMultiplayerPeerView: View {
                             let jsonData = try? JSONEncoder().encode(startMessage)
                             let jsonString = String(data: jsonData!, encoding: .utf8)!
                             socketManager.send(jsonString)
-                            
                             isSeeking = false
                             
                         } else {
@@ -312,7 +311,7 @@ struct JoinMultiplayerPeerView: View {
                         let jsonData = try? JSONEncoder().encode(startMessage)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)
-                        
+
                         isSeeking = false
                     } label: {
                         Text("START GAME")
