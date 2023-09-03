@@ -24,6 +24,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
     var gameCode: String
     var rounds: Int
     var score: Int
+    var selectedContinents: [String]
 
     //private var currentSceneBinding: Binding<String>?
     
@@ -36,6 +37,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
         gameCode = ""
         rounds = 10
         score = 0
+        selectedContinents = []
         super.init()
         socket.delegate = self
     }
@@ -121,6 +123,7 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                             return
                         }
                         let filteredCountries = countries.filter { jsonSelectedContinents.contains($0.continent) }
+                        self.selectedContinents = jsonSelectedContinents
                         self.countries = filteredCountries
                         
                         DispatchQueue.main.async { [weak self] in

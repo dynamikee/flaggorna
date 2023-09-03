@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		75CC1ED4CD2A9D723B953B11 /* Pods_Flaggorna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */; };
-		BA1B734F2AA50430007F59DD /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1B734E2AA50430007F59DD /* StoreView.swift */; };
 		BA3482AC2A3CC8B900EE876F /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */; };
 		BA5BA1FF29A5FE700034BBED /* MainGameMultiplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */; };
 		BA6793102A38600300955104 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA67930F2A38600300955104 /* StoreKit.framework */; };
@@ -45,6 +44,7 @@
 		BA9C458F2A60085600439C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF21C0729994103009035E8 /* Assets.xcassets */; };
 		BA9C45982A6483AA00439C00 /* TeamStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BA9C45962A6483AA00439C00 /* TeamStats.xcdatamodeld */; };
 		BA9C45A62A6B12C400439C00 /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = BA9C45A52A6B12C400439C00 /* teams.json */; };
+		BAB544302AA51144008FBCEA /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5442F2AA51144008FBCEA /* StoreView.swift */; };
 		BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466629A0AED90048AE12 /* GetReadyView.swift */; };
 		BABC466A29A0AFC40048AE12 /* MainGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466929A0AFC40048AE12 /* MainGameView.swift */; };
 		BABC466C29A0B0320048AE12 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC466B29A0B0320048AE12 /* StartGameView.swift */; };
@@ -70,7 +70,6 @@
 /* Begin PBXFileReference section */
 		8E54404F3BA6DF08850CA45A /* Pods_Flaggorna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flaggorna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DCCA9EA8BF73D862B57A6C0 /* Pods-Flaggorna.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flaggorna.release.xcconfig"; path = "Target Support Files/Pods-Flaggorna/Pods-Flaggorna.release.xcconfig"; sourceTree = "<group>"; };
-		BA1B734E2AA50430007F59DD /* StoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = "../../../../backup dator/dev/flaggorna/Flaggorna/StoreView.swift"; sourceTree = "<group>"; };
 		BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		BA5BA1FE29A5FE700034BBED /* MainGameMultiplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameMultiplayerView.swift; sourceTree = "<group>"; };
 		BA67930F2A38600300955104 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -82,6 +81,7 @@
 		BA9C45952A60085600439C00 /* Flaggorna copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Flaggorna copy-Info.plist"; path = "/Users/mikaelmattsson/Documents/dev/flaggorna/Flaggorna copy-Info.plist"; sourceTree = "<absolute>"; };
 		BA9C45972A6483AA00439C00 /* TeamStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TeamStats.xcdatamodel; sourceTree = "<group>"; };
 		BA9C45A52A6B12C400439C00 /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = teams.json; path = "../../../Flaggorna stuff/teams.json"; sourceTree = "<group>"; };
+		BAB5442F2AA51144008FBCEA /* StoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreView.swift; path = Flaggorna/StoreView.swift; sourceTree = SOURCE_ROOT; };
 		BABC466629A0AED90048AE12 /* GetReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReadyView.swift; sourceTree = "<group>"; };
 		BABC466929A0AFC40048AE12 /* MainGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameView.swift; sourceTree = "<group>"; };
 		BABC466B29A0B0320048AE12 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		BA3482AA2A3CC89800EE876F /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				BA1B734E2AA50430007F59DD /* StoreView.swift */,
+				BAB5442F2AA51144008FBCEA /* StoreView.swift */,
 				BA3482AB2A3CC8B900EE876F /* PurchaseManager.swift */,
 			);
 			path = Store;
@@ -471,7 +471,7 @@
 				BAD64D1A2A2D23F100A994DA /* JoinMultiplayerPeerView.swift in Sources */,
 				BAD40D2729ABD86F0054E972 /* WrongAnswerMultiplayerView.swift in Sources */,
 				BAC726CC2A4B7DE50077A2B0 /* SocketManager.swift in Sources */,
-				BA1B734F2AA50430007F59DD /* StoreView.swift in Sources */,
+				BAB544302AA51144008FBCEA /* StoreView.swift in Sources */,
 				BAF21C0629994100009035E8 /* ContentView.swift in Sources */,
 				BABC466729A0AED90048AE12 /* GetReadyView.swift in Sources */,
 				BAF21C0429994100009035E8 /* FlaggornaApp.swift in Sources */,

@@ -93,6 +93,7 @@ struct GameModeView: View {
                 
                 let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
                 self.countries = filteredCountries
+                self.socketManager.selectedContinents = selectedContinents
                 self.socketManager.countries = filteredCountries
 
             }) {
