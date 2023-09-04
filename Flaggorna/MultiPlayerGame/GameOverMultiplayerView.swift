@@ -108,8 +108,12 @@ struct GameOverMultiplayerView: View {
                         
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"
                         
+                        let filteredCountries = socketManager.countries.filter { socketManager.selectedContinents.contains($0.continent) }
+                        self.socketManager.selectedContinents = selectedContinents
+                        self.socketManager.countries = filteredCountries
+                        
                         let flagQuestion = socketManager.generateFlagQuestion()
-                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: selectedContinents)
+                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: socketManager.selectedContinents)
                         let jsonData = try? JSONEncoder().encode(startMessage)
                         let jsonString = String(data: jsonData!, encoding: .utf8)!
                         socketManager.send(jsonString)

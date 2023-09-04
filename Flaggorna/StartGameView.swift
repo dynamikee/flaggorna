@@ -17,11 +17,14 @@ struct StartGameView: View {
     @Binding var multiplayer: Bool
     @Binding var numberOfRounds: Int
     @Binding var roundsArray: [RoundStatus]
+    @Binding var selectedContinents: [String]
     
     @State private var offset = CGSize.zero
     @State private var isSettingsViewActive = false
     
     @State private var playButtonScale: CGFloat = 1.0
+    
+    @State private var continentList: [String] = []
     
     var body: some View {
         ZStack {
@@ -91,6 +94,19 @@ struct StartGameView: View {
                     multiplayer = true
                     SocketManager.shared.currentScene = "JoinMultiplayerPeer"
                     
+                    if countries.isEmpty {
+                        FlagDataManager.loadDataAndUpdateFlagData() { countries in
+                            self.countries = countries
+                        }
+                    }
+                    if SocketManager.shared.countries.isEmpty {
+                        SocketManager.shared.loadData()
+                    }
+                    let uniqueContinents = Set(countries.map { $0.continent })
+                    continentList = Array(uniqueContinents)
+                    selectedContinents = continentList
+                    
+                    
                 }){
                     VStack {
                         Image("party_quiz_logo")
@@ -140,9 +156,14 @@ struct StartGameView: View {
             //.edgesIgnoringSafeArea(.all)
             .onAppear {
                 SocketManager.shared.loadData()
+                
                 FlagDataManager.loadDataAndUpdateFlagData() { countries in
                     self.countries = countries
                 }
+                let uniqueContinents = Set(countries.map { $0.continent })
+                continentList = Array(uniqueContinents)
+                selectedContinents = continentList
+                
                 animatePlayButton()
             }
         }

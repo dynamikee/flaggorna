@@ -1386,13 +1386,6 @@
     "continent": "North_America"
   },
   {
-    "id": 199,
-    "name": "Dominican Republic",
-    "flag": "dominica",
-    "level": "Hard",
-    "continent": "North_America"
-  },
-  {
     "id": 200,
     "name": "Equatorial Guinea",
     "flag": "equatorial_guinea",

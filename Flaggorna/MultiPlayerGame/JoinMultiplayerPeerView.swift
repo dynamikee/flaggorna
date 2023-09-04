@@ -225,6 +225,12 @@ struct JoinMultiplayerPeerView: View {
             
             VStack (spacing: 10) {
                 Spacer()
+                Text(gameCode)
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding()
                 Text("Searching nearby players...")
                     .font(.body)
                     .fontWeight(.bold)
@@ -253,6 +259,7 @@ struct JoinMultiplayerPeerView: View {
                 
                 
                 if socketManager.users.count < 2 {
+
                     Button {
                         score = 0
                         rounds = numberOfRounds
@@ -274,7 +281,13 @@ struct JoinMultiplayerPeerView: View {
                     .buttonStyle(OrdinaryButtonStyle())
                     
                 } else if socketManager.users.count > 4 {
+                    
                     Button {
+                        guard !gameCode.isEmpty else {
+                            // Handle the case where the gameCode is empty
+                            // You can show an alert or provide some feedback to the user
+                            return
+                        }
                         // premium is needed
                         if purchaseManager.hasUnlockedPremium {
                             self.socketManager.stopUsersTimer()
@@ -302,6 +315,11 @@ struct JoinMultiplayerPeerView: View {
                     
                 } else {
                     Button {
+                        guard !gameCode.isEmpty else {
+                            // Handle the case where the gameCode is empty
+                            // You can show an alert or provide some feedback to the user
+                            return
+                        }
                         // premium is not needed
                         self.socketManager.stopUsersTimer()
                         SocketManager.shared.currentScene = "GetReadyMultiplayer"

@@ -44,7 +44,7 @@ struct ContentView: View {
             } else {
                 switch currentScene {
                 case "Start":
-                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 case "GameModeView":
                     GameModeView(currentScene: $currentScene, countries: $countries, multiplayer: $multiplayer, selectedContinents: $selectedContinents)
                 case "GetReady":
@@ -58,7 +58,7 @@ struct ContentView: View {
                 case "GameOver":
                     GameOverView(currentScene: $currentScene, score: $score, rounds: $rounds, countries: $countries, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 default:
-                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray)
+                    StartGameView(currentScene: $currentScene, countries: $countries, score: $score, rounds: $rounds, multiplayer: $multiplayer, numberOfRounds: $numberOfRounds, roundsArray: $roundsArray, selectedContinents: $selectedContinents)
                 }
             }
         }
