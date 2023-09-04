@@ -17,7 +17,25 @@ struct GameModeView: View {
     @EnvironmentObject var socketManager: SocketManager
 
     //@State private var selectedContinents: [String] = []
-    @State private var continentList: [String] = []
+    //let continentList = ["Africa", "Asia", "Europe", "North_America", "Oceania", "South_America"]
+
+    struct ContinentInfo {
+        let name: String  // Internal name with underscores
+        let displayName: String  // Display name with spaces
+    }
+
+    enum Continents {
+        static let list: [ContinentInfo] = [
+            ContinentInfo(name: "Africa", displayName: "Africa"),
+            ContinentInfo(name: "Asia", displayName: "Asia"),
+            ContinentInfo(name: "Europe", displayName: "Europe"),
+            ContinentInfo(name: "North_America", displayName: "North America"),
+            ContinentInfo(name: "Oceania", displayName: "Oceania"),
+            ContinentInfo(name: "South_America", displayName: "South America")
+        ]
+    }
+
+    
     
     var body: some View {
         VStack {
@@ -27,31 +45,30 @@ struct GameModeView: View {
                 .foregroundColor(.white)
             ScrollView {
                 VStack (alignment: .leading) {
-                    ForEach(continentList.sorted(), id: \.self) { continent in
-                                    Button(action: {
-                                        if selectedContinents.contains(continent) {
-                                            selectedContinents.removeAll(where: { $0 == continent })
-                                            } else {
-                                                selectedContinents.append   (continent)
-                                            }
-                                    }) {
-                                        HStack {
-                                            Image(systemName: selectedContinents.contains(continent) ? "checkmark.square.fill" : "square")
-                                                .resizable()
-                                                .frame(width: 32, height: 32)
-                                                .foregroundColor(selectedContinents.contains(continent) ? .white : .white)
-                                                .fontWeight(.bold)
-                                            
-                                            Text(continent)
-                                                .font(.title)
-                                                .fontWeight(.black)
-                                                .foregroundColor(.white)
-                                            Spacer()
-                                            
-                                        }
-                                    }
-                                    .padding(.vertical, 8)
-                                }
+                    ForEach(Continents.list, id: \.name) { continent in
+                        Button(action: {
+                            if selectedContinents.contains(continent.name) {
+                                selectedContinents.removeAll(where: { $0 == continent.name })
+                            } else {
+                                selectedContinents.append(continent.name)
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: selectedContinents.contains(continent.name) ? "checkmark.square.fill" : "square")
+                                    .resizable()
+                                    .frame(width: 32, height: 32)
+                                    .foregroundColor(selectedContinents.contains(continent.name) ? .white : .white)
+                                    .fontWeight(.bold)
+                                
+                                Text(continent.displayName)
+                                    .font(.title)
+                                    .fontWeight(.black)
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
+                        }
+                        .padding(.vertical, 8)
+                    }
                     Spacer()
 //                            Text("Choose level")
 //                                .font(.title)
@@ -87,14 +104,20 @@ struct GameModeView: View {
                 
                 //self.countries.removeAll { $0.name == "Åland" }
                 
-                multiplayer = true
-                currentScene = "JoinMultiplayerPeerView"
+                if !selectedContinents.isEmpty {
+                    multiplayer = true
+                    currentScene = "JoinMultiplayerPeerView"
+                    
+                    
+                    let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+                    self.countries = filteredCountries
+                    self.socketManager.selectedContinents = selectedContinents
+                    self.socketManager.countries = filteredCountries
+                } else {
+                    return
+                }
                 
                 
-                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
-                self.countries = filteredCountries
-                self.socketManager.selectedContinents = selectedContinents
-                self.socketManager.countries = filteredCountries
 
             }) {
                 Text("DONE")
@@ -105,9 +128,8 @@ struct GameModeView: View {
         }
         .padding()
         .onAppear() {
-            let uniqueContinents = Set(countries.map { $0.continent })
-            continentList = Array(uniqueContinents)
-            selectedContinents = continentList
+
+            //selectedContinents = continentList
             
         }
     }
