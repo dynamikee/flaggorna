@@ -63,24 +63,24 @@ struct WrongAnswerView: View {
                 .foregroundColor(.white)
             Spacer()
             
-            Button(action: {
-                FlagDataManager.loadDataAndUpdateFlagData() { countries in
-                    self.countries = countries
-                }
-                
-                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
-                self.countries = filteredCountries
-                
-                score = 0
-                rounds = 10
-                roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
-                currentScene = "GetReady"
-            }) {
-                Image(systemName: "gobackward")
-                    .font(.title)
-                    .foregroundColor(.white)
-            }
-            .padding(24)
+//            Button(action: {
+//                FlagDataManager.loadDataAndUpdateFlagData() { countries in
+//                    self.countries = countries
+//                }
+//                
+//                let filteredCountries = countries.filter { selectedContinents.contains($0.continent) }
+//                self.countries = filteredCountries
+//                
+//                score = 0
+//                rounds = 10
+//                roundsArray = Array(repeating: .notAnswered, count: numberOfRounds)
+//                currentScene = "GetReady"
+//            }) {
+//                Image(systemName: "gobackward")
+//                    .font(.title)
+//                    .foregroundColor(.white)
+//            }
+//            .padding(24)
             
 
             

@@ -215,11 +215,12 @@ class SocketManager: NSObject, ObservableObject, WebSocketDelegate {
                                 print("Missing or malformed game code")
                                 return
                             }
-                        //reset the number of countries
-                        FlagDataManager.loadDataAndUpdateFlagData() { countries in
-                            self.countries = countries
-                        }
                         
+                        self.loadData()
+                        
+                        let filteredCountries = self.countries.filter { self.selectedContinents.contains($0.continent) }
+                        self.countries = filteredCountries
+                                                
                         // Reset the rounds and scores of all users in the game
                         for user in users {
                             user.currentRound = 10

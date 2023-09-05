@@ -79,52 +79,49 @@ struct GameOverMultiplayerView: View {
             }
             Spacer()
             
-            if showAlert {
-                    Text("Need to be at least two players")
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    
-                                .opacity(showAlert ? 1 : 0)
-                                .animation(.easeInOut(duration: 0.5))
-                        }
-            
-                Button(action: {
-
-                    if socketManager.users.count < 2 {
-                        showAlert = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            withAnimation {
-                                showAlert = false
-                            }
-                        }
-                    } else {
-                        
-                        score = 0
-                        
-                        resetGame()
-                        socketManager.loadData()
-                        
-                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
-                        
-                        let filteredCountries = socketManager.countries.filter { socketManager.selectedContinents.contains($0.continent) }
-                        self.socketManager.selectedContinents = selectedContinents
-                        self.socketManager.countries = filteredCountries
-                        
-                        let flagQuestion = socketManager.generateFlagQuestion()
-                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: socketManager.selectedContinents)
-                        let jsonData = try? JSONEncoder().encode(startMessage)
-                        let jsonString = String(data: jsonData!, encoding: .utf8)!
-                        socketManager.send(jsonString)
-                        
-                    }
-                }){
-                    Text("PLAY AGAIN")
-                }
-                .buttonStyle(OrdinaryButtonStyle())
-                .padding()
-            
+//            if showAlert {
+//                    Text("Need to be at least two players")
+//                    .font(.body)
+//                    .fontWeight(.bold)
+//                    .multilineTextAlignment(.center)
+//                    .foregroundColor(.white)
+//                    
+//                                .opacity(showAlert ? 1 : 0)
+//                                .animation(.easeInOut(duration: 0.5))
+//                        }
+//            
+//                Button(action: {
+//
+//                    if socketManager.users.count < 2 {
+//                        showAlert = true
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                            withAnimation {
+//                                showAlert = false
+//                            }
+//                        }
+//                    } else {
+//
+//                        
+//                        resetGame() //reset score and rounds and sends message to clients to update aswell
+//                        
+//                        
+//                        
+//                        SocketManager.shared.currentScene = "GetReadyMultiplayer"
+//                        
+//                        
+//                        let flagQuestion = socketManager.generateFlagQuestion()
+//                        let startMessage = StartMessage(type: "startGame", gameCode: socketManager.gameCode, question: flagQuestion, selectedContinents: socketManager.selectedContinents)
+//                        let jsonData = try? JSONEncoder().encode(startMessage)
+//                        let jsonString = String(data: jsonData!, encoding: .utf8)!
+//                        socketManager.send(jsonString)
+//                        
+//                    }
+//                }){
+//                    Text("PLAY AGAIN")
+//                }
+//                .buttonStyle(OrdinaryButtonStyle())
+//                .padding()
+//            
             Button(action: {
                 if let currentUser = self.socketManager.currentUser {
                     self.socketManager.users.remove(currentUser)
@@ -171,6 +168,13 @@ struct GameOverMultiplayerView: View {
             user.currentRound = 10
             user.score = 0
         }
+        
+        socketManager.loadData()
+        
+        let filteredCountries = socketManager.countries.filter { socketManager.selectedContinents.contains($0.continent) }
+        self.socketManager.countries = filteredCountries
+        
+        score = 0
         
         print("Resetting game for: \(socketManager.users)")
         
